@@ -52,10 +52,11 @@ export default function PinLogin() {
             <Ionicons name="card-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Member ID (e.g., MV-1234567)"
-              value={memberId}
-              onChangeText={setMemberId}
-              autoCapitalize="characters"
+              placeholder="Email (e.g., user@example.com)"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              keyboardType="email-address"
             />
           </View>
 
