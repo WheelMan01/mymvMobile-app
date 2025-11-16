@@ -267,7 +267,7 @@ class BackendTester:
                     # Log vehicle details if any exist
                     if vehicle_count > 0:
                         print(f"   Vehicle details:")
-                        for i, vehicle in enumerate(data[:3]):  # Show first 3 vehicles
+                        for i, vehicle in enumerate(vehicles[:3]):  # Show first 3 vehicles
                             make = vehicle.get('make', 'Unknown')
                             model = vehicle.get('model', 'Unknown')
                             year = vehicle.get('year', 'Unknown')
