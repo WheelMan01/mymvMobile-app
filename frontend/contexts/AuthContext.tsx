@@ -33,9 +33,13 @@ const deleteStorageItem = async (key: string) => {
 interface User {
   id: string;
   email: string;
-  full_name: string;
-  phone: string;
-  member_id: string;
+  first_name?: string;
+  last_name?: string;
+  full_name?: string;
+  phone?: string;
+  mobile?: string;
+  member_id?: string;
+  member_number?: string;
 }
 
 interface AuthContextType {
