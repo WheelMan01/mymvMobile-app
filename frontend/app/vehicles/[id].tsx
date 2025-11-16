@@ -86,7 +86,17 @@ export default function VehicleDetail() {
         {/* Vehicle Image */}
         <View style={styles.imageContainer}>
           {vehicle.image ? (
-            <Image source={{ uri: vehicle.image }} style={styles.vehicleImage} resizeMode="cover" />
+            <Image 
+              source={{ uri: vehicle.image }} 
+              style={styles.vehicleImage} 
+              resizeMode="cover"
+              onError={(error) => {
+                console.log('Failed to load vehicle image:', vehicle.image, error.nativeEvent);
+              }}
+              onLoad={() => {
+                console.log('Successfully loaded vehicle image:', vehicle.image);
+              }}
+            />
           ) : (
             <View style={styles.imagePlaceholder}>
               <Ionicons name="car" size={80} color="#8E8E93" />
