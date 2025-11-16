@@ -31,7 +31,7 @@ class UserLogin(BaseModel):
     password: str
 
 class PinLogin(BaseModel):
-    member_id: str
+    email: str
     pin: str
 
 class UserResponse(BaseModel):
