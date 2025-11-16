@@ -9,12 +9,16 @@ interface RoadsideMembership {
   id: string;
   vehicle_id: string;
   provider_id: string;
-  membership_type: string;
+  provider_name: string;
   membership_number: string;
-  start_date: string;
-  end_date: string;
-  emergency_contact: string;
-  status: string;
+  annual_premium: number;
+  expiry_date: string;
+  plan_type: string;
+  coverage_details?: string;
+  provider_phone: string;
+  provider_email?: string;
+  provider_website?: string;
+  provider_logo?: string;
 }
 
 export default function Roadside() {
