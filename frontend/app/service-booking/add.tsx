@@ -347,13 +347,30 @@ export default function AddServiceBooking() {
           {/* Date */}
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>Preferred Date <Text style={styles.required}>*</Text></Text>
-            <TextInput
-              style={styles.input}
-              placeholder="YYYY-MM-DD"
-              value={formData.date}
-              onChangeText={(value) => setFormData({ ...formData, date: value })}
-            />
-            <Text style={styles.hint}>Format: YYYY-MM-DD (e.g., 2025-12-15)</Text>
+            <TouchableOpacity
+              style={styles.datePickerButton}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Ionicons name="calendar-outline" size={20} color="#007AFF" />
+              <Text style={styles.datePickerText}>
+                {formData.date ? formatDateAU(selectedDate) : 'Select a date'}
+              </Text>
+              <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+            </TouchableOpacity>
+            {formData.date && (
+              <Text style={styles.hint}>Selected: {formatDateAU(selectedDate)}</Text>
+            )}
+            
+            {showDatePicker && (
+              <DateTimePicker
+                value={selectedDate}
+                mode="date"
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={handleDateChange}
+                minimumDate={new Date()}
+                maximumDate={new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)}
+              />
+            )}
           </View>
 
           {/* Time */}
