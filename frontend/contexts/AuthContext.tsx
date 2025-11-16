@@ -63,8 +63,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const loadStoredAuth = async () => {
     try {
-      const storedToken = await SecureStore.getItemAsync('auth_token');
-      const storedUser = await SecureStore.getItemAsync('user_data');
+      const storedToken = await getStorageItem('auth_token');
+      const storedUser = await getStorageItem('user_data');
       
       if (storedToken && storedUser) {
         setToken(storedToken);
@@ -78,8 +78,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setUser(response.data);
         } catch (error) {
           // Token invalid, clear storage
-          await SecureStore.deleteItemAsync('auth_token');
-          await SecureStore.deleteItemAsync('user_data');
+          await deleteStorageItem('auth_token');
+          await deleteStorageItem('user_data');
           setToken(null);
           setUser(null);
         }
