@@ -86,7 +86,7 @@ class VehicleResponse(BaseModel):
     id: str
     user_id: str
     rego: str
-    vin: str
+    vin: Optional[str] = None
     make: str
     model: str
     year: int
