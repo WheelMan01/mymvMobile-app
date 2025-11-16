@@ -11,9 +11,24 @@ export default function PinLogin() {
   const router = useRouter();
   const { pinLogin } = useAuth();
 
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handlePinLogin = async () => {
     if (!email || !pin) {
       Alert.alert('Error', 'Please enter Email and PIN');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      Alert.alert('Error', 'Please enter a valid email address');
+      return;
+    }
+
+    if (pin.length !== 4) {
+      Alert.alert('Error', 'PIN must be exactly 4 digits');
       return;
     }
 
