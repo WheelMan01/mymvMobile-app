@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   amountSection: {
-    marginBottom: 16,
+    marginBottom: 12,
   },
   amountLabel: {
     fontSize: 14,
@@ -239,6 +239,19 @@ const styles = StyleSheet.create({
   amountValue: {
     fontSize: 32,
     fontWeight: 'bold',
+    color: '#1C1C1E',
+  },
+  lenderInfo: {
+    marginBottom: 16,
+  },
+  lenderLabel: {
+    fontSize: 12,
+    color: '#8E8E93',
+    marginBottom: 4,
+  },
+  lenderValue: {
+    fontSize: 16,
+    fontWeight: '600',
     color: '#1C1C1E',
   },
   detailsGrid: {
