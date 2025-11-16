@@ -5,21 +5,21 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function PinLogin() {
-  const [memberId, setMemberId] = useState('');
+  const [email, setEmail] = useState('');
   const [pin, setPin] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { pinLogin } = useAuth();
 
   const handlePinLogin = async () => {
-    if (!memberId || !pin) {
-      Alert.alert('Error', 'Please enter Member ID and PIN');
+    if (!email || !pin) {
+      Alert.alert('Error', 'Please enter Email and PIN');
       return;
     }
 
     setLoading(true);
     try {
-      await pinLogin(memberId, pin);
+      await pinLogin(email, pin);
       router.replace('/(tabs)');
     } catch (error: any) {
       Alert.alert('Login Failed', error.message);
