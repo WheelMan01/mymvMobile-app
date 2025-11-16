@@ -153,48 +153,40 @@ export default function Promotions() {
         <View style={{ width: 40 }} />
       </View>
 
+      {/* Tabs */}
       <View style={styles.filterContainer}>
-        <TouchableOpacity 
-          style={[styles.filterChip, filter === 'all' && styles.filterChipActive]}
-          onPress={() => setFilter('all')}
-        >
-          <Text style={[styles.filterChipText, filter === 'all' && styles.filterChipTextActive]}>All</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.filterChip, filter === 'Insurance' && styles.filterChipActive]}
-          onPress={() => setFilter('Insurance')}
-        >
-          <Text style={[styles.filterChipText, filter === 'Insurance' && styles.filterChipTextActive]}>Insurance</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.filterChip, filter === 'Finance' && styles.filterChipActive]}
-          onPress={() => setFilter('Finance')}
-        >
-          <Text style={[styles.filterChipText, filter === 'Finance' && styles.filterChipTextActive]}>Finance</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.filterChip, filter === 'Roadside' && styles.filterChipActive]}
-          onPress={() => setFilter('Roadside')}
-        >
-          <Text style={[styles.filterChipText, filter === 'Roadside' && styles.filterChipTextActive]}>Roadside</Text>
-        </TouchableOpacity>
+        {tabs.map((tab) => (
+          <TouchableOpacity
+            key={tab.id}
+            style={[styles.filterChip, activeTab === tab.id && styles.filterChipActive]}
+            onPress={() => setActiveTab(tab.id as any)}
+          >
+            <Text style={[styles.filterChipText, activeTab === tab.id && styles.filterChipTextActive]}>
+              {tab.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
-      {filteredPromotions.length === 0 && !loading ? (
+      {/* Content */}
+      {loading ? (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#007AFF" />
+        </View>
+      ) : banners.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Ionicons name="pricetag-outline" size={80} color="#C7C7CC" />
+          <Text style={styles.emptyIcon}>🏷️</Text>
           <Text style={styles.emptyText}>No promotions available</Text>
           <Text style={styles.emptySubtext}>Check back later for special offers</Text>
         </View>
       ) : (
         <FlatList
-          data={filteredPromotions}
-          renderItem={({ item }) => <PromotionCard promotion={item} />}
+          data={banners}
+          renderItem={renderBanner}
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.list}
-          refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={fetchPromotions} />
-          }
+          onRefresh={loadBanners}
+          refreshing={loading}
         />
       )}
     </View>
