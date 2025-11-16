@@ -32,7 +32,7 @@ export default function ServiceBooking() {
   const fetchBookings = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/service-bookings');
+      const response = await api.get('/services');
       console.log('Service Bookings API response:', response.data);
       
       // Access nested data structure from live API
