@@ -143,15 +143,18 @@ backend:
   
   - task: "AI Rego Scan with OpenAI Vision"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Implemented using Emergent LLM key with OpenAI gpt-4o vision model. Needs testing with actual image."
+      - working: true
+        agent: "testing"
+        comment: "AI Rego Scan tested successfully with sample registration document image. Extracted all fields correctly: rego, vin, make, model, year, body_type, expiry_date. OpenAI GPT-4o vision integration working perfectly."
   
   - task: "Insurance Policy Management"
     implemented: true
