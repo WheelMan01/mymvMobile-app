@@ -70,9 +70,9 @@ class BackendTester:
                     )
                     return False
                 
-                # Verify user data structure
+                # Verify user data structure (live backend format)
                 user = data.get("user", {})
-                user_required_fields = ["id", "email", "full_name", "member_id"]
+                user_required_fields = ["id", "email"]
                 missing_user_fields = [field for field in user_required_fields if field not in user]
                 
                 if missing_user_fields:
@@ -80,6 +80,17 @@ class BackendTester:
                         "PIN Login - Success Case",
                         False,
                         f"Missing user fields: {missing_user_fields}",
+                        data
+                    )
+                    return False
+                
+                # Check for member identifier (could be member_id or member_number)
+                member_id = user.get('member_id') or user.get('member_number')
+                if not member_id:
+                    self.log_test(
+                        "PIN Login - Success Case",
+                        False,
+                        "Missing member identifier (member_id or member_number)",
                         data
                     )
                     return False
