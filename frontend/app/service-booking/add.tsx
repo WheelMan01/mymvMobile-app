@@ -59,8 +59,43 @@ export default function AddServiceBooking() {
     dealer_code: '',
   });
   
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // Helper function to format date to Australian format (DD/MM/YYYY)
+  const formatDateAU = (date: Date): string => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  // Helper function to convert date to API format (YYYY-MM-DD)
+  const formatDateAPI = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const handleDateChange = (event: any, date?: Date) => {
+    setShowDatePicker(Platform.OS === 'ios'); // Keep open on iOS, close on Android
+    
+    if (date) {
+      setSelectedDate(date);
+      const apiDate = formatDateAPI(date);
+      
+      // Check if date is blocked
+      if (blockedDates.includes(apiDate)) {
+        Alert.alert('Date Unavailable', 'This date is not available. Please choose another date.');
+        return;
+      }
+      
+      setFormData({ ...formData, date: apiDate });
+    }
+  };
 
   const serviceTypes = [
     'Oil Change',
