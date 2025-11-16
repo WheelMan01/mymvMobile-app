@@ -117,17 +117,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pinLogin = async (email: string, pin: string) => {
     try {
       const url = `${API_URL}/api/auth/pin-login`;
-      console.log('PIN Login - URL:', url);
-      console.log('PIN Login - Payload:', { email: email.toLowerCase().trim(), pin });
+      console.log('=== PIN Login Debug ===');
+      console.log('URL:', url);
+      console.log('Email:', email);
+      console.log('PIN:', pin);
       
       const response = await axios.post(url, {
         email: email.toLowerCase().trim(),
         pin
       });
       
-      console.log('PIN Login - Success:', response.data);
+      console.log('Success! Response:', response.data);
       
       const { access_token, user: userData } = response.data;
+      
+      if (!access_token) {
+        throw new Error('No access token received from server');
+      }
       
       await setStorageItem('auth_token', access_token);
       await setStorageItem('user_data', JSON.stringify(userData));
@@ -135,18 +141,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(access_token);
       setUser(userData);
     } catch (error: any) {
-      console.error('PIN Login - Error:', JSON.stringify(error.response?.data || error.message));
+      console.error('=== PIN Login Error ===');
+      console.error('Full error:', error);
+      console.error('Error response:', error.response);
+      console.error('Error data:', error.response?.data);
+      console.error('Error message:', error.message);
       
       // Extract error message properly
-      let errorMessage = 'PIN login failed';
-      if (error.response?.data?.detail) {
-        errorMessage = error.response.data.detail;
-      } else if (error.response?.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.message) {
+      let errorMessage = 'Login failed. Please check your credentials.';
+      
+      if (error.response?.data) {
+        const data = error.response.data;
+        if (typeof data === 'string') {
+          errorMessage = data;
+        } else if (data.detail) {
+          errorMessage = data.detail;
+        } else if (data.message) {
+          errorMessage = data.message;
+        } else if (data.error) {
+          errorMessage = data.error;
+        }
+      } else if (error.message && error.message !== 'Network Error') {
         errorMessage = error.message;
       }
       
+      console.error('Final error message:', errorMessage);
       throw new Error(errorMessage);
     }
   };
