@@ -249,8 +249,15 @@ class BackendTester:
             if response.status_code == 200:
                 data = response.json()
                 
-                if isinstance(data, list):
-                    vehicle_count = len(data)
+                # Handle both direct array and wrapped response formats
+                vehicles = data
+                if isinstance(data, dict) and 'data' in data and 'vehicles' in data['data']:
+                    vehicles = data['data']['vehicles']
+                elif isinstance(data, dict) and 'vehicles' in data:
+                    vehicles = data['vehicles']
+                
+                if isinstance(vehicles, list):
+                    vehicle_count = len(vehicles)
                     self.log_test(
                         "Vehicles Endpoint",
                         True,
