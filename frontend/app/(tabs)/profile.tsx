@@ -42,17 +42,27 @@ export default function Profile() {
         <View style={styles.avatarContainer}>
           <Ionicons name="person" size={40} color="#fff" />
         </View>
-        <Text style={styles.userName}>{user?.full_name}</Text>
+        <Text style={styles.userName}>
+          {user?.full_name || `${user?.first_name || ''} ${user?.last_name || ''}`.trim() || 'User'}
+        </Text>
         <Text style={styles.userEmail}>{user?.email}</Text>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Profile Information</Text>
         <View style={styles.card}>
-          <ProfileItem icon="card" label="Member ID" value={user?.member_id} />
-          <ProfileItem icon="person" label="Full Name" value={user?.full_name} />
-          <ProfileItem icon="mail" label="Email" value={user?.email} />
-          <ProfileItem icon="call" label="Phone" value={user?.phone} />
+          <ProfileItem 
+            icon="card" 
+            label="Member Number" 
+            value={user?.member_number || user?.member_id || 'N/A'} 
+          />
+          <ProfileItem 
+            icon="person" 
+            label="Full Name" 
+            value={user?.full_name || `${user?.first_name || ''} ${user?.last_name || ''}`.trim() || 'N/A'} 
+          />
+          <ProfileItem icon="mail" label="Email" value={user?.email || 'N/A'} />
+          <ProfileItem icon="call" label="Phone" value={user?.mobile || user?.phone || 'N/A'} />
         </View>
       </View>
 
