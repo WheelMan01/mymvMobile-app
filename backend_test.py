@@ -12,7 +12,7 @@ from typing import Dict, Any, Optional
 import sys
 
 # Backend URL from frontend environment
-BASE_URL = "https://carmgr-2.preview.emergentagent.com/api"
+BASE_URL = "https://carmgr-mobile.preview.emergentagent.com/api"
 
 class BackendTester:
     def __init__(self):
