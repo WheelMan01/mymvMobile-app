@@ -18,11 +18,10 @@ TEST_PIN = "1234"
 
 class BackendTester:
     def __init__(self):
-        self.base_url = BASE_URL
-        self.auth_token = None
-        self.user_id = None
+        self.base_url = BACKEND_URL
+        self.access_token = None
+        self.user_data = None
         self.test_results = []
-        self.vehicle_id = None
         
     def log_result(self, test_name: str, success: bool, message: str, details: Any = None):
         """Log test result"""
