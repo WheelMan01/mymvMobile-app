@@ -260,8 +260,13 @@ const styles = StyleSheet.create({
   },
   dateSection: {
     marginBottom: 12,
+    gap: 8,
   },
   dateItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  detailItem: {
     flexDirection: 'row',
     alignItems: 'center',
   },
