@@ -7,16 +7,19 @@ import { format } from 'date-fns';
 
 interface FinanceProduct {
   id: string;
+  user_id: string;
   vehicle_id: string;
-  provider_id: string;
+  lender: string;
+  loan_type: string;
   loan_amount: number;
   interest_rate: number;
+  loan_term_months: number;
   monthly_payment: number;
-  outstanding_balance: number;
   start_date: string;
   end_date: string;
-  status: string;
-  term_months: number;
+  account_number?: string;
+  notes?: string;
+  documents?: string[];
 }
 
 export default function Finance() {
