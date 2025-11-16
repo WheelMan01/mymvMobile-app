@@ -111,7 +111,7 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: true
         agent: "main"
@@ -119,6 +119,9 @@ backend:
       - working: "NA"
         agent: "main"
         comment: "Updated PIN login to use correct backend URL (https://vehicle-ocr.preview.emergentagent.com) and modified to send {email, pin} instead of {member_id, pin}. Ready for testing with credentials: anthony@wheelsfinance.com.au / PIN: 1234"
+      - working: true
+        agent: "testing"
+        comment: "PIN Login API integration with live backend SUCCESSFUL! All 6 tests passed: ✅ PIN login with correct credentials (anthony@wheelsfinance.com.au/1234) ✅ Retrieved 4 vehicles from live backend ✅ Correctly rejected wrong PIN/email/invalid format ✅ Old format {member_id, pin} correctly rejected - API updated to new {email, pin} format. Live backend response includes access_token, refresh_token, user data with member_number: MV-7981038. Integration working perfectly."
   
   - task: "Dashboard Stats Endpoint"
     implemented: true
