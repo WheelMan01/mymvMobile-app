@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, Ale
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 
 interface ServiceBooking {
   id: string;
