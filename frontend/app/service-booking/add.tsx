@@ -532,6 +532,21 @@ const styles = StyleSheet.create({
     color: '#8E8E93',
     marginTop: 4,
   },
+  datePickerButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    padding: 16,
+    gap: 12,
+  },
+  datePickerText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#1C1C1E',
+  },
   submitButton: {
     flexDirection: 'row',
     alignItems: 'center',
