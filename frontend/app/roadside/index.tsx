@@ -61,48 +61,57 @@ export default function Roadside() {
     );
   };
 
-  const MembershipCard = ({ membership }: { membership: RoadsideMembership }) => (
-    <View style={styles.membershipCard}>
-      <View style={styles.cardHeader}>
-        <View style={styles.iconContainer}>
-          <Ionicons name="car-sport" size={28} color="#FF3B30" />
+  const MembershipCard = ({ membership }: { membership: RoadsideMembership }) => {
+    // Check if policy is active based on expiry date
+    const isActive = new Date(membership.expiry_date) > new Date();
+    
+    return (
+      <View style={styles.membershipCard}>
+        <View style={styles.cardHeader}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="car-sport" size={28} color="#FF3B30" />
+          </View>
+          <View style={[styles.statusBadge, { backgroundColor: isActive ? '#34C75920' : '#FF3B3020' }]}>
+            <Text style={[styles.statusText, { color: isActive ? '#34C759' : '#FF3B30' }]}>
+              {isActive ? 'Active' : 'Expired'}
+            </Text>
+          </View>
         </View>
-        <View style={[styles.statusBadge, { backgroundColor: membership.status === 'Active' ? '#34C75920' : '#FF3B3020' }]}>
-          <Text style={[styles.statusText, { color: membership.status === 'Active' ? '#34C759' : '#FF3B30' }]}>
-            {membership.status}
-          </Text>
+
+        <View style={styles.typeSection}>
+          <Text style={styles.membershipType}>{membership.provider_name} {membership.plan_type}</Text>
+          <Text style={styles.membershipNumber}>#{membership.membership_number}</Text>
         </View>
-      </View>
 
-      <View style={styles.typeSection}>
-        <Text style={styles.membershipType}>{membership.membership_type}</Text>
-        <Text style={styles.membershipNumber}>#{membership.membership_number}</Text>
-      </View>
+        <TouchableOpacity 
+          style={styles.emergencyButton}
+          onPress={() => handleEmergencyCall(membership.provider_phone)}
+        >
+          <Ionicons name="call" size={20} color="#fff" />
+          <Text style={styles.emergencyButtonText}>Emergency Call: {membership.provider_phone}</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity 
-        style={styles.emergencyButton}
-        onPress={() => handleEmergencyCall(membership.emergency_contact)}
-      >
-        <Ionicons name="call" size={20} color="#fff" />
-        <Text style={styles.emergencyButtonText}>Emergency Call: {membership.emergency_contact}</Text>
-      </TouchableOpacity>
-
-      <View style={styles.dateSection}>
-        <View style={styles.dateItem}>
-          <Ionicons name="calendar-outline" size={16} color="#8E8E93" />
-          <Text style={styles.dateText}>Valid until: {format(new Date(membership.end_date), 'dd MMM yyyy')}</Text>
+        <View style={styles.dateSection}>
+          <View style={styles.detailItem}>
+            <Ionicons name="calendar-outline" size={16} color="#8E8E93" />
+            <Text style={styles.dateText}>Valid until: {format(new Date(membership.expiry_date), 'dd MMM yyyy')}</Text>
+          </View>
+          <View style={styles.detailItem}>
+            <Ionicons name="cash-outline" size={16} color="#8E8E93" />
+            <Text style={styles.dateText}>${membership.annual_premium}/year</Text>
+          </View>
         </View>
-      </View>
 
-      <TouchableOpacity 
-        style={styles.detailsButton}
-        onPress={() => router.push(`/roadside/${membership.id}`)}
-      >
-        <Text style={styles.detailsButtonText}>View Details</Text>
-        <Ionicons name="chevron-forward" size={16} color="#007AFF" />
-      </TouchableOpacity>
-    </View>
-  );
+        <TouchableOpacity 
+          style={styles.detailsButton}
+          onPress={() => router.push(`/roadside/${membership.id}`)}
+        >
+          <Text style={styles.detailsButtonText}>View Details</Text>
+          <Ionicons name="chevron-forward" size={16} color="#007AFF" />
+        </TouchableOpacity>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
