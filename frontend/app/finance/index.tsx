@@ -50,58 +50,66 @@ export default function Finance() {
     fetchProducts();
   }, []);
 
-  const FinanceCard = ({ product }: { product: FinanceProduct }) => (
-    <TouchableOpacity 
-      style={styles.financeCard}
-      onPress={() => router.push(`/finance/${product.id}`)}
-    >
-      <View style={styles.cardHeader}>
-        <View style={styles.iconContainer}>
-          <Ionicons name="cash" size={24} color="#FF9500" />
+  const FinanceCard = ({ product }: { product: FinanceProduct }) => {
+    const isActive = new Date(product.end_date) > new Date();
+    
+    return (
+      <TouchableOpacity 
+        style={styles.financeCard}
+        onPress={() => router.push(`/finance/${product.id}`)}
+      >
+        <View style={styles.cardHeader}>
+          <View style={styles.iconContainer}>
+            <Ionicons name="cash" size={24} color="#FF9500" />
+          </View>
+          <View style={[styles.statusBadge, { backgroundColor: isActive ? '#34C75920' : '#8E8E9320' }]}>
+            <Text style={[styles.statusText, { color: isActive ? '#34C759' : '#8E8E93' }]}>
+              {isActive ? 'Active' : 'Completed'}
+            </Text>
+          </View>
         </View>
-        <View style={[styles.statusBadge, { backgroundColor: product.status === 'Active' ? '#34C75920' : '#8E8E9320' }]}>
-          <Text style={[styles.statusText, { color: product.status === 'Active' ? '#34C759' : '#8E8E93' }]}>
-            {product.status}
+        
+        <View style={styles.amountSection}>
+          <Text style={styles.amountLabel}>Loan Amount</Text>
+          <Text style={styles.amountValue}>${product.loan_amount?.toLocaleString() || '0'}</Text>
+        </View>
+        
+        <View style={styles.lenderInfo}>
+          <Text style={styles.lenderLabel}>Lender</Text>
+          <Text style={styles.lenderValue}>{product.lender}</Text>
+        </View>
+        
+        <View style={styles.detailsGrid}>
+          <View style={styles.detailItem}>
+            <Text style={styles.detailLabel}>Monthly Payment</Text>
+            <Text style={styles.detailValue}>${Math.abs(product.monthly_payment || 0).toLocaleString()}</Text>
+          </View>
+          <View style={styles.detailItem}>
+            <Text style={styles.detailLabel}>Interest Rate</Text>
+            <Text style={styles.detailValue}>{product.interest_rate}%</Text>
+          </View>
+        </View>
+        
+        <View style={styles.detailsGrid}>
+          <View style={styles.detailItem}>
+            <Text style={styles.detailLabel}>Loan Term</Text>
+            <Text style={styles.detailValue}>{product.loan_term_months} months</Text>
+          </View>
+          <View style={styles.detailItem}>
+            <Text style={styles.detailLabel}>Loan Type</Text>
+            <Text style={styles.detailValue}>{product.loan_type}</Text>
+          </View>
+        </View>
+        
+        <View style={styles.dateRow}>
+          <Ionicons name="calendar-outline" size={14} color="#8E8E93" />
+          <Text style={styles.dateText}>
+            {format(new Date(product.start_date), 'dd MMM yyyy')} - {format(new Date(product.end_date), 'dd MMM yyyy')}
           </Text>
         </View>
-      </View>
-      
-      <View style={styles.amountSection}>
-        <Text style={styles.amountLabel}>Outstanding Balance</Text>
-        <Text style={styles.amountValue}>${product.outstanding_balance.toLocaleString()}</Text>
-      </View>
-      
-      <View style={styles.detailsGrid}>
-        <View style={styles.detailItem}>
-          <Text style={styles.detailLabel}>Monthly Payment</Text>
-          <Text style={styles.detailValue}>${product.monthly_payment}</Text>
-        </View>
-        <View style={styles.detailItem}>
-          <Text style={styles.detailLabel}>Interest Rate</Text>
-          <Text style={styles.detailValue}>{product.interest_rate}%</Text>
-        </View>
-      </View>
-      
-      <View style={styles.progressSection}>
-        <View style={styles.progressBar}>
-          <View 
-            style={[
-              styles.progressFill, 
-              { width: `${((product.loan_amount - product.outstanding_balance) / product.loan_amount) * 100}%` }
-            ]} 
-          />
-        </View>
-        <Text style={styles.progressText}>
-          {Math.round(((product.loan_amount - product.outstanding_balance) / product.loan_amount) * 100)}% paid
-        </Text>
-      </View>
-      
-      <View style={styles.dateRow}>
-        <Ionicons name="calendar-outline" size={14} color="#8E8E93" />
-        <Text style={styles.dateText}>Ends: {format(new Date(product.end_date), 'dd MMM yyyy')}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
