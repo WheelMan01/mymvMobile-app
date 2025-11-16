@@ -7,14 +7,18 @@ import { format } from 'date-fns';
 
 interface InsurancePolicy {
   id: string;
+  user_id: string;
   vehicle_id: string;
-  policy_type: string;
-  provider_id: string;
+  provider: string;
   policy_number: string;
+  insurance_types: string[];
   premium: number;
-  start_date: string;
-  end_date: string;
-  status: string;
+  expiry_date: string;
+  coverage_details?: string;
+  provider_phone?: string;
+  provider_email?: string;
+  provider_website?: string;
+  provider_logo?: string;
 }
 
 export default function Insurance() {
