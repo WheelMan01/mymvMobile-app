@@ -1,86 +1,78 @@
 <analysis>
-The project began with a detailed specification to build the myMV Customer Mobile App using React Native/Expo, connecting to a pre-existing FastAPI backend at . The AI engineer initially built a full-stack application from scratch, including a local FastAPI backend and a comprehensive React Native frontend. This local version implemented features like Authentication (Email/Password, PIN), Vehicle Management (with AI Rego Scan), Insurance, Finance, and more.
+The trajectory details a complex debugging and refactoring process for a React Native myMV Customer Mobile App. The initial engineer built the app against a local FastAPI backend, leading to a major disconnect when the user tried to use their credentials for the specified live backend ().
 
-A major point of confusion arose when the user tried to log in with existing credentials. It was discovered that the AI engineer had built and tested against a local backend instance, not the user's specified live backend. This resulted in a data and API mismatch. The user provided test credentials () and clarified the backend URL.
+The core of the work involved a multi-step investigation to align the frontend with the live backend. This included:
+1.  **API Correction:** Changing the PIN login from  to .
+2.  **Environment Misconfiguration:** Discovering that a Kubernetes proxy was routing API calls to the local backend, despite the  file pointing to the live URL. This led to a temporary phase of syncing the local database with live data.
+3.  **Architectural Correction:** Following user guidance, the configuration was updated to ensure the mobile app *directly* calls the live backend API, bypassing the local environment's proxy and database.
+4.  **Data Structure Mismatches:** After connecting to the live API, multiple screens failed because the API's JSON response structure (e.g., , nested data objects) differed from what the frontend code expected. This required fixing data models and component data accessors.
+5.  **Web Compatibility:** An issue with  failing in the web preview was resolved by creating a platform-aware storage helper that falls back to .
 
-Further investigation revealed a critical API discrepancy: the live backend's PIN login endpoint () expected  in the request body, whereas the initial specification and the AI's implementation used . After the user provided the corrected API structure, the AI engineer successfully validated the new login flow via . The immediate next task is to modify the mobile app's PIN login screen to align with the actual backend API.
-
-The user's primary language is English. Future responses should be in English.
+The current task is to fix data fetching on the Insurance, Roadside Assistance, and other service pages, which are not displaying data despite it being available on the live API. The user's primary language is English. The next agent should respond in English.
 </analysis>
 <product_requirements>
-The goal is to build a myMV Customer Mobile App using React Native/Expo. This app serves as a mobile portal for customers to manage their vehicles and related services, connecting to an existing backend API at .
+The objective is to build the myMV Customer Mobile App, a mobile portal for vehicle and service management using React Native/Expo. The app must connect to and interact with a pre-existing live FastAPI backend at .
 
-**Core Features Implemented:**
-*   **Authentication:** Login via Email/Password and a PIN-based method. User registration is also included.
-*   **Dashboard:** An overview screen with quick stats and navigation.
-*   **Vehicle Management:** Users can list, add, view, and edit their vehicles. A key feature is the AI Rego Scan, which uses OpenAI Vision to extract vehicle details from a registration document photo.
-*   **Service Management:** Screens for listing and adding Insurance Policies, Finance/Loans, and Roadside Assistance memberships.
-*   **Discovery:** Sections to browse Dealer Showrooms (with details and map links), Promotions, and a Marketplace for buying/selling vehicles.
-*   **Service Booking:** Functionality to book vehicle services.
+**Core Features:**
+*   **Authentication:** Secure login via Email/Password and a 4-digit PIN.
+*   **Vehicle Management:** List, add, and view vehicles. Includes an AI Rego Scan feature using OpenAI Vision to extract details from registration photos.
+*   **Service Management:** Sections for Insurance, Finance, Roadside Assistance, and Service Bookings.
+*   **User Profile:** Display user information, including their Member Number.
 
-The primary issue encountered was a deviation from the specified backend. The application was initially built against a local backend, but has since been reconfigured to point to the correct live API. The current work focuses on aligning the frontend's API calls with the live backend's actual structure.
+**Development History & Current State:**
+The app was initially built against a local backend, causing significant login and data discrepancy issues. A major effort was undertaken to refactor the app to connect directly to the user's live backend. This involved correcting API payloads, fixing environment configurations, adapting to the live API's data structures, and ensuring web preview compatibility. The app now successfully authenticates against the live backend and displays user vehicles. The current focus is on making the remaining sections (Insurance, Roadside Assistance, etc.) correctly fetch and display data from the live API.
 </product_requirements>
 <key_technical_concepts>
-- **Frontend:** React Native with Expo,  for file-based routing.
-- **UI Framework:** Tamagui.
-- **State Management:** React Context API for authentication state ().
-- **Backend:** FastAPI with a MongoDB database.
-- **Authentication:** JWT (JSON Web Tokens) for securing API endpoints.
-- **AI Integration:** OpenAI Vision for the AI Rego Scan feature, accessed via the .
-- **API Client:**  for making HTTP requests to the backend.
+- **Frontend:** React Native, Expo,  (for file-based routing).
+- **Backend:** FastAPI, MongoDB.
+- **State Management:** React Context API () for global authentication state.
+- **API Communication:**  for HTTP requests to the live backend, secured by JWT.
+- **Platform-Specific Storage:** A custom storage helper was created to use  on native and  on the web, resolving a critical web preview bug.
+- **Environment Configuration:** Heavy reliance on  files () to manage the API endpoint.
 </key_technical_concepts>
 <code_architecture>
-The project is a monorepo containing a  (React Native/Expo) and a  (FastAPI) application.
+The project is a monorepo with a  (Expo) and a  (FastAPI). The primary focus has been on the  to align it with an existing live backend API.
 
 **Directory Structure:**
 
-- ****
-    - **Importance:** This file defines all the FastAPI endpoints for the application, including authentication, vehicle management, and the AI rego scan.
-    - **Changes:** It was created from scratch. An endpoint for marketplace listings was added later. The initial implementation was based on the spec, but it differs from the user's live backend.
 
 - ****
-    - **Importance:** Sets up the main bottom tab navigation for the app after a user logs in (Dashboard, Vehicles, Discover, Profile).
-    - **Changes:** The Discover tab was updated to include a link to the Marketplace.
+    - **Importance:** Defines the backend URL. This is the single source of truth for the API endpoint.
+    - **Changes:** This was the most critical file. It was updated multiple times to switch between incorrect URLs, local proxy URLs, and finally the correct live backend URL: .
 
 - ****
-    - **Importance:** A React Context provider that manages the user's authentication state (JWT token, user data) globally across the app. It handles login, logout, and token storage.
-    - **Changes:** Created from scratch to manage the app's auth flow.
+    - **Importance:** Manages global user state, login/logout logic, and token handling. It's central to the app's functionality.
+    - **Changes:**
+        - The  function payload was changed from  to .
+        - The  interface was updated to match the live API's response (e.g., from  to , ;  to ).
+        - The logic for storing and retrieving the user object and token was modified to use a new platform-aware storage helper, fixing a web compatibility issue with .
+        - Error handling was improved to display more descriptive messages from the API.
 
 - ****
-    - **Importance:** This is the UI screen for the PIN login functionality. It is the focus of the current task.
-    - **Changes:** This file was created based on the initial spec, which required a Member ID input. It now needs to be modified to accept an Email input instead to match the live backend's API.
+    - **Importance:** A custom hook responsible for fetching the user's vehicle data.
+    - **Changes:** The data parsing logic was corrected. Instead of , it now correctly accesses the nested vehicle array at  to match the live API's response structure.
 
 - ****
-    - **Importance:** Contains environment variables for the frontend app.
-    - **Changes:** The  was initially pointing to the wrong URL. It was corrected from  to the required backend URL: . This was a critical fix.
+    - **Importance:** Displays the logged-in user's details.
+    - **Changes:** Updated to display the correct user fields from the  based on the live API's data structure (e.g., , ).
+
+- ****
+    - **Importance:** Screen for displaying the user's insurance policies. It's representative of the current problem.
+    - **Changes:** The file was read and the issue was identified: the API call expects the data to be in , but the code was incorrectly trying to read from . A fix has not yet been applied.
 </code_architecture>
 <pending_tasks>
-- **Implement Secondary Features:** As outlined in the specification, the following features are pending implementation:
-    - Advanced filtering/searching across all modules.
-    - Offline mode with data caching.
-    - Deep linking for sharing.
-    - Provider comparison tools.
-    - Biometric (Fingerprint/Face ID) authentication.
-    - In-app chat with dealers.
-    - Vehicle value estimator.
-    - Fuel tracker and maintenance logger.
+- **Fix Data Fetching:** Implement fixes for the Insurance, Roadside Assistance, Finance, and Service Booking pages to correctly parse the nested data from the live API responses.
+- **Implement Missing Features:** Address the long-term pending features from the initial product specification, such as advanced filtering, offline mode, deep linking, and biometric authentication.
 </pending_tasks>
 <current_work>
-The most recent work involved diagnosing a critical login issue. The user reported that their existing credentials for  were not working. The investigation revealed two key problems:
+The most recent work focused on diagnosing why the Insurance, Finance, Roadside Assistance, and Service Booking sections were not displaying any data, even though the user was successfully logged in and could see their vehicles.
 
-1.  **Incorrect Backend Connection:** The mobile app was initially pointed to a local development backend instead of the user's specified live backend: . This was corrected by updating the  in the  file.
+The user provided confirmation that data for these sections (except Finance) exists in the live database. The AI engineer verified this by making direct  requests to the live API endpoints (, , etc.).
 
-2.  **API Mismatch for PIN Login:** After connecting to the correct backend, the PIN login feature still failed. The user clarified that their live backend's  endpoint requires an  and , not a  and  as was originally specified and implemented in the frontend.
+The investigation revealed that the API responses for these endpoints return the data in a nested structure, for example: .
 
-The AI engineer successfully verified the correct  +  login flow via a  command, confirming that the user  exists on the live backend and has 4 vehicles associated with the account.
-
-The immediate task is to update the frontend's PIN login screen () to accept an email address instead of a Member ID and send the correct payload to the backend API.
+The engineer then examined the code for the insurance page at  and confirmed the problem: the code was attempting to map over , which is an object, instead of the actual array located at . This is the same type of data structure mismatch that was previously fixed for the  page. The immediate next step is to apply the fix to this file and then replicate it across the other affected pages.
 </current_work>
 <optional_next_step>
-Update the PIN login screen () to accept an email input instead of a Member ID, and modify the API call to send the  payload.
+I will now edit  to correct the data access path from  to  to properly display the insurance policies.
 </optional_next_step>
-<direct_quotes>
-**User's Corrected Instruction:** The backend HAS the PIN login endpoint, but it uses EMAIL + PIN, not member_id + PIN. Please update the PIN login screen to accept email instead of member_id.
-
-**AI Engineer's Last Action:** Now let me update the PIN login screen in the mobile app to use **EMAIL + PIN** instead of **MEMBER_ID + PIN**
-</direct_quotes>

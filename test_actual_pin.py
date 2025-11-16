@@ -7,7 +7,7 @@ import requests
 import json
 
 # Backend URL
-BASE_URL = "https://carmgr-mobile.preview.emergentagent.com/api"
+BASE_URL = "https://mymv-hub.preview.emergentagent.com/api"
 
 def test_actual_pin_login():
     """Test PIN login with actual PIN"""

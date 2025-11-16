@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 
 # Backend URL
-BASE_URL = "https://carmgr-mobile.preview.emergentagent.com/api"
+BASE_URL = "https://mymv-hub.preview.emergentagent.com/api"
 
 def create_sample_rego_image():
     """Create a sample registration document image"""
