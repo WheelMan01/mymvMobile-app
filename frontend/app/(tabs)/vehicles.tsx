@@ -37,7 +37,15 @@ export default function Vehicles() {
     >
       <View style={styles.vehicleImageContainer}>
         {vehicle.image ? (
-          <Image source={{ uri: vehicle.image }} style={styles.vehicleImage} />
+          <Image 
+            source={{ uri: vehicle.image }} 
+            style={styles.vehicleImage}
+            resizeMode="cover"
+            defaultSource={require('../../assets/images/icon.png')}
+            onError={(error) => {
+              console.log('Failed to load vehicle image:', vehicle.image, error.nativeEvent);
+            }}
+          />
         ) : (
           <View style={styles.vehiclePlaceholder}>
             <Ionicons name="car" size={40} color="#8E8E93" />
