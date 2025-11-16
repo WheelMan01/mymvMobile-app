@@ -7,12 +7,21 @@ import { format } from 'date-fns';
 
 interface ServiceBooking {
   id: string;
+  user_id: string;
   vehicle_id: string;
-  dealer_id: string;
+  provider: string;
   service_type: string;
-  booking_date: string;
+  date: string;
+  time: string;
   status: string;
+  price: number;
+  address: string;
+  phone?: string;
+  contact?: string;
   notes?: string;
+  dealer_code?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export default function ServiceBooking() {
