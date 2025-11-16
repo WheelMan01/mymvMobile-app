@@ -49,7 +49,7 @@ export default function PinLogin() {
 
         <View style={styles.form}>
           <View style={styles.inputContainer}>
-            <Ionicons name="card-outline" size={20} color="#666" style={styles.inputIcon} />
+            <Ionicons name="mail-outline" size={20} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
               placeholder="Email (e.g., user@example.com)"
