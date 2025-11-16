@@ -102,7 +102,7 @@ class BackendTester:
                 self.log_test(
                     "PIN Login - Success Case",
                     True,
-                    f"Login successful for {user['email']}, Member ID: {user['member_id']}"
+                    f"Login successful for {user['email']}, Member ID: {member_id}"
                 )
                 return True
                 
