@@ -347,29 +347,70 @@ export default function AddServiceBooking() {
           {/* Date */}
           <View style={styles.fieldContainer}>
             <Text style={styles.label}>Preferred Date <Text style={styles.required}>*</Text></Text>
-            <TouchableOpacity
-              style={styles.datePickerButton}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <Ionicons name="calendar-outline" size={20} color="#007AFF" />
-              <Text style={styles.datePickerText}>
-                {formData.date ? formatDateAU(selectedDate) : 'Select a date'}
-              </Text>
-              <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
-            </TouchableOpacity>
-            {formData.date && (
-              <Text style={styles.hint}>Selected: {formatDateAU(selectedDate)}</Text>
+            
+            {Platform.OS === 'web' ? (
+              // Web: Use native HTML5 date input
+              <View style={styles.datePickerButton}>
+                <Ionicons name="calendar-outline" size={20} color="#007AFF" />
+                <input
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => {
+                    const date = e.target.value;
+                    if (date) {
+                      const [year, month, day] = date.split('-');
+                      const dateObj = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+                      setSelectedDate(dateObj);
+                      
+                      if (blockedDates.includes(date)) {
+                        Alert.alert('Date Unavailable', 'This date is not available. Please choose another date.');
+                        return;
+                      }
+                      
+                      setFormData({ ...formData, date });
+                    }
+                  }}
+                  min={new Date().toISOString().split('T')[0]}
+                  max={new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                  style={{
+                    flex: 1,
+                    border: 'none',
+                    outline: 'none',
+                    fontSize: 16,
+                    padding: 0,
+                    backgroundColor: 'transparent',
+                  }}
+                />
+              </View>
+            ) : (
+              // Mobile: Use native date picker
+              <>
+                <TouchableOpacity
+                  style={styles.datePickerButton}
+                  onPress={() => setShowDatePicker(true)}
+                >
+                  <Ionicons name="calendar-outline" size={20} color="#007AFF" />
+                  <Text style={styles.datePickerText}>
+                    {formData.date ? formatDateAU(selectedDate) : 'Select a date'}
+                  </Text>
+                  <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+                </TouchableOpacity>
+                
+                {showDatePicker && (
+                  <DateTimePicker
+                    value={selectedDate}
+                    mode="date"
+                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                    onChange={handleDateChange}
+                    minimumDate={new Date()}
+                    maximumDate={new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)}
+                  />
+                )}
+              </>
             )}
             
-            {showDatePicker && (
-              <DateTimePicker
-                value={selectedDate}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                onChange={handleDateChange}
-                minimumDate={new Date()}
-                maximumDate={new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)}
-              />
+            {formData.date && (
+              <Text style={styles.hint}>Selected: {formatDateAU(selectedDate)}</Text>
             )}
           </View>
 
