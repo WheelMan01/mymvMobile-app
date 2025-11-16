@@ -51,51 +51,58 @@ export default function Insurance() {
   }, []);
 
   const filteredPolicies = policies.filter(p => {
+    const isActive = new Date(p.expiry_date) > new Date();
     if (filter === 'all') return true;
-    if (filter === 'active') return p.status === 'Active';
-    if (filter === 'expired') return p.status === 'Expired';
+    if (filter === 'active') return isActive;
+    if (filter === 'expired') return !isActive;
     return true;
   });
 
-  const getPolicyColor = (type: string) => {
+  const getPolicyColor = (types: string[]) => {
+    const type = types[0]?.toLowerCase();
     switch (type) {
-      case 'CTP': return '#34C759';
-      case 'Comprehensive': return '#007AFF';
-      case 'Third Party': return '#FF9500';
+      case 'ctp': return '#34C759';
+      case 'comprehensive': return '#007AFF';
+      case 'third_party': return '#FF9500';
       default: return '#8E8E93';
     }
   };
 
-  const PolicyCard = ({ policy }: { policy: InsurancePolicy }) => (
-    <TouchableOpacity 
-      style={[styles.policyCard, { borderLeftColor: getPolicyColor(policy.policy_type) }]}
-      onPress={() => router.push(`/insurance/${policy.id}`)}
-    >
-      <View style={styles.policyHeader}>
-        <View style={[styles.typeBadge, { backgroundColor: getPolicyColor(policy.policy_type) + '20' }]}>
-          <Ionicons name="shield-checkmark" size={20} color={getPolicyColor(policy.policy_type)} />
-          <Text style={[styles.typeText, { color: getPolicyColor(policy.policy_type) }]}>{policy.policy_type}</Text>
+  const PolicyCard = ({ policy }: { policy: InsurancePolicy }) => {
+    const isActive = new Date(policy.expiry_date) > new Date();
+    const policyType = policy.insurance_types[0]?.toUpperCase() || 'POLICY';
+    
+    return (
+      <TouchableOpacity 
+        style={[styles.policyCard, { borderLeftColor: getPolicyColor(policy.insurance_types) }]}
+        onPress={() => router.push(`/insurance/${policy.id}`)}
+      >
+        <View style={styles.policyHeader}>
+          <View style={[styles.typeBadge, { backgroundColor: getPolicyColor(policy.insurance_types) + '20' }]}>
+            <Ionicons name="shield-checkmark" size={20} color={getPolicyColor(policy.insurance_types)} />
+            <Text style={[styles.typeText, { color: getPolicyColor(policy.insurance_types) }]}>{policyType}</Text>
+          </View>
+          <View style={[styles.statusBadge, { backgroundColor: isActive ? '#34C75920' : '#FF3B3020' }]}>
+            <Text style={[styles.statusText, { color: isActive ? '#34C759' : '#FF3B30' }]}>
+              {isActive ? 'Active' : 'Expired'}
+            </Text>
+          </View>
         </View>
-        <View style={[styles.statusBadge, { backgroundColor: policy.status === 'Active' ? '#34C75920' : '#FF3B3020' }]}>
-          <Text style={[styles.statusText, { color: policy.status === 'Active' ? '#34C759' : '#FF3B30' }]}>
-            {policy.status}
-          </Text>
+        <Text style={styles.policyNumber}>{policy.provider} - Policy #{policy.policy_number}</Text>
+        <View style={styles.policyDetails}>
+          <View style={styles.detailRow}>
+            <Ionicons name="cash-outline" size={16} color="#8E8E93" />
+            <Text style={styles.detailText}>${policy.premium}/year</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Ionicons name="calendar-outline" size={16} color="#8E8E93" />
+            <Text style={styles.detailText}>Expires: {format(new Date(policy.expiry_date), 'dd MMM yyyy')}</Text>
+          </View>
         </View>
-      </View>
-      <Text style={styles.policyNumber}>Policy #{policy.policy_number}</Text>
-      <View style={styles.policyDetails}>
-        <View style={styles.detailRow}>
-          <Ionicons name="cash-outline" size={16} color="#8E8E93" />
-          <Text style={styles.detailText}>${policy.premium}/year</Text>
-        </View>
-        <View style={styles.detailRow}>
-          <Ionicons name="calendar-outline" size={16} color="#8E8E93" />
-          <Text style={styles.detailText}>Expires: {format(new Date(policy.end_date), 'dd MMM yyyy')}</Text>
-        </View>
-      </View>
-      <Ionicons name="chevron-forward" size={20} color="#C7C7CC" style={styles.chevron} />
-    </TouchableOpacity>
-  );
+        <Ionicons name="chevron-forward" size={20} color="#C7C7CC" style={styles.chevron} />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
