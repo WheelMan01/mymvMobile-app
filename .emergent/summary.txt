@@ -1,74 +1,69 @@
 <analysis>
-The trajectory documents a multi-stage debugging process for a myMV Customer Mobile App. The initial task was to fix data display issues on several pages (Insurance, Roadside, etc.) by correcting how nested JSON data from the API was accessed. This was seemingly completed. However, the user then reported a total failure of data fetching (fetching errors no data in app at all).
+The trajectory documents an extensive and complex debugging journey for a myMV Customer Mobile App. The process involved multiple pivots and deep-dives to resolve a cascade of issues originating from a fundamental misunderstanding of the backend environment.
 
-A deep investigation revealed the root cause: the Expo app was incorrectly calling a local backend instance instead of the specified live backend (). This was due to an incorrect  in the  file, compounded by browser caching of the old app bundle. The AI correctly identified this, updated the  file, and instructed the user to perform a hard refresh, which resolved the primary connection issue.
+Initially, a total data failure was traced to an incorrect  in the  file, pointing the app to a local proxy instead of the live backend. This was compounded by Metro bundler caching, which required aggressive cache clearing and process restarts to resolve.
 
-Immediately after, the user reported two new, more specific bugs: incorrect data counts on the dashboard and a fetching error on the service booking page. The AI's last actions were investigating these by reading the dashboard component file () and the application logs. It discovered the dashboard counts were hardcoded and the service booking page was not handling a 404 error gracefully. The primary language is English, and subsequent responses should be in English.
+Once connected to the correct live backend (), a series of data structure and API endpoint mismatches were uncovered. The AI systematically corrected the Finance page, which was calling a non-existent endpoint ( instead of ) and expecting fields not present in the API response. It also fixed the dashboard, which was incorrectly filtering for active items instead of showing total counts as requested by the user.
+
+Most recently, the AI addressed a navigation issue by creating a new dynamic route for vehicle details (). However, this new page was blank. The final action was diagnosing that the live backend does not have an endpoint for individual vehicle details (), leading to a 404 error. The root cause is now understood, and the next step is to refactor the detail page to work with the existing list endpoint. The user's primary language is English, and all future communications should be in English.
 </analysis>
 
 <product_requirements>
-The goal is to build and refine the myMV Customer Mobile App, a React Native/Expo application for vehicle and service management. It must integrate with a live FastAPI backend at .
+The project is to build and refine the myMV Customer Mobile App, a React Native/Expo application for vehicle and service management. The app must integrate with a live FastAPI backend at .
 
-**Core Features:**
-- **Authentication:** Email/PIN login.
-- **Dashboard:** A summary view of the user's services.
-- **Vehicle Management:** List and view vehicle details.
-- **Service Management:** Dedicated sections for Insurance, Roadside Assistance, Finance, and Service Bookings.
-
-**Development & Current State:**
-The project began with the app mistakenly built against a local backend, requiring significant refactoring to connect to the live API. This involved correcting API data structures, environment variables, and resolving caching issues. Authentication and fetching data for vehicles, insurance, and roadside assistance now work. However, the dashboard displays incorrect counts, and pages for services with no backend data (like Service Bookings) do not handle the error state correctly, getting stuck in a fetching loop. The current task is to fix these UI/UX issues.
+**Core Features & Status:**
+-   **Authentication:** Email/PIN login is functional.
+-   **Dashboard:** A summary view of the user's assets. Its primary function is to display total counts for vehicles, insurance, roadside assistance, and finance/loans. This feature was recently fixed to show total counts instead of filtered active counts.
+-   **Service Sections (Insurance, Roadside, Finance):** Dedicated pages to list service details. These have undergone significant fixes to align with the live API's nested data structures and correct endpoint names. The Finance page, in particular, was refactored to handle the correct API response fields.
+-   **Vehicle Management:** A list of the user's vehicles with placeholder images for those missing one. A critical issue was fixed where clicking a vehicle attempted to open a web URL; this now navigates to an in-app detail screen. However, this detail screen is currently not loading data.
 </product_requirements>
 
 <key_technical_concepts>
 - **Frontend:** React Native, Expo,  for file-based routing.
-- **State Management:** React Context API () for user session and token management.
-- **API Communication:**  for making JWT-authenticated requests to the backend.
-- **Environment Configuration:** Use of  file for the , which was a critical point of failure and debugging.
-- **Debugging:** Extensive use of  for direct API testing, and analysis of  logs for both frontend (Expo) and backend (FastAPI).
+- **API & State:**  for authenticated API calls, React Context () for session management.
+- **Backend Interaction:** Heavy debugging related to  in , involving confusion between a local proxy and the live backend.
+- **Data Handling:** Correcting frontend data access patterns to match nested API responses (e.g., ) and fixing mismatches between component props and API field names.
+- **Image Display:** Loading remote images from Cloudflare R2 URLs, with local placeholders for null values.
 </key_technical_concepts>
 
 <code_architecture>
-The application follows a monorepo structure with a React Native/Expo frontend and a FastAPI backend. Development has been focused on correcting the frontend's interaction with a pre-existing live backend.
+The application is a monorepo with an Expo frontend and a FastAPI backend. The focus of the trajectory was almost entirely on the frontend to align it with a pre-existing live backend.
 
 **Directory Structure:**
 
 
-- ****
-  - **Importance:** This file is the single source of truth for the backend API URL. An incorrect value here was the root cause of major 500 Internal Server Error issues, as it pointed the app to a local proxy instead of the live backend.
-  - **Changes:** The  was updated from  to the correct live backend URL .
+-   ****
+    -   **Importance:** Contains the , which was the root cause of major connectivity issues.
+    -   **Changes:** The URL was changed multiple times, oscillating between a local proxy and the live URL. It is now correctly set to . The debugging process highlighted severe issues with Metro bundler caching of this value.
 
-- ** & **
-  - **Importance:** These files are examples of service pages that display data fetched from the API.
-  - **Changes:** Both files were heavily modified. The data access logic was updated to parse a nested JSON response (e.g., from  to ). The TypeScript  definitions and the JSX rendering logic were updated to match the actual field names returned by the live API (e.g., , ).
+-   ****
+    -   **Importance:** Displays the user's finance and loan information.
+    -   **Changes:** This file was heavily modified. The API call was changed from  to the correct . The  interface and the JSX were updated to match the actual API response, removing references to non-existent fields like  and  and using fields like  and .
 
-- ** (Dashboard)**
-  - **Importance:** This is the main landing screen after login. It is supposed to show a summary of the user's assets.
-  - **Changes:** This file is the focus of the current task. It was read, and the investigation revealed it hardcodes the counts for Insurance and Roadside to 0 instead of fetching the real data, which is what the user reported as a bug.
+-   ** (Dashboard)**
+    -   **Importance:** The main landing screen, showing summary counts.
+    -   **Changes:** The data fetching logic () was modified to remove client-side filtering for active policies (e.g., ). It now directly uses the length of the returned arrays to display the *total* number of vehicles, insurance policies, roadside plans, and loans, per the user's latest request.
 
-- ****
-  - **Importance:** This page is meant to display service bookings. Its failure handling is representative of a current UX problem.
-  - **Changes:** Investigation of logs showed this page receives a 404 Not Found error from the API (as expected, since no data exists), but the UI gets stuck on a fetching service message instead of displaying a No data available message. This is part of the current task to fix.
+-   ****
+    -   **Importance:** This is a new, dynamically-routed page intended to show details for a single vehicle.
+    -   **Changes:** This file was created from scratch to solve a navigation bug where  was falling back to opening a web URL. It currently contains boilerplate code to fetch and display vehicle details, but it fails because the API endpoint it calls () does not exist.
 </code_architecture>
 
 <pending_tasks>
-- **Fix Dashboard Counts:** Modify the dashboard component () to fetch and display the actual counts for insurance policies and roadside assistance plans from the API.
-- **Improve Error Handling:** Update the Service Booking page () to handle 404 API errors gracefully by showing a No data available message instead of getting stuck in a fetching state.
-- **Implement Missing Features:** Long-term tasks include adding advanced filtering, offline mode, and biometric authentication as per the original product spec.
+-   **Fix Vehicle Detail Page:** The primary pending task is to fix the vehicle detail page () so it correctly displays vehicle data.
+-   **Future Features:** Non-urgent, previously mentioned features include adding advanced filtering, offline mode, and biometric authentication.
 </pending_tasks>
 
 <current_work>
-The most recent task was to investigate two bugs reported by the user after the major backend connection issue was resolved.
+The immediate work revolves around fixing the vehicle detail page. After the user reported that clicking on a vehicle card leads to an empty screen, the AI engineer investigated the cause.
 
-1.  **Incorrect Dashboard Counts:** The user noted that the dashboard showed '0' for insurance and roadside assistance, despite data being present on the respective pages.
-2.  **Service Booking Error:** The user reported the service booking page was perpetually stuck on a fetching service message.
+The investigation involved attempting to  the API endpoint that the new detail page was trying to use: . This API call resulted in a  error.
 
-The AI engineer began investigating by reading the dashboard component file () and confirmed that the counts for insurance and roadside assistance were hardcoded to .
+This confirmed that the live backend does not support fetching a single vehicle by its ID. The only available, working endpoint is , which returns a list of all the user's vehicles.
 
-Simultaneously, the AI checked the application logs and saw that the API call for service bookings was correctly returning a  error, as there is no data for that user. This confirmed that the frontend component for service bookings lacks proper error handling to manage a 404 response and is not exiting its loading state.
-
-The trajectory concludes just as the AI has diagnosed these two distinct problems and is preparing to implement the fixes.
+The conclusion and the current state of work is the diagnosis of this problem. The  component is architecturally incorrect for the given backend API. The planned fix, which has not yet been implemented, is to refactor this component. Instead of trying to fetch a single vehicle, it must fetch the entire list of vehicles from  and then use JavaScript on the client-side to find and display the specific vehicle that matches the ID from the URL.
 </current_work>
 
 <optional_next_step>
-I will start by fixing the dashboard. My next step is to edit  to fetch the counts for insurance and roadside assistance from their respective API endpoints instead of using hardcoded values.
+Modify  to fetch data from the  list endpoint and then filter for the specific vehicle by its ID on the client-side.
 </optional_next_step>

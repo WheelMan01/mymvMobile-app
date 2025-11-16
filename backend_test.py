@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Live backend URL from review request
-BACKEND_URL = "https://carmgmt-fix.preview.emergentagent.com"
+BACKEND_URL = "https://fleet-portal-2.preview.emergentagent.com"
 
 # Test credentials from review request
 TEST_EMAIL = "anthony@wheelsfinance.com.au"
