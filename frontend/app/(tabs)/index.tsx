@@ -39,29 +39,26 @@ export default function Dashboard() {
         ? (vehiclesResponse.value.data?.data?.vehicles || vehiclesResponse.value.data || [])
         : [];
 
-      // Parse insurance - filter for active policies
+      // Parse insurance - show all policies
       const insurancePolicies = insuranceResponse.status === 'fulfilled'
         ? (insuranceResponse.value.data?.data?.policies || [])
         : [];
-      const activeInsurance = insurancePolicies.filter((p: any) => new Date(p.expiry_date) > new Date());
 
-      // Parse roadside - filter for active memberships
+      // Parse roadside - show all memberships
       const roadsidePolicies = roadsideResponse.status === 'fulfilled'
         ? (roadsideResponse.value.data?.data?.policies || [])
         : [];
-      const activeRoadside = roadsidePolicies.filter((p: any) => new Date(p.expiry_date) > new Date());
 
-      // Parse finance - filter for active loans
+      // Parse finance - show all loans
       const financeLoans = financeResponse.status === 'fulfilled'
         ? (financeResponse.value.data?.data?.loans || [])
         : [];
-      const activeFinance = financeLoans.filter((p: any) => new Date(p.end_date) > new Date());
 
       setStats({
         total_vehicles: vehicles.length,
-        active_insurance_policies: activeInsurance.length,
-        active_finance_products: activeFinance.length,
-        active_roadside_memberships: activeRoadside.length
+        active_insurance_policies: insurancePolicies.length,
+        active_finance_products: financeLoans.length,
+        active_roadside_memberships: roadsidePolicies.length
       });
     } catch (error: any) {
       console.error('Error fetching stats:', error);
