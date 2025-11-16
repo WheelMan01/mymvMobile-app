@@ -105,10 +105,10 @@ async def login(credentials: UserLogin):
 
 @api_router.post("/auth/pin-login", response_model=TokenResponse)
 async def pin_login(credentials: PinLogin):
-    """Login with member ID and PIN"""
-    user = await db.users.find_one({"member_id": credentials.member_id})
+    """Login with email and PIN"""
+    user = await db.users.find_one({"email": credentials.email.lower().strip()})
     if not user or user.get('pin') != credentials.pin:
-        raise HTTPException(status_code=401, detail="Invalid member ID or PIN")
+        raise HTTPException(status_code=401, detail="Incorrect email or PIN")
     
     token = create_access_token({"user_id": str(user['_id']), "email": user['email']})
     
