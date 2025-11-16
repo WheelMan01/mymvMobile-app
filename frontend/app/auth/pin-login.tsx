@@ -44,7 +44,7 @@ export default function PinLogin() {
         <View style={styles.header}>
           <Ionicons name="keypad" size={64} color="#007AFF" />
           <Text style={styles.title}>PIN Login</Text>
-          <Text style={styles.subtitle}>Enter your Member ID and PIN</Text>
+          <Text style={styles.subtitle}>Enter your Email and PIN</Text>
         </View>
 
         <View style={styles.form}>
