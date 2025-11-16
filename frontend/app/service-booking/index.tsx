@@ -24,8 +24,15 @@ export default function ServiceBooking() {
     setLoading(true);
     try {
       const response = await api.get('/service-bookings');
-      setBookings(response.data);
+      console.log('Service Bookings API response:', response.data);
+      
+      // Access nested data structure from live API
+      const bookingsData = response.data?.data?.bookings || [];
+      console.log('Parsed service bookings:', bookingsData);
+      
+      setBookings(bookingsData);
     } catch (error: any) {
+      console.error('Error fetching service bookings:', error);
       Alert.alert('Error', 'Failed to load bookings');
     } finally {
       setLoading(false);

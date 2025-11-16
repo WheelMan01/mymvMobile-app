@@ -29,8 +29,8 @@ export default function Insurance() {
       const response = await api.get('/insurance-policies');
       console.log('Insurance API response:', response.data);
       
-      // Handle live backend response structure
-      const policiesData = response.data?.data?.policies || response.data?.policies || response.data || [];
+      // Access nested data structure from live API
+      const policiesData = response.data?.data?.policies || [];
       console.log('Parsed insurance policies:', policiesData);
       
       setPolicies(policiesData);

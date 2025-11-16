@@ -28,8 +28,15 @@ export default function Finance() {
     setLoading(true);
     try {
       const response = await api.get('/finance-products');
-      setProducts(response.data);
+      console.log('Finance API response:', response.data);
+      
+      // Access nested data structure from live API
+      const productsData = response.data?.data?.products || [];
+      console.log('Parsed finance products:', productsData);
+      
+      setProducts(productsData);
     } catch (error: any) {
+      console.error('Error fetching finance products:', error);
       Alert.alert('Error', 'Failed to load finance products');
     } finally {
       setLoading(false);

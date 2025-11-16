@@ -26,8 +26,15 @@ export default function Roadside() {
     setLoading(true);
     try {
       const response = await api.get('/roadside-assistance');
-      setMemberships(response.data);
+      console.log('Roadside API response:', response.data);
+      
+      // Access nested data structure from live API
+      const assistanceData = response.data?.data?.assistance || [];
+      console.log('Parsed roadside assistance:', assistanceData);
+      
+      setMemberships(assistanceData);
     } catch (error: any) {
+      console.error('Error fetching roadside assistance:', error);
       Alert.alert('Error', 'Failed to load roadside memberships');
     } finally {
       setLoading(false);
