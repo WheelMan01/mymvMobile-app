@@ -301,9 +301,6 @@ metadata:
 test_plan:
   current_focus:
     - "Authentication System"
-    - "Dashboard Screen"
-    - "Vehicle Management"
-    - "AI Rego Scan"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -313,3 +310,5 @@ agent_communication:
     message: "Phase 1 implementation complete: Auth system, navigation, dashboard, vehicle management with AI Rego Scan. Backend fully functional and tested with curl. Frontend needs testing with backend integration."
   - agent: "testing"
     message: "Backend testing completed successfully. All API endpoints tested and working: Authentication (email/password + PIN login), Dashboard stats, Vehicle CRUD operations, AI Rego Scan with OpenAI Vision, Insurance/Finance/Roadside/Dealers/Promotions/Service endpoints. 100% success rate on 14 comprehensive tests. Backend is production-ready."
+  - agent: "main"
+    message: "CRITICAL UPDATE: Fixed PIN login to connect to live backend (https://vehicle-ocr.preview.emergentagent.com) and changed payload from {member_id, pin} to {email, pin}. Updated AuthContext.tsx and pin-login.tsx. Added email validation. Need to test PIN login with anthony@wheelsfinance.com.au / PIN: 1234"
