@@ -84,10 +84,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const pinLogin = async (memberId: string, pin: string) => {
+  const pinLogin = async (email: string, pin: string) => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/pin-login`, {
-        member_id: memberId,
+        email: email.toLowerCase().trim(),
         pin
       });
       
