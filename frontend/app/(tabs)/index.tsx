@@ -31,7 +31,7 @@ export default function Dashboard() {
         api.get('/vehicles'),
         api.get('/insurance-policies'),
         api.get('/roadside-assistance'),
-        api.get('/finance-products')
+        api.get('/finance-loans')
       ]);
 
       // Parse vehicles
@@ -51,11 +51,11 @@ export default function Dashboard() {
         : [];
       const activeRoadside = roadsidePolicies.filter((p: any) => new Date(p.expiry_date) > new Date());
 
-      // Parse finance - filter for active products
-      const financeProducts = financeResponse.status === 'fulfilled'
-        ? (financeResponse.value.data?.data?.products || [])
+      // Parse finance - filter for active loans
+      const financeLoans = financeResponse.status === 'fulfilled'
+        ? (financeResponse.value.data?.data?.loans || [])
         : [];
-      const activeFinance = financeProducts.filter((p: any) => p.status === 'Active');
+      const activeFinance = financeLoans.filter((p: any) => p.status === 'Active');
 
       setStats({
         total_vehicles: vehicles.length,
