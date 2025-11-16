@@ -282,7 +282,7 @@ class BackendTester:
                     self.log_test(
                         "Vehicles Endpoint",
                         False,
-                        f"Expected array, got: {type(data)}",
+                        f"Expected array, got: {type(vehicles)}",
                         data
                     )
                     return False
