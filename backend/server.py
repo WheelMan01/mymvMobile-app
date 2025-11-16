@@ -628,6 +628,46 @@ async def get_marketplace_listing(listing_id: str):
         raise HTTPException(status_code=404, detail="Listing not found")
 
 
+@api_router.post("/marketplace-listings")
+async def create_marketplace_listing(listing_data: dict, current_user: dict = Depends(get_current_user)):
+    """Create a new marketplace listing"""
+    try:
+        # Verify the vehicle belongs to the user
+        vehicle = await db.vehicles.find_one({
+            "_id": ObjectId(listing_data['vehicle_id']),
+            "user_id": current_user['user_id']
+        })
+        
+        if not vehicle:
+            raise HTTPException(status_code=404, detail="Vehicle not found or doesn't belong to you")
+        
+        # Create listing document
+        listing = {
+            "user_id": current_user['user_id'],
+            "vehicle_id": listing_data['vehicle_id'],
+            "title": listing_data.get('title', f"{vehicle['make']} {vehicle['model']} {vehicle['year']}"),
+            "price": listing_data['price'],
+            "condition": listing_data['condition'],
+            "description": listing_data['description'],
+            "contact_name": listing_data['contact_name'],
+            "contact_phone": listing_data['contact_phone'],
+            "contact_email": listing_data.get('contact_email'),
+            "status": "Active",
+            "listed_date": datetime.utcnow(),
+            "created_at": datetime.utcnow()
+        }
+        
+        result = await db.marketplace_listings.insert_one(listing)
+        listing['id'] = str(result.inserted_id)
+        
+        return {"message": "Listing created successfully", "listing_id": str(result.inserted_id)}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating marketplace listing: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to create listing")
+
+
 # Include router
 app.include_router(api_router)
 
