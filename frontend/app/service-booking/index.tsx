@@ -79,11 +79,14 @@ export default function ServiceBooking() {
         </View>
       </View>
 
+      <Text style={styles.providerName}>{booking.provider}</Text>
       <Text style={styles.serviceType}>{booking.service_type}</Text>
       
       <View style={styles.dateSection}>
         <Ionicons name="calendar" size={16} color="#8E8E93" />
-        <Text style={styles.dateText}>{format(new Date(booking.booking_date), 'EEE, dd MMM yyyy - hh:mm a')}</Text>
+        <Text style={styles.dateText}>
+          {format(new Date(booking.date), 'EEE, dd MMM yyyy')} • {booking.time}
+        </Text>
       </View>
 
       {booking.notes && (
