@@ -34,12 +34,23 @@ export default function VehicleDetail() {
   const fetchVehicleDetails = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/vehicles/${id}`);
-      console.log('Vehicle details response:', response.data);
+      // Fetch all vehicles and filter for the specific one
+      const response = await api.get('/vehicles');
+      console.log('Vehicles list response:', response.data);
       
       // Handle nested response structure
-      const vehicleData = response.data?.data?.vehicle || response.data?.vehicle || response.data;
-      setVehicle(vehicleData);
+      const vehiclesList = response.data?.data?.vehicles || response.data?.vehicles || response.data || [];
+      
+      // Find the specific vehicle by ID
+      const foundVehicle = vehiclesList.find((v: any) => v.id === id);
+      
+      if (foundVehicle) {
+        setVehicle(foundVehicle);
+      } else {
+        console.error('Vehicle not found with ID:', id);
+        Alert.alert('Error', 'Vehicle not found');
+        router.back();
+      }
     } catch (error: any) {
       console.error('Error fetching vehicle details:', error);
       Alert.alert('Error', 'Failed to load vehicle details');
