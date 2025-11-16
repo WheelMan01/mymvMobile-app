@@ -118,7 +118,7 @@ backend:
         comment: "Implemented email/password login, PIN login, registration, JWT token management, and profile endpoints. Tested successfully with curl."
       - working: "NA"
         agent: "main"
-        comment: "Updated PIN login to use correct backend URL (https://mymv-hub.preview.emergentagent.com) and modified to send {email, pin} instead of {member_id, pin}. Ready for testing with credentials: anthony@wheelsfinance.com.au / PIN: 1234"
+        comment: "Updated PIN login to use correct backend URL (https://carmgmt-fix.preview.emergentagent.com) and modified to send {email, pin} instead of {member_id, pin}. Ready for testing with credentials: anthony@wheelsfinance.com.au / PIN: 1234"
       - working: true
         agent: "testing"
         comment: "PIN Login API integration with live backend SUCCESSFUL! All 6 tests passed: ✅ PIN login with correct credentials (anthony@wheelsfinance.com.au/1234) ✅ Retrieved 4 vehicles from live backend ✅ Correctly rejected wrong PIN/email/invalid format ✅ Old format {member_id, pin} correctly rejected - API updated to new {email, pin} format. Live backend response includes access_token, refresh_token, user data with member_number: MV-7981038. Integration working perfectly."
@@ -314,6 +314,6 @@ agent_communication:
   - agent: "testing"
     message: "Backend testing completed successfully. All API endpoints tested and working: Authentication (email/password + PIN login), Dashboard stats, Vehicle CRUD operations, AI Rego Scan with OpenAI Vision, Insurance/Finance/Roadside/Dealers/Promotions/Service endpoints. 100% success rate on 14 comprehensive tests. Backend is production-ready."
   - agent: "main"
-    message: "CRITICAL UPDATE: Fixed PIN login to connect to live backend (https://mymv-hub.preview.emergentagent.com) and changed payload from {member_id, pin} to {email, pin}. Updated AuthContext.tsx and pin-login.tsx. Added email validation. Need to test PIN login with anthony@wheelsfinance.com.au / PIN: 1234"
+    message: "CRITICAL UPDATE: Fixed PIN login to connect to live backend (https://carmgmt-fix.preview.emergentagent.com) and changed payload from {member_id, pin} to {email, pin}. Updated AuthContext.tsx and pin-login.tsx. Added email validation. Need to test PIN login with anthony@wheelsfinance.com.au / PIN: 1234"
   - agent: "testing"
-    message: "🎉 PIN LOGIN LIVE BACKEND INTEGRATION VERIFIED! All 6 comprehensive tests passed (100% success rate). Live backend at https://mymv-hub.preview.emergentagent.com is working perfectly with new {email, pin} format. Successfully authenticated anthony@wheelsfinance.com.au with PIN 1234, retrieved 4 vehicles, confirmed error handling works correctly. Old {member_id, pin} format properly rejected. Integration is production-ready!"
+    message: "🎉 PIN LOGIN LIVE BACKEND INTEGRATION VERIFIED! All 6 comprehensive tests passed (100% success rate). Live backend at https://carmgmt-fix.preview.emergentagent.com is working perfectly with new {email, pin} format. Successfully authenticated anthony@wheelsfinance.com.au with PIN 1234, retrieved 4 vehicles, confirmed error handling works correctly. Old {member_id, pin} format properly rejected. Integration is production-ready!"
