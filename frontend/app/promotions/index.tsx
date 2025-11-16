@@ -1,19 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, Alert } from 'react-native';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  FlatList, 
+  TouchableOpacity, 
+  Image,
+  Linking,
+  ActivityIndicator,
+  Alert 
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
-import { format } from 'date-fns';
 
-interface Promotion {
+interface Banner {
   id: string;
+  banner_type: string;
+  provider_name: string;
   title: string;
   description: string;
-  discount_details: string;
-  category: string;
+  cta_text: string;
+  cta_url: string;
+  image_url?: string;
+  display_mode: 'text_overlay' | 'full_image';
+  target_audience: string;
+  status: string;
+  priority: number;
   start_date: string;
   end_date: string;
-  status: string;
+  impressions: number;
+  clicks: number;
 }
 
 export default function Promotions() {
