@@ -29,8 +29,15 @@ export const useVehicles = () => {
     setError(null);
     try {
       const response = await api.get('/vehicles');
-      setVehicles(response.data);
+      console.log('Vehicles API response:', response.data);
+      
+      // Handle different response structures from live backend
+      const vehiclesData = response.data?.data?.vehicles || response.data?.vehicles || response.data || [];
+      console.log('Parsed vehicles:', vehiclesData);
+      
+      setVehicles(vehiclesData);
     } catch (err: any) {
+      console.error('Error fetching vehicles:', err);
       setError(err.response?.data?.detail || 'Failed to fetch vehicles');
     } finally {
       setLoading(false);
