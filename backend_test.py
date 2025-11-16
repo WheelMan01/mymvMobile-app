@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 """
 Backend API Testing for myMV Customer Mobile App
-Tests all backend endpoints with realistic data
+Testing PIN Login API Integration with Live Backend
 """
 
 import requests
 import json
-import base64
-from datetime import datetime, timedelta
-from typing import Dict, Any, Optional
 import sys
+from datetime import datetime
 
-# Backend URL from frontend environment
-BASE_URL = "https://carmgr-mobile.preview.emergentagent.com/api"
+# Live backend URL from review request
+BACKEND_URL = "https://vehicle-ocr.preview.emergentagent.com"
+
+# Test credentials from review request
+TEST_EMAIL = "anthony@wheelsfinance.com.au"
+TEST_PIN = "1234"
 
 class BackendTester:
     def __init__(self):
