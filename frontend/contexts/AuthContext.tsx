@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 
 const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+console.log('🔧 AuthContext API_URL:', API_URL);
 
 // Helper functions for storage (supports both native and web)
 const setStorageItem = async (key: string, value: string) => {
