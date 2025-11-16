@@ -547,6 +547,87 @@ async def get_providers(provider_type: Optional[str] = None):
     return [ProviderResponse(**serialize_doc(p)) for p in providers]
 
 
+# ===== MARKETPLACE ENDPOINTS =====
+
+@api_router.get("/marketplace-listings")
+async def get_marketplace_listings():
+    """Get all marketplace listings"""
+    try:
+        # Get vehicles that are listed for sale
+        vehicles = await db.vehicles.find().to_list(100)
+        listings = []
+        
+        for v in vehicles:
+            listing = {
+                "id": str(v['_id']),
+                "user_id": v.get('user_id', ''),
+                "vehicle_id": str(v['_id']),
+                "dealer_id": v.get('dealer_id'),
+                "title": f"{v['make']} {v['model']} {v['year']}",
+                "make": v['make'],
+                "model": v['model'],
+                "year": v['year'],
+                "price": v.get('purchase_price', 25000),  # Default price
+                "odometer": v.get('odometer'),
+                "condition": "Used",
+                "description": f"{v['year']} {v['make']} {v['model']} in excellent condition",
+                "images": [v['image']] if v.get('image') else [],
+                "contact_name": "Dealer Sales",
+                "contact_phone": "1800 123 456",
+                "contact_email": "sales@dealer.com",
+                "listed_date": v.get('created_at', datetime.utcnow()),
+                "status": "Active"
+            }
+            listings.append(listing)
+        
+        return listings
+    except Exception as e:
+        logger.error(f"Error fetching marketplace listings: {str(e)}")
+        return []
+
+
+@api_router.get("/marketplace-listings/{listing_id}")
+async def get_marketplace_listing(listing_id: str):
+    """Get specific marketplace listing"""
+    try:
+        vehicle = await db.vehicles.find_one({"_id": ObjectId(listing_id)})
+        if not vehicle:
+            raise HTTPException(status_code=404, detail="Listing not found")
+        
+        listing = {
+            "id": str(vehicle['_id']),
+            "user_id": vehicle.get('user_id', ''),
+            "vehicle_id": str(vehicle['_id']),
+            "dealer_id": vehicle.get('dealer_id'),
+            "title": f"{vehicle['make']} {vehicle['model']} {vehicle['year']}",
+            "make": vehicle['make'],
+            "model": vehicle['model'],
+            "year": vehicle['year'],
+            "price": vehicle.get('purchase_price', 25000),
+            "odometer": vehicle.get('odometer'),
+            "condition": "Used",
+            "description": f"{vehicle['year']} {vehicle['make']} {vehicle['model']} in excellent condition. Well maintained with full service history.",
+            "images": [vehicle['image']] if vehicle.get('image') else [],
+            "contact_name": "Dealer Sales",
+            "contact_phone": "1800 123 456",
+            "contact_email": "sales@dealer.com",
+            "listed_date": vehicle.get('created_at', datetime.utcnow()),
+            "status": "Active",
+            "features": [
+                "Air Conditioning",
+                "Power Windows",
+                "Bluetooth",
+                "Backup Camera",
+                "Cruise Control"
+            ]
+        }
+        
+        return listing
+    except Exception as e:
+        logger.error(f"Error fetching marketplace listing: {str(e)}")
+        raise HTTPException(status_code=404, detail="Listing not found")
+
+
 # Include router
 app.include_router(api_router)
 
