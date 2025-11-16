@@ -26,15 +26,42 @@ export default function Dashboard() {
 
   const fetchStats = async () => {
     try {
-      // Try to fetch vehicles to get count
-      const vehiclesResponse = await api.get('/vehicles');
-      const vehicles = vehiclesResponse.data?.data?.vehicles || vehiclesResponse.data || [];
-      
+      // Fetch all counts in parallel
+      const [vehiclesResponse, insuranceResponse, roadsideResponse, financeResponse] = await Promise.allSettled([
+        api.get('/vehicles'),
+        api.get('/insurance-policies'),
+        api.get('/roadside-assistance'),
+        api.get('/finance-products')
+      ]);
+
+      // Parse vehicles
+      const vehicles = vehiclesResponse.status === 'fulfilled' 
+        ? (vehiclesResponse.value.data?.data?.vehicles || vehiclesResponse.value.data || [])
+        : [];
+
+      // Parse insurance - filter for active policies
+      const insurancePolicies = insuranceResponse.status === 'fulfilled'
+        ? (insuranceResponse.value.data?.data?.policies || [])
+        : [];
+      const activeInsurance = insurancePolicies.filter((p: any) => new Date(p.expiry_date) > new Date());
+
+      // Parse roadside - filter for active memberships
+      const roadsidePolicies = roadsideResponse.status === 'fulfilled'
+        ? (roadsideResponse.value.data?.data?.policies || [])
+        : [];
+      const activeRoadside = roadsidePolicies.filter((p: any) => new Date(p.expiry_date) > new Date());
+
+      // Parse finance - filter for active products
+      const financeProducts = financeResponse.status === 'fulfilled'
+        ? (financeResponse.value.data?.data?.products || [])
+        : [];
+      const activeFinance = financeProducts.filter((p: any) => p.status === 'Active');
+
       setStats({
         total_vehicles: vehicles.length,
-        active_insurance_policies: 0,
-        active_finance_products: 0,
-        active_roadside_memberships: 0
+        active_insurance_policies: activeInsurance.length,
+        active_finance_products: activeFinance.length,
+        active_roadside_memberships: activeRoadside.length
       });
     } catch (error: any) {
       console.error('Error fetching stats:', error);
