@@ -105,8 +105,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(access_token);
       setUser(userData);
     } catch (error: any) {
-      console.error('PIN Login - Error:', error.response?.data || error.message);
-      throw new Error(error.response?.data?.detail || 'PIN login failed');
+      console.error('PIN Login - Error:', JSON.stringify(error.response?.data || error.message));
+      
+      // Extract error message properly
+      let errorMessage = 'PIN login failed';
+      if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      throw new Error(errorMessage);
     }
   };
 
