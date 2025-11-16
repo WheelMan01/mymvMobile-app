@@ -158,8 +158,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       const { access_token, user: userData } = response.data;
       
-      await SecureStore.setItemAsync('auth_token', access_token);
-      await SecureStore.setItemAsync('user_data', JSON.stringify(userData));
+      await setStorageItem('auth_token', access_token);
+      await setStorageItem('user_data', JSON.stringify(userData));
       
       setToken(access_token);
       setUser(userData);
@@ -169,8 +169,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    await SecureStore.deleteItemAsync('auth_token');
-    await SecureStore.deleteItemAsync('user_data');
+    await deleteStorageItem('auth_token');
+    await deleteStorageItem('user_data');
     setToken(null);
     setUser(null);
   };
