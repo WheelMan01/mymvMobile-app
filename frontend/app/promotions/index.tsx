@@ -35,81 +35,113 @@ interface Banner {
 
 export default function Promotions() {
   const router = useRouter();
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [banners, setBanners] = useState<Banner[]>([]);
   const [loading, setLoading] = useState(false);
-  const [filter, setFilter] = useState<'all' | 'Finance' | 'Insurance' | 'Roadside' | 'Service'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'insurance' | 'finance' | 'roadside'>('all');
 
-  const fetchPromotions = async () => {
+  const tabs = [
+    { id: 'all', label: 'All' },
+    { id: 'insurance', label: 'Insurance' },
+    { id: 'finance', label: 'Finance' },
+    { id: 'roadside', label: 'Roadside' },
+  ];
+
+  useEffect(() => {
+    loadBanners();
+  }, [activeTab]);
+
+  const loadBanners = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/promotions?status=active');
-      setPromotions(response.data);
+      if (activeTab === 'all') {
+        // Load all banner types in parallel
+        const responses = await Promise.allSettled([
+          api.get('/banners/insurance/active'),
+          api.get('/banners/finance/active'),
+          api.get('/banners/roadside/active'),
+        ]);
+
+        // Extract banners from successful responses
+        const allBanners = responses
+          .filter(r => r.status === 'fulfilled')
+          .map((r: any) => r.value?.data?.data?.banner)
+          .filter(b => b !== null && b !== undefined);
+
+        setBanners(allBanners);
+      } else {
+        // Load specific banner type
+        const response = await api.get(`/banners/${activeTab}/active`);
+        const banner = response.data?.data?.banner;
+        setBanners(banner ? [banner] : []);
+      }
     } catch (error: any) {
-      Alert.alert('Error', 'Failed to load promotions');
+      console.error('Error loading banners:', error);
+      setBanners([]);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchPromotions();
-  }, []);
+  const handleBannerClick = async (banner: Banner) => {
+    try {
+      // Track click
+      await api.post(`/banners/${banner.id}/click`);
 
-  const filteredPromotions = filter === 'all' 
-    ? promotions 
-    : promotions.filter(p => p.category === filter);
-
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'Finance': return '#FF9500';
-      case 'Insurance': return '#34C759';
-      case 'Roadside': return '#FF3B30';
-      case 'Service': return '#5856D6';
-      default: return '#007AFF';
+      // Open URL
+      if (banner.cta_url && banner.cta_url.startsWith('http')) {
+        await Linking.openURL(banner.cta_url);
+      }
+    } catch (error: any) {
+      console.error('Error handling banner click:', error);
+      // Still try to open URL even if tracking fails
+      if (banner.cta_url && banner.cta_url.startsWith('http')) {
+        await Linking.openURL(banner.cta_url);
+      }
     }
   };
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'Finance': return 'cash';
-      case 'Insurance': return 'shield-checkmark';
-      case 'Roadside': return 'car-sport';
-      case 'Service': return 'construct';
-      default: return 'pricetag';
+  const renderBanner = ({ item: banner }: { item: Banner }) => {
+    if (banner.display_mode === 'full_image' && banner.image_url) {
+      return (
+        <TouchableOpacity
+          style={styles.bannerCard}
+          onPress={() => handleBannerClick(banner)}
+        >
+          <Image
+            source={{ uri: banner.image_url }}
+            style={styles.fullImage}
+            resizeMode="cover"
+          />
+        </TouchableOpacity>
+      );
     }
-  };
 
-  const PromotionCard = ({ promotion }: { promotion: Promotion }) => (
-    <TouchableOpacity 
-      style={styles.promotionCard}
-      onPress={() => router.push(`/promotions/${promotion.id}`)}
-    >
-      <View style={[styles.categoryBanner, { backgroundColor: getCategoryColor(promotion.category) }]}>
-        <Ionicons name={getCategoryIcon(promotion.category) as any} size={20} color="#fff" />
-        <Text style={styles.categoryText}>{promotion.category}</Text>
-        <View style={styles.discountBadge}>
-          <Text style={styles.discountText}>{promotion.discount_details}</Text>
-        </View>
-      </View>
-
-      <View style={styles.cardContent}>
-        <Text style={styles.promotionTitle}>{promotion.title}</Text>
-        <Text style={styles.promotionDescription} numberOfLines={2}>{promotion.description}</Text>
-        
-        <View style={styles.dateRow}>
-          <Ionicons name="time-outline" size={14} color="#8E8E93" />
-          <Text style={styles.dateText}>
-            Valid until {format(new Date(promotion.end_date), 'dd MMM yyyy')}
+    return (
+      <View style={styles.bannerCard}>
+        {banner.image_url && (
+          <Image
+            source={{ uri: banner.image_url }}
+            style={styles.backgroundImage}
+            resizeMode="cover"
+          />
+        )}
+        <View style={styles.overlay}>
+          <Text style={styles.providerName}>{banner.provider_name}</Text>
+          <Text style={styles.title}>{banner.title}</Text>
+          <Text style={styles.description} numberOfLines={3}>
+            {banner.description}
           </Text>
-        </View>
-
-        <View style={styles.viewButton}>
-          <Text style={styles.viewButtonText}>View Details</Text>
-          <Ionicons name="chevron-forward" size={16} color="#007AFF" />
+          <TouchableOpacity
+            style={styles.ctaButton}
+            onPress={() => handleBannerClick(banner)}
+          >
+            <Text style={styles.ctaText}>{banner.cta_text}</Text>
+            <Ionicons name="chevron-forward" size={16} color="#fff" />
+          </TouchableOpacity>
         </View>
       </View>
-    </TouchableOpacity>
-  );
+    );
+  };
 
   return (
     <View style={styles.container}>
