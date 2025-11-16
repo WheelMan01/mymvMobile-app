@@ -31,6 +31,13 @@ export default function Discover() {
 
       <View style={styles.section}>
         <DiscoverCard
+          title="Marketplace"
+          description="Browse vehicles for sale from dealers"
+          icon="cart"
+          color="#007AFF"
+          route="/marketplace"
+        />
+        <DiscoverCard
           title="Dealer Showroom"
           description="Browse dealerships and service centers"
           icon="business"
