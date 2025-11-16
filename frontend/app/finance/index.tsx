@@ -27,17 +27,17 @@ export default function Finance() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/finance-products');
+      const response = await api.get('/finance-loans');
       console.log('Finance API response:', response.data);
       
       // Access nested data structure from live API
-      const productsData = response.data?.data?.products || [];
-      console.log('Parsed finance products:', productsData);
+      const productsData = response.data?.data?.loans || [];
+      console.log('Parsed finance loans:', productsData);
       
       setProducts(productsData);
     } catch (error: any) {
-      console.error('Error fetching finance products:', error);
-      Alert.alert('Error', 'Failed to load finance products');
+      console.error('Error fetching finance loans:', error);
+      Alert.alert('Error', 'Failed to load finance loans');
     } finally {
       setLoading(false);
     }
