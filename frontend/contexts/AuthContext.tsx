@@ -86,10 +86,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const pinLogin = async (email: string, pin: string) => {
     try {
-      const response = await axios.post(`${API_URL}/api/auth/pin-login`, {
+      const url = `${API_URL}/api/auth/pin-login`;
+      console.log('PIN Login - URL:', url);
+      console.log('PIN Login - Payload:', { email: email.toLowerCase().trim(), pin });
+      
+      const response = await axios.post(url, {
         email: email.toLowerCase().trim(),
         pin
       });
+      
+      console.log('PIN Login - Success:', response.data);
       
       const { access_token, user: userData } = response.data;
       
@@ -99,6 +105,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setToken(access_token);
       setUser(userData);
     } catch (error: any) {
+      console.error('PIN Login - Error:', error.response?.data || error.message);
       throw new Error(error.response?.data?.detail || 'PIN login failed');
     }
   };
