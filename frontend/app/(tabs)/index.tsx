@@ -55,7 +55,7 @@ export default function Dashboard() {
       const financeLoans = financeResponse.status === 'fulfilled'
         ? (financeResponse.value.data?.data?.loans || [])
         : [];
-      const activeFinance = financeLoans.filter((p: any) => p.status === 'Active');
+      const activeFinance = financeLoans.filter((p: any) => new Date(p.end_date) > new Date());
 
       setStats({
         total_vehicles: vehicles.length,
