@@ -27,8 +27,15 @@ export default function Insurance() {
     setLoading(true);
     try {
       const response = await api.get('/insurance-policies');
-      setPolicies(response.data);
+      console.log('Insurance API response:', response.data);
+      
+      // Handle live backend response structure
+      const policiesData = response.data?.data?.policies || response.data?.policies || response.data || [];
+      console.log('Parsed insurance policies:', policiesData);
+      
+      setPolicies(policiesData);
     } catch (error: any) {
+      console.error('Error fetching insurance policies:', error);
       Alert.alert('Error', 'Failed to load insurance policies');
     } finally {
       setLoading(false);
