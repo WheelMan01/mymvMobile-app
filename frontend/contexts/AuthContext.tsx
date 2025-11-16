@@ -125,8 +125,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       const { access_token, user: userData } = response.data;
       
-      await SecureStore.setItemAsync('auth_token', access_token);
-      await SecureStore.setItemAsync('user_data', JSON.stringify(userData));
+      await setStorageItem('auth_token', access_token);
+      await setStorageItem('user_data', JSON.stringify(userData));
       
       setToken(access_token);
       setUser(userData);
