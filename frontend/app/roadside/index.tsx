@@ -29,7 +29,8 @@ export default function Roadside() {
       console.log('Roadside API response:', response.data);
       
       // Access nested data structure from live API
-      const assistanceData = response.data?.data?.assistance || [];
+      // Note: API returns data.policies, not data.assistance
+      const assistanceData = response.data?.data?.policies || [];
       console.log('Parsed roadside assistance:', assistanceData);
       
       setMemberships(assistanceData);
