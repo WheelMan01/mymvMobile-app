@@ -220,10 +220,16 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
   },
-  serviceType: {
-    fontSize: 18,
+  providerName: {
+    fontSize: 16,
     fontWeight: '600',
     color: '#1C1C1E',
+    marginBottom: 4,
+  },
+  serviceType: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#8E8E93',
     marginBottom: 12,
   },
   dateSection: {
