@@ -111,11 +111,14 @@ backend:
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
         comment: "Implemented email/password login, PIN login, registration, JWT token management, and profile endpoints. Tested successfully with curl."
+      - working: "NA"
+        agent: "main"
+        comment: "Updated PIN login to use correct backend URL (https://vehicle-ocr.preview.emergentagent.com) and modified to send {email, pin} instead of {member_id, pin}. Ready for testing with credentials: anthony@wheelsfinance.com.au / PIN: 1234"
   
   - task: "Dashboard Stats Endpoint"
     implemented: true
