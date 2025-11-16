@@ -16,7 +16,7 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, password: string) => Promise<void>;
-  pinLogin: (memberId: string, pin: string) => Promise<void>;
+  pinLogin: (email: string, pin: string) => Promise<void>;
   register: (email: string, password: string, fullName: string, phone: string) => Promise<void>;
   logout: () => Promise<void>;
   isLoading: boolean;
