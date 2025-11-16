@@ -220,12 +220,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
     gap: 8,
+    backgroundColor: '#fff',
   },
   filterChip: {
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: '#fff',
+    backgroundColor: '#F2F2F7',
   },
   filterChipActive: {
     backgroundColor: '#007AFF',
@@ -241,70 +242,69 @@ const styles = StyleSheet.create({
   list: {
     padding: 16,
   },
-  promotionCard: {
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bannerCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
     marginBottom: 16,
     overflow: 'hidden',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
-  categoryBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
+  backgroundImage: {
+    width: '100%',
+    height: 220,
+    position: 'absolute',
   },
-  categoryText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: '600',
-    marginLeft: 8,
-    flex: 1,
+  fullImage: {
+    width: '100%',
+    height: 200,
   },
-  discountBadge: {
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
+  overlay: {
+    padding: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    minHeight: 220,
   },
-  discountText: {
-    color: '#fff',
+  providerName: {
     fontSize: 12,
-    fontWeight: '600',
-  },
-  cardContent: {
-    padding: 16,
-  },
-  promotionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#8E8E93',
+    textTransform: 'uppercase',
     marginBottom: 8,
+    fontWeight: '600',
   },
-  promotionDescription: {
-    fontSize: 14,
-    color: '#8E8E93',
-    marginBottom: 12,
-    lineHeight: 20,
-  },
-  dateRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#1C1C1E',
     marginBottom: 12,
   },
-  dateText: {
-    fontSize: 12,
-    color: '#8E8E93',
-    marginLeft: 6,
+  description: {
+    fontSize: 15,
+    color: '#666',
+    marginBottom: 20,
+    lineHeight: 22,
   },
-  viewButton: {
+  ctaButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
   },
-  viewButtonText: {
+  ctaText: {
+    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
-    color: '#007AFF',
     marginRight: 4,
   },
   emptyContainer: {
@@ -313,15 +313,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 32,
   },
+  emptyIcon: {
+    fontSize: 60,
+    marginBottom: 16,
+  },
   emptyText: {
     fontSize: 20,
     fontWeight: '600',
     color: '#1C1C1E',
-    marginTop: 16,
+    marginTop: 8,
   },
   emptySubtext: {
     fontSize: 14,
     color: '#8E8E93',
     marginTop: 8,
+    textAlign: 'center',
   },
 });
