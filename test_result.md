@@ -203,15 +203,18 @@ backend:
   
   - task: "Dealers & Promotions & Service Booking"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/backend/server.py"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "GET endpoints for dealers, promotions, service bookings implemented. Not yet tested."
+      - working: true
+        agent: "testing"
+        comment: "All endpoints tested successfully: Dealers, Promotions, and Service Bookings GET endpoints return empty lists as expected for new database. Endpoint structures and authentication working correctly."
 
 frontend:
   - task: "Authentication Screens"
