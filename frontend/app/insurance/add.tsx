@@ -218,46 +218,16 @@ export default function AddInsurance() {
 
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Expiry Date *</Text>
-            {Platform.OS === 'web' ? (
-              // Web: Use text input with Australian format
-              <>
-                <TextInput
-                  style={styles.input}
-                  value={formatAustralianDate(expiryDate)}
-                  onChangeText={(text) => {
-                    // Parse DD/MM/YYYY format
-                    const parts = text.split('/');
-                    if (parts.length === 3) {
-                      const day = parseInt(parts[0]);
-                      const month = parseInt(parts[1]) - 1; // Month is 0-indexed
-                      const year = parseInt(parts[2]);
-                      if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-                        const newDate = new Date(year, month, day);
-                        if (!isNaN(newDate.getTime())) {
-                          setExpiryDate(newDate);
-                        }
-                      }
-                    }
-                  }}
-                  placeholder="DD/MM/YYYY"
-                  maxLength={10}
-                />
-                <Text style={styles.hint}>Format: DD/MM/YYYY (e.g., 31/12/2025)</Text>
-              </>
-            ) : (
-              // Mobile: Use native date picker
-              <>
-                <TouchableOpacity 
-                  style={styles.dateButton}
-                  onPress={() => setShowDatePicker(true)}
-                >
-                  <Ionicons name="calendar-outline" size={20} color="#007AFF" />
-                  <Text style={styles.dateButtonText}>{formatAustralianDate(expiryDate)}</Text>
-                  <Ionicons name="chevron-down" size={20} color="#8E8E93" />
-                </TouchableOpacity>
-                <Text style={styles.hint}>Tap to change date (Australian format)</Text>
-              </>
-            )}
+            <TextInput
+              style={styles.input}
+              value={dateText}
+              onChangeText={handleDateInput}
+              placeholder="DD/MM/YYYY"
+              placeholderTextColor="#8E8E93"
+              keyboardType="numeric"
+              maxLength={10}
+            />
+            <Text style={styles.hint}>Type date as: 31/12/2025 (DD/MM/YYYY)</Text>
           </View>
 
           {showDatePicker && Platform.OS !== 'web' && (
