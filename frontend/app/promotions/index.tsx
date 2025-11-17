@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 12,
-    color: '#999',
+    color: '#ccc',
     marginTop: 2,
   },
   listContent: {
