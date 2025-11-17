@@ -230,26 +230,6 @@ export default function AddInsurance() {
             <Text style={styles.hint}>Type date as: 31/12/2025 (DD/MM/YYYY)</Text>
           </View>
 
-          {showDatePicker && Platform.OS !== 'web' && (
-            <DateTimePicker
-              value={expiryDate}
-              mode="date"
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              onChange={handleDateChange}
-              minimumDate={new Date()}
-            />
-          )}
-          
-          {showDatePicker && Platform.OS === 'ios' && (
-            <View style={styles.datePickerButtons}>
-              <TouchableOpacity 
-                style={styles.datePickerButton}
-                onPress={() => setShowDatePicker(false)}
-              >
-                <Text style={styles.datePickerButtonText}>Done</Text>
-              </TouchableOpacity>
-            </View>
-          )}
         </View>
 
         <TouchableOpacity 
