@@ -14,8 +14,7 @@ export default function AddInsurance() {
   const [providerId, setProviderId] = useState('default-provider');
   const [policyNumber, setPolicyNumber] = useState('');
   const [premium, setPremium] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000));
+  const [expiryDate, setExpiryDate] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
