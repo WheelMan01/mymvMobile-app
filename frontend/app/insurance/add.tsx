@@ -93,8 +93,8 @@ export default function AddInsurance() {
   };
 
   const handleSubmit = async () => {
-    if (!selectedVehicleId || !policyNumber || !premium) {
-      Alert.alert('Error', 'Please fill in all required fields');
+    if (!selectedVehicleId || !provider || !policyNumber || !premium) {
+      Alert.alert('Error', 'Please fill in all required fields (Vehicle, Provider, Policy Number, Premium)');
       return;
     }
 
@@ -102,7 +102,7 @@ export default function AddInsurance() {
     try {
       await api.post('/insurance-policies', {
         vehicle_id: selectedVehicleId,
-        provider: 'NRMA Insurance', // Default provider
+        provider: provider,
         policy_number: policyNumber,
         insurance_types: [policyType.toLowerCase()],
         premium: parseFloat(premium),
