@@ -114,12 +114,29 @@ export default function Dashboard() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#fff" />
         }
       >
-        {/* Header with user info */}
+        {/* Header with hamburger menu and profile */}
         <View style={styles.header}>
-          <View style={styles.userSection}>
-            <Ionicons name="person-circle" size={40} color="#fff" />
-            <Text style={styles.userName}>{user?.full_name || user?.email || 'JOHN O\'NEILL'}</Text>
+          <TouchableOpacity 
+            style={styles.menuButton}
+            onPress={() => {
+              // Open drawer/menu - for now navigate to profile
+              router.push('/profile');
+            }}
+          >
+            <Ionicons name="menu" size={32} color="#fff" />
+          </TouchableOpacity>
+          
+          <View style={styles.brandSection}>
+            <Text style={styles.brandText}>myMV</Text>
           </View>
+          
+          <TouchableOpacity 
+            style={styles.profileButton}
+            onPress={() => router.push('/profile')}
+          >
+            <Ionicons name="person-circle" size={40} color="#fff" />
+            <Text style={styles.userName}>{user?.full_name || user?.email?.split('@')[0] || 'User'}</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Main Grid of Features - Row 1 */}
