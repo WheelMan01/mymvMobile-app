@@ -276,7 +276,7 @@ export default function ShowroomScreen() {
                   <ScrollView
                     horizontal
                     pagingEnabled
-                    showsHorizontalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={true}
                     onScroll={index === currentIndex ? handleImageScroll : undefined}
                     scrollEventThrottle={16}
                   >
