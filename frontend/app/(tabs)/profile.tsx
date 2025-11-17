@@ -1,182 +1,117 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
+import AppHeader from '../../components/AppHeader';
 
 export default function Profile() {
-  const { user, logout } = useAuth();
   const router = useRouter();
+  const { user, logout } = useAuth();
 
-  const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: async () => {
-            await logout();
-            router.replace('/auth/login');
-          },
-        },
-      ]
-    );
+  const handleLogout = async () => {
+    await logout();
+    router.replace('/auth/login');
   };
 
-  const ProfileItem = ({ icon, label, value }: any) => (
-    <View style={styles.profileItem}>
-      <Ionicons name={icon} size={20} color="#007AFF" style={styles.itemIcon} />
-      <View style={styles.itemContent}>
-        <Text style={styles.itemLabel}>{label}</Text>
-        <Text style={styles.itemValue}>{value}</Text>
-      </View>
-    </View>
+  const ProfileOption = ({ icon, title, onPress, color = '#007AFF' }: any) => (
+    <TouchableOpacity style={styles.option} onPress={onPress}>
+      <Ionicons name={icon} size={24} color={color} />
+      <Text style={[styles.optionText, { color }]}>{title}</Text>
+      <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
+    </TouchableOpacity>
   );
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.avatarContainer}>
-          <Ionicons name="person" size={40} color="#fff" />
+    <View style={styles.container}>
+      <AppHeader title="My Profile" />
+      
+      <ScrollView style={styles.content}>
+        {/* User Info */}
+        <View style={styles.userSection}>
+          <Ionicons name="person-circle" size={80} color="#007AFF" />
+          <Text style={styles.userName}>{user?.full_name || 'User'}</Text>
+          <Text style={styles.userEmail}>{user?.email || 'user@example.com'}</Text>
         </View>
-        <Text style={styles.userName}>
-          {user?.full_name || `${user?.first_name || ''} ${user?.last_name || ''}`.trim() || 'User'}
-        </Text>
-        <Text style={styles.userEmail}>{user?.email}</Text>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Profile Information</Text>
-        <View style={styles.card}>
-          <ProfileItem 
-            icon="card" 
-            label="Member Number" 
-            value={user?.member_number || user?.member_id || 'N/A'} 
+        {/* Options */}
+        <View style={styles.optionsSection}>
+          <ProfileOption
+            icon="person-outline"
+            title="Edit Profile"
+            onPress={() => {}}
           />
-          <ProfileItem 
-            icon="person" 
-            label="Full Name" 
-            value={user?.full_name || `${user?.first_name || ''} ${user?.last_name || ''}`.trim() || 'N/A'} 
+          <ProfileOption
+            icon="notifications-outline"
+            title="Notifications"
+            onPress={() => {}}
           />
-          <ProfileItem icon="mail" label="Email" value={user?.email || 'N/A'} />
-          <ProfileItem icon="call" label="Phone" value={user?.mobile || user?.phone || 'N/A'} />
+          <ProfileOption
+            icon="lock-closed-outline"
+            title="Privacy & Security"
+            onPress={() => {}}
+          />
+          <ProfileOption
+            icon="help-circle-outline"
+            title="Help & Support"
+            onPress={() => {}}
+          />
+          <ProfileOption
+            icon="information-circle-outline"
+            title="About"
+            onPress={() => {}}
+          />
+          <ProfileOption
+            icon="log-out-outline"
+            title="Logout"
+            onPress={handleLogout}
+            color="#FF3B30"
+          />
         </View>
-      </View>
-
-      <View style={styles.section}>
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Ionicons name="log-out-outline" size={20} color="#FF3B30" />
-          <Text style={styles.logoutButtonText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>myMV v1.0.0</Text>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#fff',
   },
-  header: {
-    backgroundColor: '#007AFF',
+  content: {
+    flex: 1,
+  },
+  userSection: {
+    alignItems: 'center',
     padding: 32,
-    alignItems: 'center',
-  },
-  avatarContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
+    backgroundColor: '#F2F2F7',
   },
   userName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 4,
+    marginTop: 16,
+    color: '#1C1C1E',
   },
   userEmail: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
-  },
-  section: {
-    padding: 16,
-  },
-  sectionTitle: {
     fontSize: 16,
-    fontWeight: '600',
     color: '#8E8E93',
-    marginBottom: 12,
-    textTransform: 'uppercase',
+    marginTop: 4,
   },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
+  optionsSection: {
+    marginTop: 20,
   },
-  profileItem: {
+  option: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#F2F2F7',
+    borderBottomColor: '#E5E5EA',
   },
-  itemIcon: {
-    marginRight: 16,
-  },
-  itemContent: {
+  optionText: {
     flex: 1,
-  },
-  itemLabel: {
-    fontSize: 12,
-    color: '#8E8E93',
-    marginBottom: 4,
-  },
-  itemValue: {
     fontSize: 16,
-    color: '#1C1C1E',
+    marginLeft: 16,
     fontWeight: '500',
-  },
-  logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  logoutButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FF3B30',
-    marginLeft: 8,
-  },
-  footer: {
-    padding: 32,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 12,
-    color: '#8E8E93',
   },
 });

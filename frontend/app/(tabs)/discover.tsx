@@ -2,17 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import AppHeader from '../../components/AppHeader';
 
 export default function Discover() {
   const router = useRouter();
 
   const DiscoverCard = ({ title, description, icon, color, route }: any) => (
     <TouchableOpacity 
-      style={styles.discoverCard}
-      onPress={() => router.push(route)}
+      style={styles.card}
+      onPress={() => route && router.push(route)}
     >
       <View style={[styles.iconContainer, { backgroundColor: color + '20' }]}>
-        <Ionicons name={icon} size={32} color={color} />
+        <Ionicons name={icon} size={40} color={color} />
       </View>
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle}>{title}</Text>
@@ -23,27 +24,36 @@ export default function Discover() {
   );
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Discover</Text>
-        <Text style={styles.headerSubtitle}>Explore dealerships and offers</Text>
-      </View>
+    <View style={styles.container}>
+      <AppHeader title="Discover" />
+      
+      <ScrollView style={styles.content}>
+        <Text style={styles.sectionTitle}>Explore Features</Text>
 
-      <View style={styles.section}>
         <DiscoverCard
           title="Vehicle Showroom"
-          description="TikTok-style feed of vehicles"
-          icon="play-circle"
-          color="#34C759"
+          description="Browse vehicles in TikTok-style feed"
+          icon="car-sport"
+          color="#007AFF"
           route="/showroom"
         />
+
         <DiscoverCard
           title="Marketplace"
-          description="Browse vehicles for sale from dealers"
+          description="Buy and sell vehicles"
           icon="cart"
-          color="#007AFF"
+          color="#34C759"
           route="/marketplace"
         />
+
+        <DiscoverCard
+          title="Promotions"
+          description="View latest deals and offers"
+          icon="pricetag"
+          color="#FF9500"
+          route="/promotions"
+        />
+
         <DiscoverCard
           title="Dealers"
           description="Browse dealerships and service centers"
@@ -51,22 +61,8 @@ export default function Discover() {
           color="#5856D6"
           route="/dealers"
         />
-        <DiscoverCard
-          title="Promotions & Offers"
-          description="Special deals and exclusive promotions"
-          icon="pricetag"
-          color="#FF2D55"
-          route="/promotions"
-        />
-        <DiscoverCard
-          title="Service Booking"
-          description="Schedule service appointments"
-          icon="construct"
-          color="#FF9500"
-          route="/service-booking"
-        />
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -75,50 +71,42 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F2F2F7',
   },
-  header: {
-    backgroundColor: '#007AFF',
-    padding: 24,
-    paddingTop: 16,
+  content: {
+    flex: 1,
+    padding: 16,
   },
-  headerTitle: {
-    fontSize: 28,
+  sectionTitle: {
+    fontSize: 22,
     fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 4,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
-  },
-  section: {
-    padding: 16,
-  },
-  discoverCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
     marginBottom: 16,
+    color: '#1C1C1E',
+  },
+  card: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   iconContainer: {
     width: 64,
     height: 64,
-    borderRadius: 32,
-    justifyContent: 'center',
+    borderRadius: 12,
     alignItems: 'center',
+    justifyContent: 'center',
     marginRight: 16,
   },
   cardContent: {
     flex: 1,
   },
   cardTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '600',
     color: '#1C1C1E',
     marginBottom: 4,
