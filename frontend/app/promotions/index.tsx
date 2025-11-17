@@ -5,32 +5,34 @@ import {
   StyleSheet, 
   FlatList, 
   TouchableOpacity, 
-  Image,
   Linking,
   ActivityIndicator,
   Alert 
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import * as Clipboard from 'expo-clipboard';
 import api from '../../services/api';
 
-interface Banner {
+interface DirectPromo {
   id: string;
-  banner_type: string;
-  provider_name: string;
   title: string;
+  supplier_name: string;
   description: string;
-  cta_text: string;
-  cta_url: string;
-  image_url?: string;
-  display_mode: 'text_overlay' | 'full_image';
-  target_audience: string;
-  status: string;
-  priority: number;
+  promo_code?: string;
+  action_type: string;
+  action_value: string;
+  member_tier: string;
+  category?: string;
   start_date: string;
   end_date: string;
-  impressions: number;
-  clicks: number;
+  is_active: boolean;
+  is_featured: boolean;
+  display_order: number;
+  image_url?: string;
+  click_count: number;
+  created_at: string;
+  updated_at: string;
 }
 
 export default function Promotions() {
