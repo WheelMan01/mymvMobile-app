@@ -111,7 +111,7 @@ export default function AddInsurance() {
     try {
       await api.post('/insurance-policies', {
         vehicle_id: selectedVehicleId,
-        provider: provider,
+        provider: selectedProviderName,
         policy_number: policyNumber,
         insurance_types: [policyType.toLowerCase()],
         premium: parseFloat(premium),
