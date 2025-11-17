@@ -41,87 +41,38 @@ class SettingsAPITester:
             print(f"   Response: {response_data}")
         print()
 
-    def test_pin_login_success(self):
-        """Test successful PIN login with correct credentials"""
-        url = f"{self.base_url}/api/auth/pin-login"
-        
-        # Test with the NEW format: {email, pin}
-        payload = {
-            "email": TEST_EMAIL,
-            "pin": TEST_PIN
-        }
+    def authenticate(self):
+        """Authenticate with PIN login"""
+        print("🔐 AUTHENTICATING WITH PIN LOGIN...")
         
         try:
-            response = requests.post(url, json=payload, timeout=30)
+            response = requests.post(
+                f"{self.base_url}/api/auth/pin-login",
+                json={"email": TEST_EMAIL, "pin": TEST_PIN},
+                headers={"Content-Type": "application/json"},
+                timeout=30
+            )
             
             if response.status_code == 200:
                 data = response.json()
-                
-                # Verify response structure
-                required_fields = ["access_token", "token_type", "user"]
-                missing_fields = [field for field in required_fields if field not in data]
-                
-                if missing_fields:
-                    self.log_test(
-                        "PIN Login - Success Case",
-                        False,
-                        f"Missing required fields: {missing_fields}",
-                        data
-                    )
-                    return False
-                
-                # Verify user data structure (live backend format)
-                user = data.get("user", {})
-                user_required_fields = ["id", "email"]
-                missing_user_fields = [field for field in user_required_fields if field not in user]
-                
-                if missing_user_fields:
-                    self.log_test(
-                        "PIN Login - Success Case",
-                        False,
-                        f"Missing user fields: {missing_user_fields}",
-                        data
-                    )
-                    return False
-                
-                # Check for member identifier (could be member_id or member_number)
-                member_id = user.get('member_id') or user.get('member_number')
-                if not member_id:
-                    self.log_test(
-                        "PIN Login - Success Case",
-                        False,
-                        "Missing member identifier (member_id or member_number)",
-                        data
-                    )
-                    return False
-                
-                # Store for subsequent tests
                 self.access_token = data["access_token"]
-                self.user_data = user
-                
-                self.log_test(
-                    "PIN Login - Success Case",
-                    True,
-                    f"Login successful for {user['email']}, Member ID: {member_id}"
-                )
+                self.user_data = data["user"]
+                self.log_test("PIN Authentication", True, f"Authenticated as {self.user_data['email']}")
                 return True
-                
             else:
-                self.log_test(
-                    "PIN Login - Success Case",
-                    False,
-                    f"HTTP {response.status_code}: {response.text}",
-                    {"status_code": response.status_code, "response": response.text}
-                )
+                self.log_test("PIN Authentication", False, f"Status: {response.status_code}", response.text)
                 return False
                 
-        except requests.exceptions.RequestException as e:
-            self.log_test(
-                "PIN Login - Success Case",
-                False,
-                f"Request failed: {str(e)}"
-            )
+        except Exception as e:
+            self.log_test("PIN Authentication", False, f"Exception: {str(e)}")
             return False
+    
+    def get_headers(self):
+        """Get authorization headers"""
+        return {
+            "Authorization": f"Bearer {self.access_token}",
+            "Content-Type": "application/json"
+        }
 
     def test_pin_login_wrong_pin(self):
         """Test PIN login with incorrect PIN"""
