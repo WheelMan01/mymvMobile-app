@@ -325,4 +325,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+  hint: {
+    fontSize: 12,
+    color: '#8E8E93',
+    marginTop: 4,
+  },
 });
