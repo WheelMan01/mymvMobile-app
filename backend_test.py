@@ -9,8 +9,8 @@ import json
 import sys
 from datetime import datetime
 
-# Backend URL from frontend .env (testing current working setup first)
-BACKEND_URL = "https://carmgmt-hub.preview.emergentagent.com"
+# Backend URL for new forked database (from backend-config.json)
+BACKEND_URL = "https://mymv-api-docs.preview.emergentagent.com"
 
 # Test credentials from review request
 TEST_EMAIL = "anthony@wheelsfinance.com.au"
