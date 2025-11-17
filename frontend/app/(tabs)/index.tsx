@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     paddingTop: 25,
     paddingBottom: 6,
     backgroundColor: '#007AFF',
-    marginBottom: 200,
+    marginBottom: 320,
   },
   menuButton: {
     padding: 4,
