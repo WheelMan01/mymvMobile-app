@@ -39,22 +39,22 @@ export default function AddRoadside() {
         documents: []
       });
 
-      // Explicitly check for success
-      if (response.status === 201 || response.status === 200) {
-        setLoading(false);
-        Alert.alert(
-          'Success', 
-          'Roadside assistance membership added successfully!',
-          [
-            { 
-              text: 'OK', 
-              onPress: () => {
-                router.back();
-              }
+      // If we reach here, the request succeeded (no error thrown)
+      setLoading(false);
+      
+      // Show success message and navigate back
+      Alert.alert(
+        'Success', 
+        'Roadside assistance membership added successfully!',
+        [
+          { 
+            text: 'OK', 
+            onPress: () => {
+              router.back();
             }
-          ]
-        );
-      }
+          }
+        ]
+      );
     } catch (error: any) {
       setLoading(false);
       console.error('Error adding roadside assistance:', error);
