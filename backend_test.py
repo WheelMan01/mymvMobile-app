@@ -16,7 +16,7 @@ BACKEND_URL = "https://mobile-spec-sync.preview.emergentagent.com"
 TEST_EMAIL = "anthony@wheelsfinance.com.au"
 TEST_PIN = "1234"
 
-class BackendTester:
+class SettingsAPITester:
     def __init__(self):
         self.base_url = BACKEND_URL
         self.access_token = None
