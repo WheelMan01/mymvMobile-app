@@ -66,12 +66,6 @@ export default function HamburgerMenu({ visible, onClose }: HamburgerMenuProps) 
           {/* Menu Items */}
           <ScrollView style={styles.menuList}>
             <MenuItem
-              icon="person"
-              title="My Profile"
-              onPress={() => handleNavigation('/profile')}
-            />
-            
-            <MenuItem
               icon="car"
               title="My Vehicles"
               onPress={() => handleNavigation('/vehicles')}
