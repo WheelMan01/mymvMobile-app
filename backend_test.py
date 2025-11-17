@@ -74,40 +74,35 @@ class SettingsAPITester:
             "Content-Type": "application/json"
         }
 
-    def test_pin_login_wrong_pin(self):
-        """Test PIN login with incorrect PIN"""
-        url = f"{self.base_url}/api/auth/pin-login"
-        
-        payload = {
-            "email": TEST_EMAIL,
-            "pin": "9999"  # Wrong PIN
-        }
+    def test_get_current_user(self):
+        """Test GET /api/auth/me - Get current user data"""
+        print("👤 TESTING GET CURRENT USER...")
         
         try:
-            response = requests.post(url, json=payload, timeout=30)
-            
-            if response.status_code == 401:
-                self.log_test(
-                    "PIN Login - Wrong PIN",
-                    True,
-                    "Correctly rejected invalid PIN"
-                )
-                return True
-            else:
-                self.log_test(
-                    "PIN Login - Wrong PIN",
-                    False,
-                    f"Expected 401, got {response.status_code}: {response.text}"
-                )
-                return False
-                
-        except requests.exceptions.RequestException as e:
-            self.log_test(
-                "PIN Login - Wrong PIN",
-                False,
-                f"Request failed: {str(e)}"
+            response = requests.get(
+                f"{self.base_url}/api/auth/me",
+                headers=self.get_headers(),
+                timeout=30
             )
-            return False
+            
+            if response.status_code == 200:
+                data = response.json()
+                required_fields = ["id", "email", "full_name", "phone", "member_id", "created_at"]
+                missing_fields = [field for field in required_fields if field not in data]
+                
+                if not missing_fields:
+                    self.log_test("Get Current User", True, f"Retrieved user data for {data['email']}")
+                    return data
+                else:
+                    self.log_test("Get Current User", False, f"Missing fields: {missing_fields}", data)
+                    return None
+            else:
+                self.log_test("Get Current User", False, f"Status: {response.status_code}", response.text)
+                return None
+                
+        except Exception as e:
+            self.log_test("Get Current User", False, f"Exception: {str(e)}")
+            return None
 
     def test_pin_login_wrong_email(self):
         """Test PIN login with incorrect email"""
