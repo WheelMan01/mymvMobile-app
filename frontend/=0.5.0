@@ -1,0 +1,16 @@
+yarn add v1.22.22
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+[3/4] Linking dependencies...
+[4/4] Building fresh packages...
+success Saved lockfile.
+success Saved 5 new dependencies.
+info Direct dependencies
+└─ react-native-worklets@0.6.1
+info All dependencies
+├─ @babel/plugin-transform-classes@7.28.4
+├─ @babel/plugin-transform-optional-chaining@7.28.5
+├─ @babel/plugin-transform-template-literals@7.27.1
+├─ @babel/preset-typescript@7.28.5
+└─ react-native-worklets@0.6.1
+Done in 3.71s.
