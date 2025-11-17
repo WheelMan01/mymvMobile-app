@@ -112,47 +112,63 @@ export default function Marketplace() {
     return matchesSearch && matchesPrice;
   });
 
-  const ListingCard = ({ listing }: { listing: MarketplaceListing }) => (
-    <TouchableOpacity 
-      style={styles.listingCard}
-      onPress={() => router.push(`/marketplace/${listing.id}`)}
-    >
-      <View style={styles.imageContainer}>
-        {listing.images && listing.images.length > 0 ? (
-          <Image source={{ uri: listing.images[0] }} style={styles.vehicleImage} />
-        ) : (
-          <View style={styles.imagePlaceholder}>
-            <Ionicons name="car" size={48} color="#C7C7CC" />
+  const ListingCard = ({ listing }: { listing: MarketplaceListing }) => {
+    const isDealer = (listing as any).source === 'dealer';
+    const dealerName = (listing as any).dealer_name;
+    
+    return (
+      <TouchableOpacity 
+        style={styles.listingCard}
+        onPress={() => router.push(`/marketplace/${listing.id}?source=${isDealer ? 'dealer' : 'customer'}`)}
+      >
+        {/* Dealer Badge */}
+        {isDealer && (
+          <View style={styles.dealerBadgeTop}>
+            <Text style={styles.dealerBadgeText}>🏢 Dealer</Text>
           </View>
         )}
-        <View style={styles.conditionBadge}>
-          <Text style={styles.conditionText}>{listing.condition}</Text>
-        </View>
-      </View>
-
-      <View style={styles.listingContent}>
-        <Text style={styles.listingTitle}>{listing.title}</Text>
-        <Text style={styles.listingSubtitle}>{listing.make} {listing.model} • {listing.year}</Text>
         
-        <View style={styles.detailsRow}>
-          {listing.odometer && (
-            <View style={styles.detailItem}>
-              <Ionicons name="speedometer-outline" size={14} color="#8E8E93" />
-              <Text style={styles.detailText}>{listing.odometer.toLocaleString()} km</Text>
+        <View style={styles.imageContainer}>
+          {listing.images && listing.images.length > 0 ? (
+            <Image source={{ uri: listing.images[0] }} style={styles.vehicleImage} />
+          ) : (
+            <View style={styles.imagePlaceholder}>
+              <Ionicons name="car" size={48} color="#C7C7CC" />
             </View>
           )}
+          <View style={styles.conditionBadge}>
+            <Text style={styles.conditionText}>{listing.condition}</Text>
+          </View>
         </View>
 
-        <View style={styles.priceRow}>
-          <Text style={styles.price}>${listing.price.toLocaleString()}</Text>
-          <TouchableOpacity style={styles.contactButton}>
-            <Ionicons name="chatbubble-outline" size={16} color="#007AFF" />
-            <Text style={styles.contactButtonText}>Contact</Text>
-          </TouchableOpacity>
+        <View style={styles.listingContent}>
+          <Text style={styles.listingTitle}>{listing.title}</Text>
+          <Text style={styles.listingSubtitle}>{listing.make} {listing.model} • {listing.year}</Text>
+          
+          {isDealer && dealerName && (
+            <Text style={styles.dealerNameText}>{dealerName}</Text>
+          )}
+          
+          <View style={styles.detailsRow}>
+            {listing.odometer && (
+              <View style={styles.detailItem}>
+                <Ionicons name="speedometer-outline" size={14} color="#8E8E93" />
+                <Text style={styles.detailText}>{listing.odometer.toLocaleString()} km</Text>
+              </View>
+            )}
+          </View>
+
+          <View style={styles.priceRow}>
+            <Text style={styles.price}>${listing.price.toLocaleString()}</Text>
+            <TouchableOpacity style={styles.contactButton}>
+              <Ionicons name="chatbubble-outline" size={16} color="#007AFF" />
+              <Text style={styles.contactButtonText}>Contact</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
