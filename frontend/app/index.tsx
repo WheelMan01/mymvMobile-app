@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
 // TEMPORARILY DISABLED TO DEBUG
@@ -7,18 +7,16 @@ import { useRouter } from 'expo-router';
 export default function Index() {
   // const { user, isLoading } = useAuth();
   const router = useRouter();
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // TEMPORARILY SKIP AUTH CHECK TO DEBUG BLACK SCREEN
-    router.replace('/auth/login');
-    
-    // if (!isLoading) {
-    //   if (user) {
-    //     router.replace('/(tabs)');
-    //   } else {
-    //     router.replace('/auth/login');
-    //   }
-    // }
+    // Wait for layout to mount before navigating
+    const timer = setTimeout(() => {
+      setIsReady(true);
+      router.replace('/auth/login');
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
