@@ -15,8 +15,26 @@ export default function AddInsurance() {
   const [providerId, setProviderId] = useState('default-provider');
   const [policyNumber, setPolicyNumber] = useState('');
   const [premium, setPremium] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
+  const [expiryDate, setExpiryDate] = useState(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)); // Default: 1 year from now
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Format date in Australian format for display
+  const formatAustralianDate = (date: Date) => {
+    return format(date, 'dd/MM/yyyy');
+  };
+
+  // Convert date to API format (YYYY-MM-DD)
+  const formatApiDate = (date: Date) => {
+    return format(date, 'yyyy-MM-dd');
+  };
+
+  const handleDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(Platform.OS === 'ios'); // Keep open on iOS, close on Android
+    if (selectedDate) {
+      setExpiryDate(selectedDate);
+    }
+  };
 
   const handleSubmit = async () => {
     if (!selectedVehicleId || !policyNumber || !premium || !expiryDate) {
