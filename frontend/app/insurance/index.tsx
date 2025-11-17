@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
   },
   filterContainer: {
     flexDirection: 'row',
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   policyNumber: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
     marginBottom: 12,
   },
   policyDetails: {
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
     marginTop: 16,
   },
   emptySubtext: {

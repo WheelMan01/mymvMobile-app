@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 16,
-    color: '#1C1C1E',
+    color: '#FFFFFF',
   },
   userEmail: {
     fontSize: 16,

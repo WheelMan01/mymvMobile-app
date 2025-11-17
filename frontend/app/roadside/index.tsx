@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
   },
   list: {
     padding: 16,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   membershipType: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
     marginBottom: 4,
   },
   membershipNumber: {
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
     marginTop: 16,
   },
   emptySubtext: {

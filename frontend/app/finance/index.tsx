@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
   },
   list: {
     padding: 16,
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
   amountValue: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
   },
   lenderInfo: {
     marginBottom: 16,
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   lenderValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
   },
   detailsGrid: {
     flexDirection: 'row',
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   detailValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
   },
   progressSection: {
     marginBottom: 12,
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
     marginTop: 16,
   },
   emptySubtext: {
