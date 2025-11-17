@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import { fetchLogosWithCache } from '../../services/logoService';
+import HamburgerMenu from '../../components/HamburgerMenu';
 
 const { width } = Dimensions.get('window');
 
