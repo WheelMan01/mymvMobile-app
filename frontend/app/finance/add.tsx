@@ -36,15 +36,18 @@ export default function AddFinance() {
 
     setLoading(true);
     try {
-      await api.post('/finance-products', {
+      await api.post('/finance-loans', {
         vehicle_id: selectedVehicleId,
-        provider_id: providerId,
+        lender: 'Commonwealth Bank', // Default lender
+        loan_type: 'personal',
         loan_amount: parseFloat(loanAmount),
         interest_rate: parseFloat(interestRate),
-        term_months: parseInt(termMonths),
+        loan_term_months: parseInt(termMonths),
         monthly_payment: parseFloat(monthlyPayment),
-        start_date: startDate.toISOString(),
-        end_date: calculateEndDate().toISOString(),
+        start_date: startDate.toISOString().split('T')[0],
+        end_date: calculateEndDate().toISOString().split('T')[0],
+        account_number: '',
+        notes: '',
         documents: []
       });
 
