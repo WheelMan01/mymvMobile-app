@@ -19,6 +19,44 @@ export default function AddInsurance() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [dateText, setDateText] = useState('');
+
+  useEffect(() => {
+    // Initialize date text with default date
+    setDateText(format(expiryDate, 'dd/MM/yyyy'));
+  }, []);
+
+  // Format date input as user types
+  const handleDateInput = (text: string) => {
+    // Remove all non-numeric characters
+    const numbers = text.replace(/\D/g, '');
+    
+    // Format as DD/MM/YYYY
+    let formatted = '';
+    if (numbers.length > 0) {
+      formatted = numbers.substring(0, 2);
+      if (numbers.length >= 3) {
+        formatted += '/' + numbers.substring(2, 4);
+      }
+      if (numbers.length >= 5) {
+        formatted += '/' + numbers.substring(4, 8);
+      }
+    }
+    
+    setDateText(formatted);
+    
+    // Parse complete date
+    if (numbers.length === 8) {
+      const day = parseInt(numbers.substring(0, 2));
+      const month = parseInt(numbers.substring(2, 4)) - 1;
+      const year = parseInt(numbers.substring(4, 8));
+      const newDate = new Date(year, month, day);
+      if (!isNaN(newDate.getTime())) {
+        setExpiryDate(newDate);
+      }
+    }
+  };
+
   // Format date in Australian format for display
   const formatAustralianDate = (date: Date) => {
     return format(date, 'dd/MM/yyyy');
@@ -33,6 +71,7 @@ export default function AddInsurance() {
     setShowDatePicker(Platform.OS === 'ios'); // Keep open on iOS, close on Android
     if (selectedDate) {
       setExpiryDate(selectedDate);
+      setDateText(format(selectedDate, 'dd/MM/yyyy'));
     }
   };
 
