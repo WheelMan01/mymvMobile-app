@@ -25,15 +25,15 @@ export default function SellVehicle() {
 
     setLoading(true);
     try {
-      await api.post('/marketplace-listings', {
+      await api.post('/marketplace/listings', {
         vehicle_id: selectedVehicleId,
-        title: vehicles.find(v => v.id === selectedVehicleId)?.make + ' ' + vehicles.find(v => v.id === selectedVehicleId)?.model,
         price: parseFloat(price),
-        condition,
+        negotiable: false,
         description,
-        contact_name: contactName,
-        contact_phone: contactPhone,
-        contact_email: contactEmail || undefined,
+        condition: condition.toLowerCase(),
+        service_history: 'partial',
+        features: [],
+        display_in_showroom: false,
       });
 
       Alert.alert('Success', 'Your vehicle has been listed for sale!', [
