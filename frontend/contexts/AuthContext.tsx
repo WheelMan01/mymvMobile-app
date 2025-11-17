@@ -2,9 +2,12 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import { Platform } from 'react-native';
+import backendConfig from '../backend-config.json';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+// PERMANENT FIX: Read from backend-config.json first (survives forks), then fall back to .env
+const API_URL = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
 console.log('🔧 AuthContext API_URL:', API_URL);
+console.log('🔧 Using backend-config.json:', backendConfig.backendUrl);
 
 // Helper functions for storage (supports both native and web)
 const setStorageItem = async (key: string, value: string) => {
