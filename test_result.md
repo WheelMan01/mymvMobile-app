@@ -221,6 +221,18 @@ backend:
       - working: true
         agent: "testing"
         comment: "All endpoints tested successfully: Dealers, Promotions, and Service Bookings GET endpoints return empty lists as expected for new database. Endpoint structures and authentication working correctly."
+  
+  - task: "Settings API Endpoints"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented all Settings page backend endpoints: Profile update (PUT /api/user/profile), Password change (POST /api/user/change-password), Notification preferences (GET/PUT /api/user/notification-preferences), Subscription upgrade (POST /api/user/upgrade-subscription), Account cancellation (POST /api/user/request-cancellation), Member lookup (GET /api/users/lookup/{member_number}), Transfer initiate (POST /api/transfers/initiate), Get pending transfers (GET /api/transfers/pending), Get quarantined vehicles (GET /api/transfers/quarantined), Cancel transfer (POST /api/transfers/{transfer_id}/reject). All models added to models.py. Ready for testing with credentials: anthony@wheelsfinance.com.au / PIN: 1234"
 
 frontend:
   - task: "Settings Page - Multi-tab Implementation"
