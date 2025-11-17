@@ -106,13 +106,7 @@ export default function ServiceBooking() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#007AFF" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Service Booking</Text>
-        <View style={{ width: 40 }} />
-      </View>
+      <AppHeader title="Service Booking" />
 
       {bookings.length === 0 && !loading ? (
         <View style={styles.emptyContainer}>
