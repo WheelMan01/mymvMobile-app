@@ -1,8 +1,7 @@
 import axios from 'axios';
 import api from './api';
-import backendConfig from '../backend-config.json';
 
-const API_URL = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://auto-specs-hub-1.preview.emergentagent.com';
 
 export interface ShowroomVehicle {
   id: string;
