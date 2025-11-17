@@ -254,14 +254,14 @@ const styles = StyleSheet.create({
     marginBottom: 60,
   },
   menuButton: {
-    padding: 8,
+    padding: 4,
   },
   brandSection: {
     flex: 1,
     alignItems: 'center',
   },
   brandText: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
     letterSpacing: 1,
@@ -269,14 +269,14 @@ const styles = StyleSheet.create({
   profileButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 4,
+    padding: 2,
   },
   userName: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: '#fff',
-    marginLeft: 8,
-    maxWidth: 80,
+    marginLeft: 6,
+    maxWidth: 70,
   },
   gridRow: {
     flexDirection: 'row',
