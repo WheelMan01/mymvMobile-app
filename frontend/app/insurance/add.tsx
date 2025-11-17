@@ -12,12 +12,29 @@ export default function AddInsurance() {
   const { vehicles } = useVehicles();
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
   const [policyType, setPolicyType] = useState<'CTP' | 'Comprehensive' | 'Third Party'>('Comprehensive');
-  const [providerId, setProviderId] = useState('default-provider');
+  const [provider, setProvider] = useState('NRMA Insurance');
   const [policyNumber, setPolicyNumber] = useState('');
   const [premium, setPremium] = useState('');
   const [expiryDate, setExpiryDate] = useState(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)); // Default: 1 year from now
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Australian insurance providers
+  const insuranceProviders = [
+    'NRMA Insurance',
+    'RACV',
+    'RACQ',
+    'RAA',
+    'RAC',
+    'Allianz',
+    'AAMI',
+    'Budget Direct',
+    'QBE',
+    'Suncorp',
+    'Youi',
+    'Bingle',
+    'Other'
+  ];
 
   const [dateText, setDateText] = useState('');
 
