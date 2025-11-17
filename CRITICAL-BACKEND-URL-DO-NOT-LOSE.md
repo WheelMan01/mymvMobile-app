@@ -5,7 +5,7 @@
 ```
 ⚠️ IF YOU CHANGE THIS URL, YOU WILL LOSE ALL YOUR DATA! ⚠️
 
-Backend URL: https://mobile-spec-sync.preview.emergentagent.com
+Backend URL: https://vehicle-buddy-6.preview.emergentagent.com
 Database: mongodb://localhost:27017/mymv_db
 ```
 
