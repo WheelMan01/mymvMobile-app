@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, Alert, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, ImageBackground, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
+
+const { width } = Dimensions.get('window');
 
 interface Stats {
   total_vehicles: number;
@@ -26,7 +28,6 @@ export default function Dashboard() {
 
   const fetchStats = async () => {
     try {
-      // Fetch all counts in parallel
       const [vehiclesResponse, insuranceResponse, roadsideResponse, financeResponse] = await Promise.allSettled([
         api.get('/vehicles'),
         api.get('/insurance-policies'),
@@ -34,41 +35,30 @@ export default function Dashboard() {
         api.get('/finance-loans')
       ]);
 
-      // Parse vehicles
       const vehicles = vehiclesResponse.status === 'fulfilled' 
         ? (vehiclesResponse.value.data?.data?.vehicles || vehiclesResponse.value.data || [])
         : [];
 
-      // Parse insurance - show all policies
       const insurancePolicies = insuranceResponse.status === 'fulfilled'
         ? (insuranceResponse.value.data?.data?.policies || [])
         : [];
 
-      // Parse roadside - show all memberships
       const roadsidePolicies = roadsideResponse.status === 'fulfilled'
         ? (roadsideResponse.value.data?.data?.policies || [])
         : [];
 
-      // Parse finance - show all loans
-      const financeLoans = financeResponse.status === 'fulfilled'
+      const financeProducts = financeResponse.status === 'fulfilled'
         ? (financeResponse.value.data?.data?.loans || [])
         : [];
 
       setStats({
         total_vehicles: vehicles.length,
         active_insurance_policies: insurancePolicies.length,
-        active_finance_products: financeLoans.length,
+        active_finance_products: financeProducts.length,
         active_roadside_memberships: roadsidePolicies.length
       });
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching stats:', error);
-      // Don't show alert, just use default values
-      setStats({
-        total_vehicles: 0,
-        active_insurance_policies: 0,
-        active_finance_products: 0,
-        active_roadside_memberships: 0
-      });
     } finally {
       setLoading(false);
     }
@@ -84,227 +74,259 @@ export default function Dashboard() {
     fetchStats();
   }, []);
 
-  const StatCard = ({ title, value, icon, color, onPress }: any) => (
-    <TouchableOpacity style={[styles.statCard, { borderLeftColor: color }]} onPress={onPress}>
-      <View style={[styles.statIconContainer, { backgroundColor: color + '20' }]}>
-        <Ionicons name={icon} size={28} color={color} />
+  // Feature tile component matching your web app design
+  const FeatureTile = ({ title, icon, count, onPress, color = '#007AFF' }: any) => (
+    <TouchableOpacity style={styles.featureTile} onPress={onPress} activeOpacity={0.7}>
+      <View style={styles.featureTileContent}>
+        <View style={[styles.iconContainer, { backgroundColor: 'rgba(0, 122, 255, 0.1)' }]}>
+          <Ionicons name={icon} size={40} color={color} />
+        </View>
+        <Text style={styles.featureTitle}>{title}</Text>
+        {count !== undefined && count > 0 && (
+          <View style={styles.countBadge}>
+            <Text style={styles.countText}>({count})</Text>
+          </View>
+        )}
       </View>
-      <View style={styles.statContent}>
-        <Text style={styles.statValue}>{value}</Text>
-        <Text style={styles.statTitle}>{title}</Text>
-      </View>
-      <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
-    </TouchableOpacity>
-  );
-
-  const QuickAction = ({ title, icon, color, onPress }: any) => (
-    <TouchableOpacity style={styles.quickAction} onPress={onPress}>
-      <View style={[styles.quickActionIcon, { backgroundColor: color + '20' }]}>
-        <Ionicons name={icon} size={24} color={color} />
-      </View>
-      <Text style={styles.quickActionText}>{title}</Text>
     </TouchableOpacity>
   );
 
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <Text>Loading...</Text>
+        <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
   }
 
   return (
-    <ScrollView 
-      style={styles.container}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
+    <ImageBackground
+      source={{ uri: 'https://customer-assets.emergentagent.com/job_62d41ce6-5f2e-494c-ac68-4946e67b7a4b/artifacts/9fx7lxuy_landingpage.jpg' }}
+      style={styles.backgroundImage}
+      resizeMode="cover"
     >
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.greeting}>Welcome back,</Text>
-          <Text style={styles.userName}>{user?.full_name || 'User'}</Text>
+      <View style={styles.overlay} />
+      
+      <ScrollView 
+        style={styles.container}
+        contentContainerStyle={styles.contentContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#fff" />
+        }
+      >
+        {/* Header with user info */}
+        <View style={styles.header}>
+          <View style={styles.userSection}>
+            <Ionicons name="person-circle" size={40} color="#fff" />
+            <Text style={styles.userName}>{user?.full_name || user?.email || 'JOHN O\'NEILL'}</Text>
+          </View>
         </View>
-        <Text style={styles.memberId}>{user?.member_id}</Text>
-      </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Quick Stats</Text>
-        <StatCard
-          title="Vehicles Owned"
-          value={stats.total_vehicles}
-          icon="car"
-          color="#007AFF"
-          onPress={() => router.push('/vehicles')}
-        />
-        <StatCard
-          title="Active Insurance"
-          value={stats.active_insurance_policies}
-          icon="shield-checkmark"
-          color="#34C759"
-          onPress={() => router.push('/insurance')}
-        />
-        <StatCard
-          title="Finance/Loans"
-          value={stats.active_finance_products}
-          icon="cash"
-          color="#FF9500"
-          onPress={() => router.push('/finance')}
-        />
-        <StatCard
-          title="Roadside Assistance"
-          value={stats.active_roadside_memberships}
-          icon="car-sport"
-          color="#FF3B30"
-          onPress={() => router.push('/roadside')}
-        />
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Quick Actions</Text>
-        <View style={styles.quickActionsGrid}>
-          <QuickAction
-            title="Add Vehicle"
-            icon="add-circle"
+        {/* Main Grid of Features - Row 1 */}
+        <View style={styles.gridRow}>
+          <FeatureTile
+            title="myMV"
+            icon="car"
+            count={stats.total_vehicles}
             color="#007AFF"
-            onPress={() => router.push('/vehicles/add')}
+            onPress={() => router.push('/vehicles')}
           />
-          <QuickAction
-            title="Dealerships"
-            icon="business"
-            color="#5856D6"
-            onPress={() => router.push('/dealers')}
-          />
-          <QuickAction
-            title="Promotions"
-            icon="pricetag"
-            color="#FF2D55"
-            onPress={() => router.push('/promotions')}
-          />
-          <QuickAction
-            title="Book Service"
+          <FeatureTile
+            title="myService"
             icon="construct"
-            color="#FF9500"
+            color="#007AFF"
             onPress={() => router.push('/service-booking')}
           />
+          <FeatureTile
+            title="myRoadside"
+            icon="car-sport"
+            count={stats.active_roadside_memberships}
+            color="#007AFF"
+            onPress={() => router.push('/roadside')}
+          />
         </View>
-      </View>
-    </ScrollView>
+
+        {/* Row 2 */}
+        <View style={styles.gridRow}>
+          <FeatureTile
+            title="myInsurance"
+            icon="shield-checkmark"
+            count={stats.active_insurance_policies}
+            color="#007AFF"
+            onPress={() => router.push('/insurance')}
+          />
+          <FeatureTile
+            title="myFinance"
+            icon="cash"
+            count={stats.active_finance_products}
+            color="#007AFF"
+            onPress={() => router.push('/finance')}
+          />
+          <FeatureTile
+            title="myTravel"
+            icon="airplane"
+            color="#007AFF"
+            onPress={() => {}}
+          />
+        </View>
+
+        {/* Row 3 */}
+        <View style={styles.gridRow}>
+          <FeatureTile
+            title="myDates"
+            icon="calendar"
+            color="#007AFF"
+            onPress={() => {}}
+          />
+          <FeatureTile
+            title="myTrunk"
+            icon="briefcase"
+            color="#007AFF"
+            onPress={() => {}}
+          />
+          <FeatureTile
+            title="myVault"
+            icon="lock-closed"
+            color="#007AFF"
+            onPress={() => {}}
+          />
+        </View>
+
+        {/* Row 4 - Bottom actions */}
+        <View style={styles.gridRow}>
+          <FeatureTile
+            title="Showroom"
+            icon="storefront"
+            color="#007AFF"
+            onPress={() => router.push('/showroom')}
+          />
+          <FeatureTile
+            title="myMarket"
+            icon="cart"
+            color="#007AFF"
+            onPress={() => router.push('/marketplace')}
+          />
+          <FeatureTile
+            title="Promotions"
+            icon="pricetag"
+            color="#007AFF"
+            onPress={() => router.push('/promotions')}
+          />
+        </View>
+
+        {/* Bottom Row */}
+        <View style={styles.gridRow}>
+          <View style={[styles.featureTile, { opacity: 0 }]} />
+          <FeatureTile
+            title="myProfile"
+            icon="person"
+            color="#007AFF"
+            onPress={() => router.push('/profile')}
+          />
+          <FeatureTile
+            title="Logout"
+            icon="log-out"
+            color="#007AFF"
+            onPress={() => router.push('/auth/login')}
+          />
+        </View>
+
+        <View style={{ height: 40 }} />
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  },
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+  },
+  contentContainer: {
+    padding: 16,
+    paddingTop: 60,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#007AFF',
+  },
+  loadingText: {
+    color: '#fff',
+    fontSize: 18,
   },
   header: {
-    backgroundColor: '#007AFF',
-    padding: 24,
-    paddingTop: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+    marginBottom: 32,
   },
-  greeting: {
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.8)',
+  userSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 122, 255, 0.8)',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 12,
   },
   userName: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
-    marginTop: 4,
+    marginLeft: 12,
+    textTransform: 'uppercase',
   },
-  memberId: {
-    fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
-    fontWeight: '600',
-  },
-  section: {
-    padding: 16,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: '#1C1C1E',
+  gridRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginBottom: 16,
   },
-  statCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    flexDirection: 'row',
+  featureTile: {
+    width: (width - 64) / 3,
+    aspectRatio: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 16,
+    padding: 12,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
-    borderLeftWidth: 4,
-  },
-  statIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
-  statContent: {
+  featureTileContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
   },
-  statValue: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#1C1C1E',
-    marginBottom: 4,
-  },
-  statTitle: {
-    fontSize: 14,
-    color: '#8E8E93',
-  },
-  quickActionsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  quickAction: {
-    width: '48%',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 12,
+  iconContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  quickActionIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
     justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
   },
-  quickActionText: {
-    fontSize: 14,
+  featureTitle: {
+    fontSize: 13,
     fontWeight: '600',
     color: '#1C1C1E',
     textAlign: 'center',
+    marginTop: 4,
+  },
+  countBadge: {
+    marginTop: 4,
+  },
+  countText: {
+    fontSize: 11,
+    color: '#007AFF',
+    fontWeight: '600',
   },
 });
