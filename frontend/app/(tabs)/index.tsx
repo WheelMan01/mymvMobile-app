@@ -156,8 +156,11 @@ export default function Dashboard() {
             style={styles.profileButton}
             onPress={() => router.push('/profile')}
           >
-            <Ionicons name="person-circle" size={32} color="#fff" />
-            <Text style={styles.userName}>{user?.full_name || user?.email?.split('@')[0] || 'User'}</Text>
+            <View style={styles.initialsCircle}>
+              <Text style={styles.initialsText}>
+                {getInitials(user?.full_name || user?.email?.split('@')[0] || 'User')}
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
