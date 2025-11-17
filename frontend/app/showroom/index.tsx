@@ -204,9 +204,6 @@ export default function ShowroomScreen() {
   }
 
   const currentVehicle = vehicles[currentIndex];
-  const images = currentVehicle.images && currentVehicle.images.length > 0
-    ? currentVehicle.images
-    : [require('../../assets/images/placeholder.png')];
 
   return (
     <View style={styles.container}>
