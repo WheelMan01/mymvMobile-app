@@ -27,7 +27,7 @@ export default function AddRoadside() {
 
     setLoading(true);
     try {
-      const response = await api.post('/roadside-assistance', {
+      await api.post('/roadside-assistance', {
         vehicle_id: selectedVehicleId,
         provider_id: 'default-provider-id',
         provider_name: 'NRMA Roadside Assistance',
@@ -39,26 +39,13 @@ export default function AddRoadside() {
         documents: []
       });
 
-      // If we reach here, the request succeeded (no error thrown)
-      setLoading(false);
-      
-      // Show success message and navigate back
-      Alert.alert(
-        'Success', 
-        'Roadside assistance membership added successfully!',
-        [
-          { 
-            text: 'OK', 
-            onPress: () => {
-              router.back();
-            }
-          }
-        ]
-      );
+      Alert.alert('Success', 'Roadside assistance membership added successfully!', [
+        { text: 'OK', onPress: () => router.back() }
+      ]);
     } catch (error: any) {
-      setLoading(false);
-      console.error('Error adding roadside assistance:', error);
       Alert.alert('Error', error.response?.data?.detail || 'Failed to add roadside membership');
+    } finally {
+      setLoading(false);
     }
   };
 
