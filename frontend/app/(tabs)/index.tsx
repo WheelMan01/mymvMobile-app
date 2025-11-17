@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
   featureTile: {
     width: (width - 64) / 3,
     aspectRatio: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 16,
     padding: 12,
     alignItems: 'center',
