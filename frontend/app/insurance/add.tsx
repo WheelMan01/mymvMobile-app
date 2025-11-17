@@ -28,12 +28,12 @@ export default function AddInsurance() {
     try {
       await api.post('/insurance-policies', {
         vehicle_id: selectedVehicleId,
-        policy_type: policyType,
-        provider_id: providerId,
+        provider: 'NRMA Insurance', // Default provider
         policy_number: policyNumber,
+        insurance_types: [policyType.toLowerCase()],
         premium: parseFloat(premium),
-        start_date: startDate.toISOString(),
-        end_date: endDate.toISOString(),
+        expiry_date: endDate.toISOString().split('T')[0],
+        coverage_details: '',
         documents: []
       });
 
