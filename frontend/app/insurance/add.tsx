@@ -104,19 +104,14 @@ export default function AddInsurance() {
   };
 
   const handleSubmit = async () => {
-    console.log('🔵 SUBMIT CLICKED');
-    
     if (!selectedVehicleId || !selectedProviderName || !policyNumber || !premium) {
-      console.log('❌ VALIDATION FAILED');
       Alert.alert('Error', 'Please fill in all required fields (Vehicle, Provider, Policy Number, Premium)');
       return;
     }
 
-    console.log('✅ VALIDATION PASSED');
     setLoading(true);
-    
     try {
-      const payload = {
+      await api.post('/insurance-policies', {
         vehicle_id: selectedVehicleId,
         provider_id: selectedProviderId,
         provider: selectedProviderName,
@@ -126,38 +121,17 @@ export default function AddInsurance() {
         expiry_date: formatApiDate(expiryDate),
         coverage_details: '',
         documents: []
-      };
-      
-      console.log('📤 SENDING PAYLOAD:', payload);
-      const response = await api.post('/insurance-policies', payload);
-      console.log('📥 RESPONSE RECEIVED:', response.status, response.data);
-      
-      // If we reach here, the request succeeded (no error thrown)
-      setLoading(false);
-      console.log('✅ ABOUT TO SHOW ALERT');
-      
-      // Show success message and navigate back
-      Alert.alert(
-        'Success', 
-        'Insurance policy added successfully!',
-        [
-          { 
-            text: 'OK', 
-            onPress: () => {
-              console.log('🔙 NAVIGATING BACK');
-              router.back();
-            }
-          }
-        ]
-      );
-      console.log('✅ ALERT TRIGGERED');
+      });
+
+      Alert.alert('Success', 'Insurance policy added successfully!', [
+        { text: 'OK', onPress: () => router.back() }
+      ]);
     } catch (error: any) {
-      console.log('❌ ERROR CAUGHT:', error);
-      setLoading(false);
       console.error('Error adding insurance:', error);
       const errorMessage = error.response?.data?.detail || error.message || 'Failed to add insurance policy';
-      console.log('❌ SHOWING ERROR ALERT:', errorMessage);
       Alert.alert('Error', errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
