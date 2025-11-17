@@ -39,6 +39,7 @@ export default function TabsLayout() {
         name="vehicles"
         options={{
           title: 'Vehicles',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="car" size={size} color={color} />
           ),
