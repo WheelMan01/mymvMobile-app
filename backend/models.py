@@ -295,3 +295,61 @@ class DashboardStats(BaseModel):
     active_insurance_policies: int
     active_finance_products: int
     active_roadside_memberships: int
+
+
+# Settings Models
+
+# Profile Update (for Settings Account tab)
+class ProfileUpdate(BaseModel):
+    first_name: Optional[str] = None
+    last_name: Optional[str] = None
+    email: Optional[EmailStr] = None
+    mobile: Optional[str] = None
+
+# Password Change
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+
+# Notification Preferences
+class NotificationPreferences(BaseModel):
+    sms: bool = True
+    email: bool = True
+    push: bool = True
+    alert_reminders: bool = True
+    service_reminders: bool = True
+    marketing_emails: bool = False
+
+class NotificationPreferencesResponse(BaseModel):
+    preferences: NotificationPreferences
+
+# Subscription/Membership
+class SubscriptionUpgrade(BaseModel):
+    subscription_tier: str  # "premium_monthly" or "premium_annual"
+
+class CancellationRequest(BaseModel):
+    reason: str
+
+# Vehicle Transfer
+class TransferInitiate(BaseModel):
+    vehicle_id: str
+    new_owner_member_number: str
+    new_owner_name: str
+    new_owner_mobile: Optional[str] = None
+    new_owner_email: EmailStr
+
+class TransferResponse(BaseModel):
+    id: str
+    vehicle: dict
+    new_owner_name: str
+    new_owner_member_number: str
+    created_at: datetime
+
+class QuarantinedVehicleResponse(BaseModel):
+    id: str
+    year: int
+    make: str
+    model: str
+    rego: str
+    quarantine_end_date: datetime
+
