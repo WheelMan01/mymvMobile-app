@@ -1,5 +1,5 @@
 {
-  "backendUrl": "https://mymv-api-docs.preview.emergentagent.com",
+  "backendUrl": null,
   "description": "Set to null to use EXPO_PUBLIC_BACKEND_URL from .env - Change only if you know what you're doing!",
   "database": "mongodb://localhost:27017/mymv_db",
   "dataContents": "Settings Page Database - Complete myMV data",
