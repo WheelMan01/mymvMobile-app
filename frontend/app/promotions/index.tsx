@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
-    color: '#4a4a4a',
+    color: '#fff',
     lineHeight: 20,
     marginBottom: 16,
   },
