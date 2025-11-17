@@ -123,7 +123,7 @@ export default function Dashboard() {
               router.push('/profile');
             }}
           >
-            <Ionicons name="menu" size={32} color="#fff" />
+            <Ionicons name="menu" size={28} color="#fff" />
           </TouchableOpacity>
           
           <View style={styles.brandSection}>
@@ -134,7 +134,7 @@ export default function Dashboard() {
             style={styles.profileButton}
             onPress={() => router.push('/profile')}
           >
-            <Ionicons name="person-circle" size={40} color="#fff" />
+            <Ionicons name="person-circle" size={32} color="#fff" />
             <Text style={styles.userName}>{user?.full_name || user?.email?.split('@')[0] || 'User'}</Text>
           </TouchableOpacity>
         </View>
