@@ -611,7 +611,8 @@ class SettingsAPITester:
 
 if __name__ == "__main__":
     tester = SettingsAPITester()
-    success = tester.run_all_tests()
+    # Run quick connectivity tests as requested
+    success = tester.run_connectivity_tests()
     
     if not success:
         sys.exit(1)
