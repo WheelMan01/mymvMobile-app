@@ -179,18 +179,38 @@ export default function AddInsurance() {
 
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Expiry Date *</Text>
-            <TouchableOpacity 
-              style={styles.dateButton}
-              onPress={() => setShowDatePicker(true)}
-            >
-              <Ionicons name="calendar-outline" size={20} color="#007AFF" />
-              <Text style={styles.dateButtonText}>{formatAustralianDate(expiryDate)}</Text>
-              <Ionicons name="chevron-down" size={20} color="#8E8E93" />
-            </TouchableOpacity>
-            <Text style={styles.hint}>Tap to change date</Text>
+            {Platform.OS === 'web' ? (
+              // Web: Use native HTML5 date input
+              <TextInput
+                style={styles.input}
+                value={formatApiDate(expiryDate)}
+                onChangeText={(text) => {
+                  const newDate = new Date(text);
+                  if (!isNaN(newDate.getTime())) {
+                    setExpiryDate(newDate);
+                  }
+                }}
+                placeholder="Select date"
+                // @ts-ignore - web-specific prop
+                type="date"
+              />
+            ) : (
+              // Mobile: Use native date picker
+              <>
+                <TouchableOpacity 
+                  style={styles.dateButton}
+                  onPress={() => setShowDatePicker(true)}
+                >
+                  <Ionicons name="calendar-outline" size={20} color="#007AFF" />
+                  <Text style={styles.dateButtonText}>{formatAustralianDate(expiryDate)}</Text>
+                  <Ionicons name="chevron-down" size={20} color="#8E8E93" />
+                </TouchableOpacity>
+                <Text style={styles.hint}>Tap to change date</Text>
+              </>
+            )}
           </View>
 
-          {showDatePicker && (
+          {showDatePicker && Platform.OS !== 'web' && (
             <DateTimePicker
               value={expiryDate}
               mode="date"
