@@ -1,5 +1,25 @@
 # 🛡️ FORK PROTECTION - PERMANENT FIX IMPLEMENTED
 
+## ⚠️ CRITICAL: YOUR PRODUCTION BACKEND URL
+
+```
+🔴 NEVER CHANGE THIS URL - ALL YOUR DATA LIVES HERE 🔴
+
+Backend URL: https://mobile-spec-sync.preview.emergentagent.com
+Database: mongodb://localhost:27017/mymv_db
+
+This backend contains:
+- 3+ Vehicles
+- 3+ Insurance Policies  
+- 3+ Roadside Assistance
+- All Finance/Loans data
+- All user accounts and authentication
+```
+
+**IF YOU LOSE THIS URL, YOU LOSE ALL YOUR DATA!**
+
+---
+
 ## Problem
 Every time you fork this environment, the `.env` file gets reset and `EXPO_PUBLIC_BACKEND_URL` points to the NEW environment's URL, causing all your data (vehicles, insurance, finance, etc.) to disappear because it's connecting to an empty backend.
 
@@ -22,9 +42,9 @@ const API_URL = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
 
 ## 📋 Your Backend Configuration
 
-**Your Data Backend URL:**
+**Your Data Backend URL (PERMANENT):**
 ```
-https://mobileapp-debug.preview.emergentagent.com
+https://mobile-spec-sync.preview.emergentagent.com
 ```
 
 This URL is now stored in `/app/frontend/backend-config.json` and will ALWAYS be used, regardless of what's in `.env`.
