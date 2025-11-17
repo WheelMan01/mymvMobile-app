@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend API Testing for myMV Customer Mobile App
-Testing PIN Login API Integration with Live Backend
+Comprehensive Backend API Testing for myMV Customer Mobile App
+Testing Settings API Endpoints with Authentication
 """
 
 import requests
@@ -9,8 +9,8 @@ import json
 import sys
 from datetime import datetime
 
-# Live backend URL from review request
-BACKEND_URL = "https://carmgmt-hub.preview.emergentagent.com"
+# Backend URL from review request
+BACKEND_URL = "https://mobile-spec-sync.preview.emergentagent.com"
 
 # Test credentials from review request
 TEST_EMAIL = "anthony@wheelsfinance.com.au"
