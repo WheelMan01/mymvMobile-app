@@ -118,7 +118,7 @@ export default function HamburgerMenu({ visible, onClose }: HamburgerMenuProps) 
             <MenuItem
               icon="settings"
               title="Settings"
-              onPress={() => handleNavigation('/profile')}
+              onPress={() => handleNavigation('/(tabs)/settings')}
             />
             
             <MenuItem
