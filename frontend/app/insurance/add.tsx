@@ -372,4 +372,38 @@ const styles = StyleSheet.create({
     color: '#8E8E93',
     marginTop: 4,
   },
+  dateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    gap: 8,
+  },
+  dateButtonText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#1C1C1E',
+  },
+  datePickerButtons: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 12,
+    backgroundColor: '#F2F2F7',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5EA',
+  },
+  datePickerButton: {
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    borderRadius: 8,
+  },
+  datePickerButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
 });
