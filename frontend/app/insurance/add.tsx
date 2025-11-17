@@ -104,12 +104,17 @@ export default function AddInsurance() {
   };
 
   const handleSubmit = async () => {
+    console.log('🔵 SUBMIT CLICKED');
+    
     if (!selectedVehicleId || !selectedProviderName || !policyNumber || !premium) {
+      console.log('❌ VALIDATION FAILED');
       Alert.alert('Error', 'Please fill in all required fields (Vehicle, Provider, Policy Number, Premium)');
       return;
     }
 
+    console.log('✅ VALIDATION PASSED');
     setLoading(true);
+    
     try {
       const payload = {
         vehicle_id: selectedVehicleId,
@@ -123,10 +128,13 @@ export default function AddInsurance() {
         documents: []
       };
       
+      console.log('📤 SENDING PAYLOAD:', payload);
       const response = await api.post('/insurance-policies', payload);
+      console.log('📥 RESPONSE RECEIVED:', response.status, response.data);
       
       // If we reach here, the request succeeded (no error thrown)
       setLoading(false);
+      console.log('✅ ABOUT TO SHOW ALERT');
       
       // Show success message and navigate back
       Alert.alert(
@@ -136,15 +144,19 @@ export default function AddInsurance() {
           { 
             text: 'OK', 
             onPress: () => {
+              console.log('🔙 NAVIGATING BACK');
               router.back();
             }
           }
         ]
       );
+      console.log('✅ ALERT TRIGGERED');
     } catch (error: any) {
+      console.log('❌ ERROR CAUGHT:', error);
       setLoading(false);
       console.error('Error adding insurance:', error);
       const errorMessage = error.response?.data?.detail || error.message || 'Failed to add insurance policy';
+      console.log('❌ SHOWING ERROR ALERT:', errorMessage);
       Alert.alert('Error', errorMessage);
     }
   };
