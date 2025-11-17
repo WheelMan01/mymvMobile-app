@@ -229,8 +229,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    padding: 16,
-    paddingTop: 60,
+    paddingHorizontal: 16,
+    paddingTop: 0,
+    paddingBottom: 40,
   },
   loadingContainer: {
     flex: 1,
