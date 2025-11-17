@@ -104,14 +104,26 @@ export default function AddInsurance() {
   };
 
   const handleSubmit = async () => {
+    console.log('🔵 Submit button clicked!');
+    console.log('Form data:', {
+      selectedVehicleId,
+      selectedProviderName,
+      selectedProviderId,
+      policyNumber,
+      premium,
+      expiryDate: formatApiDate(expiryDate)
+    });
+
     if (!selectedVehicleId || !selectedProviderName || !policyNumber || !premium) {
+      console.log('❌ Validation failed!');
       Alert.alert('Error', 'Please fill in all required fields (Vehicle, Provider, Policy Number, Premium)');
       return;
     }
 
+    console.log('✅ Validation passed, submitting...');
     setLoading(true);
     try {
-      await api.post('/insurance-policies', {
+      const payload = {
         vehicle_id: selectedVehicleId,
         provider_id: selectedProviderId,
         provider: selectedProviderName,
@@ -121,7 +133,11 @@ export default function AddInsurance() {
         expiry_date: formatApiDate(expiryDate),
         coverage_details: '',
         documents: []
-      });
+      };
+      console.log('📤 Sending payload:', payload);
+      
+      const response = await api.post('/insurance-policies', payload);
+      console.log('📥 Response:', response);
 
       Alert.alert('Success', 'Insurance policy added successfully!', [
         { text: 'OK', onPress: () => router.back() }
