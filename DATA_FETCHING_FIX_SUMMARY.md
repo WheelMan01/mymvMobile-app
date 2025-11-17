@@ -75,7 +75,7 @@ The frontend code was incorrectly trying to access `response.data` directly inst
 ## Testing Credentials
 - **Email**: `anthony@wheelsfinance.com.au`
 - **PIN**: `1234`
-- **Live Backend**: `https://carmv-app.preview.emergentagent.com`
+- **Live Backend**: `https://carmgmt-hub.preview.emergentagent.com`
 
 ## API Testing Results
 

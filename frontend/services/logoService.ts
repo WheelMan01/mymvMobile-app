@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const API_BASE = 'https://mobile-spec-sync.preview.emergentagent.com';
+const API_BASE = 'https://carmgmt-hub.preview.emergentagent.com';
 const CACHE_KEY = 'app_logos_cache';
 const CACHE_EXPIRY_KEY = 'app_logos_cache_expiry';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds

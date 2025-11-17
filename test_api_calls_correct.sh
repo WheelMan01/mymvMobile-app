@@ -2,7 +2,7 @@
 
 # First login to get the token
 echo "=== Testing PIN Login with correct credentials ==="
-LOGIN_RESPONSE=$(curl -s -X POST "https://carmv-app.preview.emergentagent.com/api/auth/pin-login" \
+LOGIN_RESPONSE=$(curl -s -X POST "https://carmgmt-hub.preview.emergentagent.com/api/auth/pin-login" \
   -H "Content-Type: application/json" \
   -d '{"email": "anthony@wheelsfinance.com.au", "pin": "1234"}')
 
@@ -24,7 +24,7 @@ echo "✅ Login successful! Testing other endpoints..."
 
 echo ""
 echo "=== Testing Insurance Policies Endpoint ==="
-INSURANCE_RESPONSE=$(curl -s -X GET "https://carmv-app.preview.emergentagent.com/api/insurance-policies" \
+INSURANCE_RESPONSE=$(curl -s -X GET "https://carmgmt-hub.preview.emergentagent.com/api/insurance-policies" \
   -H "Authorization: Bearer $TOKEN")
 echo "$INSURANCE_RESPONSE" | jq '.'
 INSURANCE_COUNT=$(echo "$INSURANCE_RESPONSE" | jq '.data.policies | length')
@@ -32,7 +32,7 @@ echo "✅ Insurance policies count: $INSURANCE_COUNT"
 
 echo ""
 echo "=== Testing Roadside Assistance Endpoint ==="
-ROADSIDE_RESPONSE=$(curl -s -X GET "https://carmv-app.preview.emergentagent.com/api/roadside-assistance" \
+ROADSIDE_RESPONSE=$(curl -s -X GET "https://carmgmt-hub.preview.emergentagent.com/api/roadside-assistance" \
   -H "Authorization: Bearer $TOKEN")
 echo "$ROADSIDE_RESPONSE" | jq '.'
 ROADSIDE_COUNT=$(echo "$ROADSIDE_RESPONSE" | jq '.data.assistance | length')
@@ -40,7 +40,7 @@ echo "✅ Roadside assistance count: $ROADSIDE_COUNT"
 
 echo ""
 echo "=== Testing Finance Products Endpoint ==="
-FINANCE_RESPONSE=$(curl -s -X GET "https://carmv-app.preview.emergentagent.com/api/finance-products" \
+FINANCE_RESPONSE=$(curl -s -X GET "https://carmgmt-hub.preview.emergentagent.com/api/finance-products" \
   -H "Authorization: Bearer $TOKEN")
 echo "$FINANCE_RESPONSE" | jq '.'
 FINANCE_COUNT=$(echo "$FINANCE_RESPONSE" | jq '.data.products | length')
@@ -48,7 +48,7 @@ echo "✅ Finance products count: $FINANCE_COUNT"
 
 echo ""
 echo "=== Testing Service Bookings Endpoint ==="
-BOOKINGS_RESPONSE=$(curl -s -X GET "https://carmv-app.preview.emergentagent.com/api/service-bookings" \
+BOOKINGS_RESPONSE=$(curl -s -X GET "https://carmgmt-hub.preview.emergentagent.com/api/service-bookings" \
   -H "Authorization: Bearer $TOKEN")
 echo "$BOOKINGS_RESPONSE" | jq '.'
 BOOKINGS_COUNT=$(echo "$BOOKINGS_RESPONSE" | jq '.data.bookings | length')
