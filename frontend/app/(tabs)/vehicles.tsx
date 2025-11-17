@@ -85,6 +85,7 @@ export default function Vehicles() {
 
   return (
     <View style={styles.container}>
+      <AppHeader title="My Vehicles" />
       {vehicles.length === 0 && !loading ? (
         <View style={styles.emptyContainer}>
           <Ionicons name="car-outline" size={80} color="#C7C7CC" />
