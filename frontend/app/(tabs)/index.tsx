@@ -314,7 +314,7 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#FFFFFF',
     textAlign: 'center',
     marginTop: 4,
   },
