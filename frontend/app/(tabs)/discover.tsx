@@ -31,13 +31,6 @@ export default function Discover() {
 
       <View style={styles.section}>
         <DiscoverCard
-          title="Vehicle Showroom"
-          description="TikTok-style feed of vehicles"
-          icon="play-circle"
-          color="#34C759"
-          route="/showroom"
-        />
-        <DiscoverCard
           title="Marketplace"
           description="Browse vehicles for sale from dealers"
           icon="cart"
