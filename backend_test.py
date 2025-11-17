@@ -104,193 +104,405 @@ class SettingsAPITester:
             self.log_test("Get Current User", False, f"Exception: {str(e)}")
             return None
 
-    def test_pin_login_wrong_email(self):
-        """Test PIN login with incorrect email"""
-        url = f"{self.base_url}/api/auth/pin-login"
+    def test_update_profile(self):
+        """Test PUT /api/user/profile - Update user profile"""
+        print("📝 TESTING PROFILE UPDATE...")
         
-        payload = {
-            "email": "nonexistent@example.com",
-            "pin": TEST_PIN
-        }
-        
+        # Test 1: Update first_name and last_name
         try:
-            response = requests.post(url, json=payload, timeout=30)
+            update_data = {
+                "first_name": "Anthony",
+                "last_name": "Smith"
+            }
             
-            if response.status_code == 401:
-                self.log_test(
-                    "PIN Login - Wrong Email",
-                    True,
-                    "Correctly rejected non-existent email"
-                )
-                return True
+            response = requests.put(
+                f"{self.base_url}/api/user/profile",
+                json=update_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                self.log_test("Profile Update - Names", True, "Successfully updated first and last name")
             else:
-                self.log_test(
-                    "PIN Login - Wrong Email",
-                    False,
-                    f"Expected 401, got {response.status_code}: {response.text}"
-                )
-                return False
+                self.log_test("Profile Update - Names", False, f"Status: {response.status_code}", response.text)
                 
-        except requests.exceptions.RequestException as e:
-            self.log_test(
-                "PIN Login - Wrong Email",
-                False,
-                f"Request failed: {str(e)}"
-            )
-            return False
-
-    def test_pin_login_invalid_email_format(self):
-        """Test PIN login with invalid email format"""
-        url = f"{self.base_url}/api/auth/pin-login"
+        except Exception as e:
+            self.log_test("Profile Update - Names", False, f"Exception: {str(e)}")
         
-        payload = {
-            "email": "invalid-email-format",
-            "pin": TEST_PIN
-        }
-        
+        # Test 2: Update mobile number
         try:
-            response = requests.post(url, json=payload, timeout=30)
+            update_data = {
+                "mobile": "+61412345678"
+            }
             
-            if response.status_code in [400, 422]:  # Bad request or validation error
-                self.log_test(
-                    "PIN Login - Invalid Email Format",
-                    True,
-                    "Correctly rejected invalid email format"
-                )
-                return True
+            response = requests.put(
+                f"{self.base_url}/api/user/profile",
+                json=update_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                self.log_test("Profile Update - Mobile", True, "Successfully updated mobile number")
             else:
-                self.log_test(
-                    "PIN Login - Invalid Email Format",
-                    False,
-                    f"Expected 400/422, got {response.status_code}: {response.text}"
-                )
-                return False
+                self.log_test("Profile Update - Mobile", False, f"Status: {response.status_code}", response.text)
                 
-        except requests.exceptions.RequestException as e:
-            self.log_test(
-                "PIN Login - Invalid Email Format",
-                False,
-                f"Request failed: {str(e)}"
-            )
-            return False
-
-    def test_vehicles_endpoint(self):
-        """Test vehicles endpoint with access token"""
-        if not self.access_token:
-            self.log_test(
-                "Vehicles Endpoint",
-                False,
-                "No access token available - PIN login must succeed first"
-            )
-            return False
-            
-        url = f"{self.base_url}/api/vehicles"
-        headers = {
-            "Authorization": f"Bearer {self.access_token}"
-        }
+        except Exception as e:
+            self.log_test("Profile Update - Mobile", False, f"Exception: {str(e)}")
         
+        # Test 3: Try to update with duplicate email (should work as it's likely unique)
         try:
-            response = requests.get(url, headers=headers, timeout=30)
+            update_data = {
+                "email": "test@unique.com"
+            }
+            
+            response = requests.put(
+                f"{self.base_url}/api/user/profile",
+                json=update_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                self.log_test("Profile Update - Email", True, "Successfully updated email")
+                
+                # Revert back to original email
+                revert_data = {"email": TEST_EMAIL}
+                requests.put(f"{self.base_url}/api/user/profile", json=revert_data, headers=self.get_headers(), timeout=30)
+            else:
+                self.log_test("Profile Update - Email", False, f"Status: {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Profile Update - Email", False, f"Exception: {str(e)}")
+    
+    def test_change_password(self):
+        """Test POST /api/user/change-password - Change password"""
+        print("🔒 TESTING PASSWORD CHANGE...")
+        
+        # Test 1: Try with incorrect current password
+        try:
+            password_data = {
+                "current_password": "wrongpassword",
+                "new_password": "newpassword123"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/api/user/change-password",
+                json=password_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 400:
+                self.log_test("Password Change - Wrong Current", True, "Correctly rejected wrong current password")
+            else:
+                self.log_test("Password Change - Wrong Current", False, f"Expected 400, got {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Password Change - Wrong Current", False, f"Exception: {str(e)}")
+        
+        # Test 2: Try with short password (should fail validation)
+        try:
+            password_data = {
+                "current_password": "password123",
+                "new_password": "123"  # Too short
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/api/user/change-password",
+                json=password_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code in [400, 422]:
+                self.log_test("Password Change - Short Password", True, "Correctly rejected short password")
+            else:
+                self.log_test("Password Change - Short Password", False, f"Expected 400/422, got {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Password Change - Short Password", False, f"Exception: {str(e)}")
+    
+    def test_notification_preferences(self):
+        """Test notification preferences endpoints"""
+        print("🔔 TESTING NOTIFICATION PREFERENCES...")
+        
+        # Test 1: Get notification preferences
+        try:
+            response = requests.get(
+                f"{self.base_url}/api/user/notification-preferences",
+                headers=self.get_headers(),
+                timeout=30
+            )
             
             if response.status_code == 200:
                 data = response.json()
-                
-                # Handle both direct array and wrapped response formats
-                vehicles = data
-                if isinstance(data, dict) and 'data' in data and 'vehicles' in data['data']:
-                    vehicles = data['data']['vehicles']
-                elif isinstance(data, dict) and 'vehicles' in data:
-                    vehicles = data['vehicles']
-                
-                if isinstance(vehicles, list):
-                    vehicle_count = len(vehicles)
-                    self.log_test(
-                        "Vehicles Endpoint",
-                        True,
-                        f"Successfully retrieved {vehicle_count} vehicles"
-                    )
-                    
-                    # Log vehicle details if any exist
-                    if vehicle_count > 0:
-                        print(f"   Vehicle details:")
-                        for i, vehicle in enumerate(vehicles[:3]):  # Show first 3 vehicles
-                            make = vehicle.get('make', 'Unknown')
-                            model = vehicle.get('model', 'Unknown')
-                            year = vehicle.get('year', 'Unknown')
-                            rego = vehicle.get('rego', 'Unknown')
-                            print(f"     {i+1}. {year} {make} {model} (Rego: {rego})")
-                        if vehicle_count > 3:
-                            print(f"     ... and {vehicle_count - 3} more vehicles")
-                        print()
-                    
-                    return True
+                if "preferences" in data:
+                    self.log_test("Get Notification Preferences", True, "Successfully retrieved preferences")
+                    current_prefs = data["preferences"]
                 else:
-                    self.log_test(
-                        "Vehicles Endpoint",
-                        False,
-                        f"Expected array, got: {type(vehicles)}",
-                        data
-                    )
-                    return False
+                    self.log_test("Get Notification Preferences", False, "Missing 'preferences' key", data)
+                    current_prefs = {}
             else:
-                self.log_test(
-                    "Vehicles Endpoint",
-                    False,
-                    f"HTTP {response.status_code}: {response.text}"
-                )
-                return False
+                self.log_test("Get Notification Preferences", False, f"Status: {response.status_code}", response.text)
+                current_prefs = {}
                 
-        except requests.exceptions.RequestException as e:
-            self.log_test(
-                "Vehicles Endpoint",
-                False,
-                f"Request failed: {str(e)}"
-            )
-            return False
-
-    def test_old_pin_login_format(self):
-        """Test if the old PIN login format still works (should fail)"""
-        url = f"{self.base_url}/api/auth/pin-login"
+        except Exception as e:
+            self.log_test("Get Notification Preferences", False, f"Exception: {str(e)}")
+            current_prefs = {}
         
-        # Test with the OLD format: {member_id, pin}
-        payload = {
-            "member_id": "MV-7981038",  # From review request
-            "pin": TEST_PIN
-        }
-        
+        # Test 2: Update notification preferences
         try:
-            response = requests.post(url, json=payload, timeout=30)
+            new_prefs = {
+                "sms": True,
+                "email": False,
+                "push": True,
+                "alert_reminders": True,
+                "service_reminders": False,
+                "marketing_emails": True
+            }
             
-            if response.status_code in [400, 422]:  # Should fail with validation error
-                self.log_test(
-                    "PIN Login - Old Format Check",
-                    True,
-                    "Old format correctly rejected (API updated to new format)"
-                )
-                return True
-            elif response.status_code == 200:
-                self.log_test(
-                    "PIN Login - Old Format Check",
-                    False,
-                    "WARNING: Old format still works - API may not be updated",
-                    response.json()
-                )
-                return False
-            else:
-                self.log_test(
-                    "PIN Login - Old Format Check",
-                    True,  # Any other error is acceptable
-                    f"Old format rejected with status {response.status_code}"
-                )
-                return True
-                
-        except requests.exceptions.RequestException as e:
-            self.log_test(
-                "PIN Login - Old Format Check",
-                False,
-                f"Request failed: {str(e)}"
+            response = requests.put(
+                f"{self.base_url}/api/user/notification-preferences",
+                json=new_prefs,
+                headers=self.get_headers(),
+                timeout=30
             )
-            return False
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "preferences" in data and data["preferences"] == new_prefs:
+                    self.log_test("Update Notification Preferences", True, "Successfully updated preferences")
+                else:
+                    self.log_test("Update Notification Preferences", False, "Preferences not updated correctly", data)
+            else:
+                self.log_test("Update Notification Preferences", False, f"Status: {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Update Notification Preferences", False, f"Exception: {str(e)}")
+    
+    def test_subscription_management(self):
+        """Test subscription upgrade and cancellation"""
+        print("💳 TESTING SUBSCRIPTION MANAGEMENT...")
+        
+        # Test 1: Upgrade to premium monthly
+        try:
+            upgrade_data = {
+                "subscription_tier": "premium_monthly"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/api/user/upgrade-subscription",
+                json=upgrade_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "subscription_tier" in data and data["subscription_tier"] == "premium_monthly":
+                    self.log_test("Subscription Upgrade - Premium Monthly", True, "Successfully upgraded to premium monthly")
+                else:
+                    self.log_test("Subscription Upgrade - Premium Monthly", False, "Upgrade response incorrect", data)
+            else:
+                self.log_test("Subscription Upgrade - Premium Monthly", False, f"Status: {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Subscription Upgrade - Premium Monthly", False, f"Exception: {str(e)}")
+        
+        # Test 2: Try invalid subscription tier
+        try:
+            upgrade_data = {
+                "subscription_tier": "invalid_tier"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/api/user/upgrade-subscription",
+                json=upgrade_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 400:
+                self.log_test("Subscription Upgrade - Invalid Tier", True, "Correctly rejected invalid tier")
+            else:
+                self.log_test("Subscription Upgrade - Invalid Tier", False, f"Expected 400, got {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Subscription Upgrade - Invalid Tier", False, f"Exception: {str(e)}")
+        
+        # Test 3: Upgrade to premium annual
+        try:
+            upgrade_data = {
+                "subscription_tier": "premium_annual"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/api/user/upgrade-subscription",
+                json=upgrade_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                self.log_test("Subscription Upgrade - Premium Annual", True, "Successfully upgraded to premium annual")
+            else:
+                self.log_test("Subscription Upgrade - Premium Annual", False, f"Status: {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Subscription Upgrade - Premium Annual", False, f"Exception: {str(e)}")
+        
+        # Test 4: Request account cancellation
+        try:
+            cancellation_data = {
+                "reason": "Testing cancellation functionality"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/api/user/request-cancellation",
+                json=cancellation_data,
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                self.log_test("Account Cancellation Request", True, "Successfully requested account cancellation")
+            else:
+                self.log_test("Account Cancellation Request", False, f"Status: {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Account Cancellation Request", False, f"Exception: {str(e)}")
+    
+    def test_vehicle_transfers(self):
+        """Test vehicle transfer endpoints (Premium feature)"""
+        print("🚗 TESTING VEHICLE TRANSFERS...")
+        
+        # Test 1: Lookup member by member number
+        try:
+            # Use a known member number (the current user's member number)
+            current_user = self.test_get_current_user()
+            if current_user and "member_id" in current_user:
+                member_number = current_user["member_id"]
+                
+                response = requests.get(
+                    f"{self.base_url}/api/users/lookup/{member_number}",
+                    headers=self.get_headers(),
+                    timeout=30
+                )
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    if "data" in data and "member_number" in data["data"]:
+                        self.log_test("Member Lookup - Valid", True, f"Successfully found member {member_number}")
+                    else:
+                        self.log_test("Member Lookup - Valid", False, "Invalid response structure", data)
+                else:
+                    self.log_test("Member Lookup - Valid", False, f"Status: {response.status_code}", response.text)
+            else:
+                self.log_test("Member Lookup - Valid", False, "Could not get current user member ID")
+                
+        except Exception as e:
+            self.log_test("Member Lookup - Valid", False, f"Exception: {str(e)}")
+        
+        # Test 2: Try lookup with invalid member number
+        try:
+            response = requests.get(
+                f"{self.base_url}/api/users/lookup/INVALID-123",
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 404:
+                self.log_test("Member Lookup - Invalid", True, "Correctly returned 404 for invalid member")
+            else:
+                self.log_test("Member Lookup - Invalid", False, f"Expected 404, got {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Member Lookup - Invalid", False, f"Exception: {str(e)}")
+        
+        # Test 3: Get pending transfers
+        try:
+            response = requests.get(
+                f"{self.base_url}/api/transfers/pending",
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "data" in data and "transfers" in data["data"]:
+                    self.log_test("Get Pending Transfers", True, f"Retrieved {len(data['data']['transfers'])} pending transfers")
+                else:
+                    self.log_test("Get Pending Transfers", False, "Invalid response structure", data)
+            else:
+                self.log_test("Get Pending Transfers", False, f"Status: {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Get Pending Transfers", False, f"Exception: {str(e)}")
+        
+        # Test 4: Get quarantined vehicles
+        try:
+            response = requests.get(
+                f"{self.base_url}/api/transfers/quarantined",
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "data" in data and "vehicles" in data["data"]:
+                    self.log_test("Get Quarantined Vehicles", True, f"Retrieved {len(data['data']['vehicles'])} quarantined vehicles")
+                else:
+                    self.log_test("Get Quarantined Vehicles", False, "Invalid response structure", data)
+            else:
+                self.log_test("Get Quarantined Vehicles", False, f"Status: {response.status_code}", response.text)
+                
+        except Exception as e:
+            self.log_test("Get Quarantined Vehicles", False, f"Exception: {str(e)}")
+        
+        # Test 5: Try to initiate transfer (requires a vehicle and premium subscription)
+        # First, let's check if user has vehicles
+        try:
+            vehicles_response = requests.get(
+                f"{self.base_url}/api/vehicles",
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if vehicles_response.status_code == 200:
+                vehicles = vehicles_response.json()
+                if vehicles:
+                    # Try to initiate transfer with first vehicle
+                    vehicle_id = vehicles[0]["id"]
+                    transfer_data = {
+                        "vehicle_id": vehicle_id,
+                        "new_owner_member_number": "MV-1234567",
+                        "new_owner_name": "Test Transfer User",
+                        "new_owner_mobile": "+61412345678",
+                        "new_owner_email": "transfer@test.com"
+                    }
+                    
+                    response = requests.post(
+                        f"{self.base_url}/api/transfers/initiate",
+                        json=transfer_data,
+                        headers=self.get_headers(),
+                        timeout=30
+                    )
+                    
+                    if response.status_code == 200:
+                        self.log_test("Initiate Transfer - With Premium", True, "Successfully initiated transfer")
+                    elif response.status_code == 403:
+                        self.log_test("Initiate Transfer - Without Premium", True, "Correctly blocked transfer for non-premium user")
+                    else:
+                        self.log_test("Initiate Transfer", False, f"Status: {response.status_code}", response.text)
+                else:
+                    self.log_test("Initiate Transfer", False, "No vehicles available for transfer test")
+            else:
+                self.log_test("Initiate Transfer", False, f"Could not get vehicles: {vehicles_response.status_code}")
+                
+        except Exception as e:
+            self.log_test("Initiate Transfer", False, f"Exception: {str(e)}")
 
     def run_all_tests(self):
         """Run all backend tests"""
