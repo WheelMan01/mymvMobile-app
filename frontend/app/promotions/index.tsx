@@ -37,108 +37,137 @@ interface DirectPromo {
 
 export default function Promotions() {
   const router = useRouter();
-  const [banners, setBanners] = useState<Banner[]>([]);
+  const [promos, setPromos] = useState<DirectPromo[]>([]);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'all' | 'insurance' | 'finance' | 'roadside'>('all');
-
-  const tabs = [
-    { id: 'all', label: 'All' },
-    { id: 'insurance', label: 'Insurance' },
-    { id: 'finance', label: 'Finance' },
-    { id: 'roadside', label: 'Roadside' },
-  ];
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
 
   useEffect(() => {
-    loadBanners();
-  }, [activeTab]);
+    loadPromos();
+  }, []);
 
-  const loadBanners = async () => {
+  const loadPromos = async () => {
     setLoading(true);
     try {
-      if (activeTab === 'all') {
-        // Load all banner types in parallel
-        const responses = await Promise.allSettled([
-          api.get('/banners/insurance/active'),
-          api.get('/banners/finance/active'),
-          api.get('/banners/roadside/active'),
-        ]);
-
-        // Extract banners from successful responses
-        const allBanners = responses
-          .filter(r => r.status === 'fulfilled')
-          .map((r: any) => r.value?.data?.data?.banner)
-          .filter(b => b !== null && b !== undefined);
-
-        setBanners(allBanners);
-      } else {
-        // Load specific banner type
-        const response = await api.get(`/banners/${activeTab}/active`);
-        const banner = response.data?.data?.banner;
-        setBanners(banner ? [banner] : []);
-      }
+      const response = await api.get('/direct-promos');
+      const promosData = response.data?.promos || [];
+      setPromos(promosData);
     } catch (error: any) {
-      console.error('Error loading banners:', error);
-      setBanners([]);
+      console.error('Error loading promos:', error);
+      Alert.alert('Error', 'Failed to load promotions');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleBannerClick = async (banner: Banner) => {
+  const handlePromoClick = async (promo: DirectPromo) => {
     try {
       // Track click
-      await api.post(`/banners/${banner.id}/click`);
+      await api.post(`/direct-promos/${promo.id}/click`);
 
-      // Open URL
-      if (banner.cta_url && banner.cta_url.startsWith('http')) {
-        await Linking.openURL(banner.cta_url);
+      // Handle action based on type
+      if (promo.action_type === 'link' && promo.action_value) {
+        await Linking.openURL(promo.action_value);
+      } else if (promo.action_type === 'phone' && promo.action_value) {
+        await Linking.openURL(`tel:${promo.action_value}`);
+      } else if (promo.action_type === 'email' && promo.action_value) {
+        await Linking.openURL(`mailto:${promo.action_value}`);
       }
     } catch (error: any) {
-      console.error('Error handling banner click:', error);
-      // Still try to open URL even if tracking fails
-      if (banner.cta_url && banner.cta_url.startsWith('http')) {
-        await Linking.openURL(banner.cta_url);
-      }
+      console.error('Error handling promo click:', error);
     }
   };
 
-  const renderBanner = ({ item: banner }: { item: Banner }) => {
-    if (banner.display_mode === 'full_image' && banner.image_url) {
-      return (
-        <TouchableOpacity
-          style={styles.bannerCard}
-          onPress={() => handleBannerClick(banner)}
-        >
-          <Image
-            source={{ uri: banner.image_url }}
-            style={styles.fullImage}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
-      );
+  const copyPromoCode = async (code: string) => {
+    try {
+      await Clipboard.setStringAsync(code);
+      setCopiedCode(code);
+      setTimeout(() => setCopiedCode(null), 2000);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to copy code');
     }
+  };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-AU', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const renderPromo = ({ item: promo }: { item: DirectPromo }) => {
     return (
-      <View style={styles.bannerCard}>
-        {banner.image_url && (
-          <Image
-            source={{ uri: banner.image_url }}
-            style={styles.backgroundImage}
-            resizeMode="cover"
-          />
+      <View style={styles.promoCard}>
+        {/* Featured Badge */}
+        {promo.is_featured && (
+          <View style={styles.featuredBadge}>
+            <Text style={styles.featuredText}>⭐ FEATURED OFFER</Text>
+          </View>
         )}
-        <View style={styles.overlay}>
-          <Text style={styles.providerName}>{banner.provider_name}</Text>
-          <Text style={styles.title}>{banner.title}</Text>
-          <Text style={styles.description} numberOfLines={3}>
-            {banner.description}
-          </Text>
+
+        {/* Premium Badge */}
+        {promo.member_tier === 'premium' && (
+          <View style={styles.premiumBadge}>
+            <Text style={styles.premiumText}>👑 PREMIUM MEMBERS ONLY</Text>
+          </View>
+        )}
+
+        <View style={styles.cardContent}>
+          {/* Header */}
+          <Text style={styles.title}>{promo.title}</Text>
+          <Text style={styles.supplierName}>{promo.supplier_name}</Text>
+
+          {promo.category && (
+            <View style={styles.categoryTag}>
+              <Text style={styles.categoryText}>{promo.category}</Text>
+            </View>
+          )}
+
+          {/* Description */}
+          <Text style={styles.description}>{promo.description}</Text>
+
+          {/* Promo Code */}
+          {promo.promo_code && (
+            <View style={styles.promoCodeContainer}>
+              <View style={styles.promoCodeLeft}>
+                <Text style={styles.promoCodeLabel}>PROMO CODE</Text>
+                <Text style={styles.promoCodeValue}>{promo.promo_code}</Text>
+              </View>
+              <TouchableOpacity
+                style={styles.copyButton}
+                onPress={() => copyPromoCode(promo.promo_code!)}
+              >
+                {copiedCode === promo.promo_code ? (
+                  <Text style={styles.copiedText}>Copied!</Text>
+                ) : (
+                  <Text style={styles.copyIcon}>📋</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Expiry Date */}
+          {promo.end_date && (
+            <View style={styles.expiryContainer}>
+              <Text style={styles.expiryIcon}>📅</Text>
+              <Text style={styles.expiryText}>
+                Valid until {formatDate(promo.end_date)}
+              </Text>
+            </View>
+          )}
+
+          {/* Action Button */}
           <TouchableOpacity
-            style={styles.ctaButton}
-            onPress={() => handleBannerClick(banner)}
+            style={styles.claimButton}
+            onPress={() => handlePromoClick(promo)}
           >
-            <Text style={styles.ctaText}>{banner.cta_text}</Text>
-            <Ionicons name="chevron-forward" size={16} color="#fff" />
+            <Text style={styles.claimButtonText}>
+              {promo.action_type === 'link' ? '🔗 Claim Offer' :
+               promo.action_type === 'phone' ? '📞 Call Now' :
+               promo.action_type === 'email' ? '📧 Email' :
+               'Claim Offer'}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
