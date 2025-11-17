@@ -104,11 +104,15 @@ export default function Dashboard() {
   };
 
   // Feature tile component with modern, slim icons
-  const FeatureTile = ({ title, icon, count, onPress, color = '#00BFFF' }: any) => (
+  const FeatureTile = ({ title, icon, count, onPress, color = '#00BFFF', customIcon }: any) => (
     <TouchableOpacity style={styles.featureTile} onPress={onPress} activeOpacity={0.8}>
       <View style={styles.featureTileContent}>
         <View style={styles.iconContainer}>
-          <Ionicons name={icon} size={48} color={color} />
+          {customIcon ? (
+            customIcon
+          ) : (
+            <Ionicons name={icon} size={48} color={color} />
+          )}
         </View>
         <Text style={styles.featureTitle}>{title}</Text>
         {count !== undefined && count > 0 && (
