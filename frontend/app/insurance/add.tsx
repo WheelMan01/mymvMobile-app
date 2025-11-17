@@ -34,46 +34,21 @@ export default function AddInsurance() {
   const loadProviders = async () => {
     try {
       setLoadingProviders(true);
-      const response = await api.get('/providers?provider_type=Insurance');
+      const response = await api.get('/insurance-providers');
       
-      if (response.data && response.data.length > 0) {
-        setProviders(response.data);
+      if (response.data.status === 'success') {
+        const providersList = response.data.data.providers;
+        setProviders(providersList);
         // Set first provider as default if available
-        const firstProvider = response.data[0];
-        setSelectedProviderId(firstProvider.id);
-        setSelectedProviderName(firstProvider.name);
-      } else {
-        // Fallback to common Australian insurance providers
-        const fallbackProviders = [
-          { id: 'allianz', name: 'Allianz' },
-          { id: 'aami', name: 'AAMI' },
-          { id: 'budget-direct', name: 'Budget Direct' },
-          { id: 'coles', name: 'Coles Insurance' },
-          { id: 'comminsure', name: 'CommInsure' },
-          { id: 'gio', name: 'GIO' },
-          { id: 'nrma', name: 'NRMA Insurance' },
-          { id: 'racv', name: 'RACV' },
-          { id: 'suncorp', name: 'Suncorp' },
-          { id: 'youi', name: 'Youi' }
-        ];
-        setProviders(fallbackProviders);
+        if (providersList.length > 0) {
+          const firstProvider = providersList[0];
+          setSelectedProviderId(firstProvider.id);
+          setSelectedProviderName(firstProvider.name);
+        }
       }
     } catch (error) {
       console.error('Error loading providers:', error);
-      // Use fallback providers on error
-      const fallbackProviders = [
-        { id: 'allianz', name: 'Allianz' },
-        { id: 'aami', name: 'AAMI' },
-        { id: 'budget-direct', name: 'Budget Direct' },
-        { id: 'coles', name: 'Coles Insurance' },
-        { id: 'comminsure', name: 'CommInsure' },
-        { id: 'gio', name: 'GIO' },
-        { id: 'nrma', name: 'NRMA Insurance' },
-        { id: 'racv', name: 'RACV' },
-        { id: 'suncorp', name: 'Suncorp' },
-        { id: 'youi', name: 'Youi' }
-      ];
-      setProviders(fallbackProviders);
+      Alert.alert('Error', 'Failed to load insurance providers from database');
     } finally {
       setLoadingProviders(false);
     }
