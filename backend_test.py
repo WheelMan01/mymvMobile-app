@@ -504,6 +504,56 @@ class SettingsAPITester:
         except Exception as e:
             self.log_test("Initiate Transfer", False, f"Exception: {str(e)}")
 
+    def run_connectivity_tests(self):
+        """Run quick connectivity tests as requested"""
+        print("🚀 BACKEND CONNECTIVITY TEST - NEW FORKED DATABASE")
+        print("=" * 60)
+        print(f"Testing backend: {self.base_url}")
+        print(f"Test email: {TEST_EMAIL}")
+        print(f"Test PIN: {TEST_PIN}")
+        print("=" * 60)
+        
+        # Step 1: Authentication Test
+        if not self.authenticate():
+            print("❌ Authentication failed. Cannot proceed with tests.")
+            self.print_summary()
+            return False
+        
+        # Step 2: Profile Data Test
+        self.test_get_current_user()
+        
+        # Step 3: Settings Endpoints Test (as requested)
+        self.test_notification_preferences()
+        self.test_vehicles_endpoint()
+        
+        # Step 4: Summary
+        self.print_summary()
+        return True
+    
+    def test_vehicles_endpoint(self):
+        """Test GET /api/vehicles endpoint"""
+        print("🚗 TESTING VEHICLES ENDPOINT...")
+        
+        try:
+            response = requests.get(
+                f"{self.base_url}/api/vehicles",
+                headers=self.get_headers(),
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                vehicle_count = len(data) if isinstance(data, list) else 0
+                self.log_test("Get Vehicles", True, f"Retrieved {vehicle_count} vehicles from database")
+                return True
+            else:
+                self.log_test("Get Vehicles", False, f"Status: {response.status_code}", response.text)
+                return False
+                
+        except Exception as e:
+            self.log_test("Get Vehicles", False, f"Exception: {str(e)}")
+            return False
+
     def run_all_tests(self):
         """Run all Settings API tests"""
         print("🚀 STARTING SETTINGS API COMPREHENSIVE TESTING")
