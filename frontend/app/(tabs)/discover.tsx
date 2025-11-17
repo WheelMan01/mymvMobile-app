@@ -45,7 +45,7 @@ export default function Discover() {
           route="/marketplace"
         />
         <DiscoverCard
-          title="Dealer Showroom"
+          title="Dealers"
           description="Browse dealerships and service centers"
           icon="business"
           color="#5856D6"
