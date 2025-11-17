@@ -18,7 +18,7 @@ export default function AddInsurance() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    if (!selectedVehicleId || !policyNumber || !premium) {
+    if (!selectedVehicleId || !policyNumber || !premium || !expiryDate) {
       Alert.alert('Error', 'Please fill in all required fields');
       return;
     }
@@ -31,7 +31,7 @@ export default function AddInsurance() {
         policy_number: policyNumber,
         insurance_types: [policyType.toLowerCase()],
         premium: parseFloat(premium),
-        expiry_date: endDate.toISOString().split('T')[0],
+        expiry_date: expiryDate,
         coverage_details: '',
         documents: []
       });
