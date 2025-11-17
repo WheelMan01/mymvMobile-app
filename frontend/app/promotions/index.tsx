@@ -174,52 +174,77 @@ export default function Promotions() {
     );
   };
 
+  if (loading && promos.length === 0) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="#007AFF" />
+          </TouchableOpacity>
+          <View style={styles.headerContent}>
+            <Text style={styles.headerTitle}>Exclusive Promotions</Text>
+            <Text style={styles.headerSubtitle}>
+              Amazing deals from our trusted partners
+            </Text>
+          </View>
+        </View>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#007AFF" />
+          <Text style={styles.loadingText}>Loading offers...</Text>
+        </View>
+      </View>
+    );
+  }
+
+  if (promos.length === 0 && !loading) {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="#007AFF" />
+          </TouchableOpacity>
+          <View style={styles.headerContent}>
+            <Text style={styles.headerTitle}>Exclusive Promotions</Text>
+            <Text style={styles.headerSubtitle}>
+              Amazing deals from our trusted partners
+            </Text>
+          </View>
+        </View>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyIcon}>🏷️</Text>
+          <Text style={styles.emptyText}>No promotions available</Text>
+          <Text style={styles.emptySubtext}>
+            Check back soon for exciting new offers from our partners!
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#007AFF" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Promotions</Text>
-        <View style={{ width: 40 }} />
+        <View style={styles.headerContent}>
+          <Text style={styles.headerTitle}>Exclusive Promotions</Text>
+          <Text style={styles.headerSubtitle}>
+            Amazing deals from our trusted partners
+          </Text>
+        </View>
       </View>
 
-      {/* Tabs */}
-      <View style={styles.filterContainer}>
-        {tabs.map((tab) => (
-          <TouchableOpacity
-            key={tab.id}
-            style={[styles.filterChip, activeTab === tab.id && styles.filterChipActive]}
-            onPress={() => setActiveTab(tab.id as any)}
-          >
-            <Text style={[styles.filterChipText, activeTab === tab.id && styles.filterChipTextActive]}>
-              {tab.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {/* Content */}
-      {loading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#007AFF" />
-        </View>
-      ) : banners.length === 0 ? (
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyIcon}>🏷️</Text>
-          <Text style={styles.emptyText}>No promotions available</Text>
-          <Text style={styles.emptySubtext}>Check back later for special offers</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={banners}
-          renderItem={renderBanner}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={styles.list}
-          onRefresh={loadBanners}
-          refreshing={loading}
-        />
-      )}
+      {/* Promo List */}
+      <FlatList
+        data={promos}
+        renderItem={renderPromo}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.listContent}
+        refreshing={loading}
+        onRefresh={loadPromos}
+      />
     </View>
   );
 }
