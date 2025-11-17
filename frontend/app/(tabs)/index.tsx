@@ -135,10 +135,7 @@ export default function Dashboard() {
         <View style={styles.header}>
           <TouchableOpacity 
             style={styles.menuButton}
-            onPress={() => {
-              // Open drawer/menu - for now navigate to profile
-              router.push('/profile');
-            }}
+            onPress={() => setMenuVisible(true)}
           >
             <Ionicons name="menu" size={28} color="#fff" />
           </TouchableOpacity>
