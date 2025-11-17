@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
   },
   featureTile: {
     width: (width - 64) / 3,
