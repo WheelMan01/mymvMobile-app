@@ -315,16 +315,22 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
   profileButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
     padding: 2,
   },
-  userName: {
-    fontSize: 12,
-    fontWeight: '600',
+  initialsCircle: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#007AFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  initialsText: {
+    fontSize: 14,
+    fontWeight: 'bold',
     color: '#fff',
-    marginLeft: 6,
-    maxWidth: 70,
   },
   gridRow: {
     flexDirection: 'row',
