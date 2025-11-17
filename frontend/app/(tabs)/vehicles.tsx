@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, RefreshContr
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useVehicles } from '../../hooks/useVehicles';
+import AppHeader from '../../components/AppHeader';
 
 export default function Vehicles() {
   const router = useRouter();
