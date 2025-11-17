@@ -3,7 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Keyboa
 import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { useVehicles } from '../../hooks/useVehicles';
 import api from '../../services/api';
 import { format } from 'date-fns';
