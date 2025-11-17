@@ -132,23 +132,6 @@ export default function Dashboard() {
             onPress={() => router.push('/vehicles')}
           />
           <FeatureTile
-            title="myService"
-            icon="construct"
-            color="#007AFF"
-            onPress={() => router.push('/service-booking')}
-          />
-          <FeatureTile
-            title="myRoadside"
-            icon="car-sport"
-            count={stats.active_roadside_memberships}
-            color="#007AFF"
-            onPress={() => router.push('/roadside')}
-          />
-        </View>
-
-        {/* Row 2 */}
-        <View style={styles.gridRow}>
-          <FeatureTile
             title="myInsurance"
             icon="shield-checkmark"
             count={stats.active_insurance_policies}
@@ -162,37 +145,32 @@ export default function Dashboard() {
             color="#007AFF"
             onPress={() => router.push('/finance')}
           />
+        </View>
+
+        {/* Row 2 */}
+        <View style={styles.gridRow}>
           <FeatureTile
-            title="myTravel"
-            icon="airplane"
+            title="myRoadside"
+            icon="car-sport"
+            count={stats.active_roadside_memberships}
             color="#007AFF"
-            onPress={() => {}}
+            onPress={() => router.push('/roadside')}
+          />
+          <FeatureTile
+            title="myService"
+            icon="construct"
+            color="#007AFF"
+            onPress={() => router.push('/service-booking')}
+          />
+          <FeatureTile
+            title="myMarket"
+            icon="cart"
+            color="#007AFF"
+            onPress={() => router.push('/marketplace')}
           />
         </View>
 
         {/* Row 3 */}
-        <View style={styles.gridRow}>
-          <FeatureTile
-            title="myDates"
-            icon="calendar"
-            color="#007AFF"
-            onPress={() => {}}
-          />
-          <FeatureTile
-            title="myTrunk"
-            icon="briefcase"
-            color="#007AFF"
-            onPress={() => {}}
-          />
-          <FeatureTile
-            title="myVault"
-            icon="lock-closed"
-            color="#007AFF"
-            onPress={() => {}}
-          />
-        </View>
-
-        {/* Row 4 - Bottom actions */}
         <View style={styles.gridRow}>
           <FeatureTile
             title="Showroom"
@@ -201,27 +179,10 @@ export default function Dashboard() {
             onPress={() => router.push('/showroom')}
           />
           <FeatureTile
-            title="myMarket"
-            icon="cart"
-            color="#007AFF"
-            onPress={() => router.push('/marketplace')}
-          />
-          <FeatureTile
             title="Promotions"
             icon="pricetag"
             color="#007AFF"
             onPress={() => router.push('/promotions')}
-          />
-        </View>
-
-        {/* Bottom Row */}
-        <View style={styles.gridRow}>
-          <View style={[styles.featureTile, { opacity: 0 }]} />
-          <FeatureTile
-            title="myProfile"
-            icon="person"
-            color="#007AFF"
-            onPress={() => router.push('/profile')}
           />
           <FeatureTile
             title="Logout"
