@@ -1,8 +1,8 @@
 {
-  "backendUrl": "https://mobile-spec-sync.preview.emergentagent.com",
-  "description": "PERMANENT: ONLY use mobile-spec-sync database",
+  "backendUrl": "https://auto-specs-hub-1.preview.emergentagent.com",
+  "description": "PERMANENT: ONLY use auto-specs-hub-1 database",
   "database": "mongodb://localhost:27017/mymv_db",
-  "dataContents": "CORRECT DATABASE - mobile-spec-sync",
+  "dataContents": "CORRECT DATABASE - auto-specs-hub-1",
   "lastUpdated": "2025-01-XX",
-  "WARNING": "DO NOT CHANGE THIS URL - mobile-spec-sync is the ONLY working database"
+  "WARNING": "DO NOT CHANGE THIS URL - auto-specs-hub-1 is the ONLY working database"
 }
