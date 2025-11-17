@@ -1,0 +1,5 @@
+{
+  "backendUrl": "https://mobileapp-debug.preview.emergentagent.com",
+  "description": "PERMANENT BACKEND URL - This file survives forks and overrides .env",
+  "lastUpdated": "2025-01-XX"
+}
