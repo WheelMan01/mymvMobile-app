@@ -102,7 +102,7 @@ export default function AddInsurance() {
   };
 
   const handleSubmit = async () => {
-    if (!selectedVehicleId || !provider || !policyNumber || !premium) {
+    if (!selectedVehicleId || !selectedProviderName || !policyNumber || !premium) {
       Alert.alert('Error', 'Please fill in all required fields (Vehicle, Provider, Policy Number, Premium)');
       return;
     }
