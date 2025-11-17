@@ -27,7 +27,7 @@ interface ListingDetail {
 
 export default function MarketplaceDetail() {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
+  const { id, source } = useLocalSearchParams();
   const [listing, setListing] = useState<ListingDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -35,18 +35,67 @@ export default function MarketplaceDetail() {
   const fetchListing = async () => {
     setLoading(true);
     try {
-      const response = await api.get(`/marketplace-listings/${id}`);
-      setListing(response.data);
+      let response;
+      if (source === 'dealer') {
+        // Fetch dealer ad
+        response = await api.get(`/marketplace/dealer-ads/${id}`);
+        const ad = response.data?.ad;
+        if (ad) {
+          setListing({
+            id: ad.id,
+            title: `${ad.year} ${ad.make} ${ad.model}`,
+            make: ad.make,
+            model: ad.model,
+            year: ad.year,
+            price: ad.price,
+            odometer: ad.odometer,
+            condition: 'Dealer',
+            description: ad.description,
+            images: ad.photos || [],
+            contact_name: ad.dealer_name,
+            contact_phone: ad.contact_phone || '',
+            contact_email: ad.contact_email || '',
+            listed_date: ad.created_at,
+          });
+        }
+      } else {
+        // Fetch customer listing
+        response = await api.get(`/marketplace/listings/${id}`);
+        const data = response.data?.data?.listing;
+        if (data) {
+          setListing({
+            id: data.id,
+            title: `${data.vehicle_details?.year} ${data.vehicle_details?.make} ${data.vehicle_details?.model}`,
+            make: data.vehicle_details?.make || '',
+            model: data.vehicle_details?.model || '',
+            year: data.vehicle_details?.year || 0,
+            price: data.price,
+            odometer: data.vehicle_details?.odometer,
+            condition: data.condition || 'Used',
+            description: data.description,
+            images: data.photos || [],
+            contact_name: data.seller_info?.name || '',
+            contact_phone: data.seller_info?.phone || '',
+            contact_email: data.seller_info?.email || '',
+            listed_date: data.created_at,
+          });
+        }
+      }
     } catch (error: any) {
-      Alert.alert('Error', 'Failed to load listing details');
+      console.error('Error loading listing:', error);
+      Alert.alert('Error', 'Failed to load listing details', [
+        { text: 'Go Back', onPress: () => router.back() }
+      ]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchListing();
-  }, [id]);
+    if (id) {
+      fetchListing();
+    }
+  }, [id, source]);
 
   const handleCall = () => {
     if (listing?.contact_phone) {
