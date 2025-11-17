@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1a1a1a',
   },
   loadingText: {
-    color: '#999',
+    color: '#ccc',
     marginTop: 12,
     fontSize: 14,
   },
