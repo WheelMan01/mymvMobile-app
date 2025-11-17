@@ -126,7 +126,7 @@ export default function Vehicles() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1C1C1E',
   },
   list: {
     padding: 16,
