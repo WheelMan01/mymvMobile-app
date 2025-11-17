@@ -1,8 +1,8 @@
 {
-  "backendUrl": null,
-  "description": "Set to null to use EXPO_PUBLIC_BACKEND_URL from .env - Change only if you know what you're doing!",
+  "backendUrl": "https://mobile-spec-sync.preview.emergentagent.com",
+  "description": "PERMANENT: ONLY use mobile-spec-sync database",
   "database": "mongodb://localhost:27017/mymv_db",
-  "dataContents": "Settings Page Database - Complete myMV data",
+  "dataContents": "CORRECT DATABASE - mobile-spec-sync",
   "lastUpdated": "2025-01-XX",
-  "WARNING": "Only set backendUrl if you need to override .env permanently"
+  "WARNING": "DO NOT CHANGE THIS URL - mobile-spec-sync is the ONLY working database"
 }
