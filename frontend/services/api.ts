@@ -1,10 +1,8 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
-import backendConfig from '../backend-config.json';
 
-// PERMANENT FIX: Read from backend-config.json first (survives forks), then fall back to .env
-const API_URL = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://auto-specs-hub-1.preview.emergentagent.com';
 
 // Storage helpers that work on both web and native
 const getStorageItem = async (key: string) => {
