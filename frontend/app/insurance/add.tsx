@@ -127,7 +127,9 @@ export default function AddInsurance() {
         { text: 'OK', onPress: () => router.back() }
       ]);
     } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.detail || 'Failed to add insurance policy');
+      console.error('Error adding insurance:', error);
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to add insurance policy';
+      Alert.alert('Error', errorMessage);
     } finally {
       setLoading(false);
     }
