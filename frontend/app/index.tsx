@@ -1,24 +1,29 @@
 import React, { useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../contexts/AuthContext';
+// TEMPORARILY DISABLED TO DEBUG
+// import { useAuth } from '../contexts/AuthContext';
 
 export default function Index() {
-  const { user, isLoading } = useAuth();
+  // const { user, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading) {
-      if (user) {
-        router.replace('/(tabs)');
-      } else {
-        router.replace('/auth/login');
-      }
-    }
-  }, [user, isLoading]);
+    // TEMPORARILY SKIP AUTH CHECK TO DEBUG BLACK SCREEN
+    router.replace('/auth/login');
+    
+    // if (!isLoading) {
+    //   if (user) {
+    //     router.replace('/(tabs)');
+    //   } else {
+    //     router.replace('/auth/login');
+    //   }
+    // }
+  }, []);
 
   return (
     <View style={styles.container}>
+      <Text>Loading...</Text>
       <ActivityIndicator size="large" color="#007AFF" />
     </View>
   );
