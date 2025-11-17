@@ -224,18 +224,7 @@ export default function Promotions() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#007AFF" />
-        </TouchableOpacity>
-        <View style={styles.headerContent}>
-          <Text style={styles.headerTitle}>Exclusive Promotions</Text>
-          <Text style={styles.headerSubtitle}>
-            Amazing deals from our trusted partners
-          </Text>
-        </View>
-      </View>
+      <AppHeader title="Promotions" />
 
       {/* Promo List */}
       <FlatList
