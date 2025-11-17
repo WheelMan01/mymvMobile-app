@@ -159,19 +159,14 @@ export default function AddInsurance() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Start Date</Text>
-            <View style={styles.dateDisplay}>
-              <Ionicons name="calendar-outline" size={20} color="#8E8E93" />
-              <Text style={styles.dateText}>{format(startDate, 'dd MMM yyyy')}</Text>
-            </View>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>End Date (Expiry)</Text>
-            <View style={styles.dateDisplay}>
-              <Ionicons name="calendar-outline" size={20} color="#8E8E93" />
-              <Text style={styles.dateText}>{format(endDate, 'dd MMM yyyy')}</Text>
-            </View>
+            <Text style={styles.label}>Expiry Date (YYYY-MM-DD) *</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="e.g., 2025-12-31"
+              value={expiryDate}
+              onChangeText={setExpiryDate}
+            />
+            <Text style={styles.hint}>Format: Year-Month-Day (e.g., 2025-12-31)</Text>
           </View>
         </View>
 
