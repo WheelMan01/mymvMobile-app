@@ -398,12 +398,26 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
     zIndex: 10
   },
+  headerTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 12
+  },
+  backButton: {
+    padding: 8,
+    width: 40
+  },
+  homeButton: {
+    padding: 8,
+    width: 40
+  },
   headerTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFF',
-    textAlign: 'center',
-    marginBottom: 12
+    flex: 1,
+    textAlign: 'center'
   },
   tabContainer: {
     flexDirection: 'row',
