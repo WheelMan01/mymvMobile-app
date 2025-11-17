@@ -9,8 +9,8 @@ import json
 import sys
 from datetime import datetime
 
-# Backend URL from review request
-BACKEND_URL = "https://mobile-spec-sync.preview.emergentagent.com"
+# Backend URL from frontend .env
+BACKEND_URL = "https://carmgmt-hub.preview.emergentagent.com"
 
 # Test credentials from review request
 TEST_EMAIL = "anthony@wheelsfinance.com.au"
