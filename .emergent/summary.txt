@@ -1,69 +1,80 @@
 <analysis>
-The trajectory documents an extensive and complex debugging journey for a myMV Customer Mobile App. The process involved multiple pivots and deep-dives to resolve a cascade of issues originating from a fundamental misunderstanding of the backend environment.
+The trajectory documents a complex and volatile development cycle, primarily centered around resolving environmental issues caused by forking a project. The initial problem was a complete data mismatch, which the AI correctly traced to an incorrect  in the  file. The debugging process was tortuous, involving multiple incorrect backend URLs (, ) and persistent Metro bundler caching issues before the correct data-rich backend () was identified and configured.
 
-Initially, a total data failure was traced to an incorrect  in the  file, pointing the app to a local proxy instead of the live backend. This was compounded by Metro bundler caching, which required aggressive cache clearing and process restarts to resolve.
-
-Once connected to the correct live backend (), a series of data structure and API endpoint mismatches were uncovered. The AI systematically corrected the Finance page, which was calling a non-existent endpoint ( instead of ) and expecting fields not present in the API response. It also fixed the dashboard, which was incorrectly filtering for active items instead of showing total counts as requested by the user.
-
-Most recently, the AI addressed a navigation issue by creating a new dynamic route for vehicle details (). However, this new page was blank. The final action was diagnosing that the live backend does not have an endpoint for individual vehicle details (), leading to a 404 error. The root cause is now understood, and the next step is to refactor the detail page to work with the existing list endpoint. The user's primary language is English, and all future communications should be in English.
+Following this fix, the task pivoted to implementing new features. First, a myService (Service Booking) feature was built out, including a list screen, a complex booking form, and a calendar picker with Australian date formatting. The work was then abruptly redirected to a Promotions page. The AI initially built the wrong version of this feature (a banner ad system) based on a confusing specification, but then corrected its mistake by implementing the *correct* Direct Promotions system, which includes promo codes and a copy-to-clipboard function. The final interaction involved fixing a crash by installing a missing package () and providing the user with detailed instructions on how to safely handle the next environment fork to prevent a recurrence of the initial data loss issues. The user's primary language is English.
 </analysis>
 
 <product_requirements>
-The project is to build and refine the myMV Customer Mobile App, a React Native/Expo application for vehicle and service management. The app must integrate with a live FastAPI backend at .
+The project is the myMV Customer Mobile App, an Expo-based application for managing vehicles and related services. It integrates with a FastAPI backend, and the correct, data-rich URL for the current environment is .
 
-**Core Features & Status:**
--   **Authentication:** Email/PIN login is functional.
--   **Dashboard:** A summary view of the user's assets. Its primary function is to display total counts for vehicles, insurance, roadside assistance, and finance/loans. This feature was recently fixed to show total counts instead of filtered active counts.
--   **Service Sections (Insurance, Roadside, Finance):** Dedicated pages to list service details. These have undergone significant fixes to align with the live API's nested data structures and correct endpoint names. The Finance page, in particular, was refactored to handle the correct API response fields.
--   **Vehicle Management:** A list of the user's vehicles with placeholder images for those missing one. A critical issue was fixed where clicking a vehicle attempted to open a web URL; this now navigates to an in-app detail screen. However, this detail screen is currently not loading data.
+**Implemented Features:**
+
+1.  **Service Booking (myService):**
+    *   A list screen () fetches and displays existing service bookings from the  endpoint. Dates are displayed in Australian format (DD/MM/YYYY).
+    *   A form () allows users to book a new service.
+    *   The form includes a native calendar picker () for date selection, correctly handling both web and mobile platforms.
+
+2.  **Direct Promotions:**
+    *   A dedicated promotions screen () that fetches promo card data from the  endpoint.
+    *   It displays a single, scrollable list of promotions, matching the web application's design.
+    *   Features include Featured Offer and Premium Only badges, a promo code with a Copy to Clipboard button (using ), and a Claim Offer button that tracks clicks and opens an external link.
 </product_requirements>
 
 <key_technical_concepts>
 - **Frontend:** React Native, Expo,  for file-based routing.
-- **API & State:**  for authenticated API calls, React Context () for session management.
-- **Backend Interaction:** Heavy debugging related to  in , involving confusion between a local proxy and the live backend.
-- **Data Handling:** Correcting frontend data access patterns to match nested API responses (e.g., ) and fixing mismatches between component props and API field names.
-- **Image Display:** Loading remote images from Cloudflare R2 URLs, with local placeholders for null values.
+- **API & State:**  and  for API calls,  for session management.
+- **Environment Management:** Critical debugging and configuration of  in  to handle forked environments.
+- **Cache Busting:** Aggressive clearing of Metro bundler cache (, ) and restarting Expo services (expo: ERROR (not running)
+expo: started).
+- **UI Components:** Use of ,  for forms, and  for user interaction.
 </key_technical_concepts>
 
 <code_architecture>
-The application is a monorepo with an Expo frontend and a FastAPI backend. The focus of the trajectory was almost entirely on the frontend to align it with a pre-existing live backend.
+The application is a monorepo with an Expo frontend. Development has been focused on adding and correcting features within the frontend application directory.
 
 **Directory Structure:**
 
 
 -   ****
-    -   **Importance:** Contains the , which was the root cause of major connectivity issues.
-    -   **Changes:** The URL was changed multiple times, oscillating between a local proxy and the live URL. It is now correctly set to . The debugging process highlighted severe issues with Metro bundler caching of this value.
+    -   **Importance:** This file is the root cause of the major data and login issues. It defines the backend URL the app connects to.
+    -   **Changes:** The  was changed multiple times. It was ultimately set to the correct URL for this environment: . This resolved the data loss and authentication problems.
 
 -   ****
-    -   **Importance:** Displays the user's finance and loan information.
-    -   **Changes:** This file was heavily modified. The API call was changed from  to the correct . The  interface and the JSX were updated to match the actual API response, removing references to non-existent fields like  and  and using fields like  and .
-
--   ** (Dashboard)**
-    -   **Importance:** The main landing screen, showing summary counts.
-    -   **Changes:** The data fetching logic () was modified to remove client-side filtering for active policies (e.g., ). It now directly uses the length of the returned arrays to display the *total* number of vehicles, insurance policies, roadside plans, and loans, per the user's latest request.
+    -   **Importance:** This screen lists all the user's service bookings.
+    -   **Changes:** The API call was updated from  to the correct  endpoint. The UI was updated to correctly map the API response fields ( instead of ) and to format the date string to an Australian format (DD/MM/YYYY).
 
 -   ****
-    -   **Importance:** This is a new, dynamically-routed page intended to show details for a single vehicle.
-    -   **Changes:** This file was created from scratch to solve a navigation bug where  was falling back to opening a web URL. It currently contains boilerplate code to fetch and display vehicle details, but it fails because the API endpoint it calls () does not exist.
+    -   **Importance:** This new screen contains the form for creating a new service booking.
+    -   **Changes:** Created from scratch based on a detailed specification. It was later modified to replace a simple text input for the date with a native calendar picker using , with platform-specific logic to ensure it works on both web and mobile.
+
+-   ****
+    -   **Importance:** Displays promotions to the user.
+    -   **Changes:** This file underwent a complete rewrite. The initial implementation (a tabbed banner system) was incorrect. It was replaced with the correct Direct Promotions system, which features a single list of promo cards, a dark theme, and functionality to copy promo codes to the clipboard. The package  was installed to support this.
+
+-   ****
+    -   **Importance:** Manages frontend dependencies.
+    -   **Changes:** The following packages were added to support new features: , , and .
 </code_architecture>
 
 <pending_tasks>
--   **Fix Vehicle Detail Page:** The primary pending task is to fix the vehicle detail page () so it correctly displays vehicle data.
--   **Future Features:** Non-urgent, previously mentioned features include adding advanced filtering, offline mode, and biometric authentication.
+- **Implement Service Booking Details/Edit/Delete:** The specification included flows for viewing, editing, and deleting service bookings (e.g., a  screen), which have not been implemented.
+- **Fix Vehicle Detail Page:** The original task to fix the broken vehicle detail page () was superseded by other priorities and remains outstanding.
 </pending_tasks>
 
 <current_work>
-The immediate work revolves around fixing the vehicle detail page. After the user reported that clicking on a vehicle card leads to an empty screen, the AI engineer investigated the cause.
+The most recent work was a critical fix and consultation phase.
 
-The investigation involved attempting to  the API endpoint that the new detail page was trying to use: . This API call resulted in a  error.
+First, the AI engineer completely rebuilt the Promotions page () to align with the correct specification for Direct Promotions. This involved replacing a tabbed Banner Ad system with a single-list Promo Card system, which includes a copy-to-clipboard feature for promo codes.
 
-This confirmed that the live backend does not support fetching a single vehicle by its ID. The only available, working endpoint is , which returns a list of all the user's vehicles.
+Immediately after this rebuild, the app crashed due to a missing dependency. The final actions were:
+1.  **Installing the missing package:**  was added to .
+2.  **Restarting the Expo service:** expo: stopped
+expo: started was run to apply the change.
+3.  **Confirming the fix:** The user confirmed that worked.
 
-The conclusion and the current state of work is the diagnosis of this problem. The  component is architecturally incorrect for the given backend API. The planned fix, which has not yet been implemented, is to refactor this component. Instead of trying to fetch a single vehicle, it must fetch the entire list of vehicles from  and then use JavaScript on the client-side to find and display the specific vehicle that matches the ID from the URL.
+The conversation then pivoted to the user's concern about future environment forks causing the same data loss issues. The AI's last action was providing a detailed Pre-Fork Checklist and Post-Fork Instructions to guide the user on how to safely manage the  in the  file during the next fork, thereby preventing a repeat of the initial problems.
 </current_work>
 
 <optional_next_step>
-Modify  to fetch data from the  list endpoint and then filter for the specific vehicle by its ID on the client-side.
+Awaiting user's decision on whether to fork the environment now or continue with development. If continuing, I will ask whether to work on the Service Booking details page or the original Vehicle details page fix.
 </optional_next_step>
