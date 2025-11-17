@@ -74,7 +74,20 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchStats();
+    loadLogo();
   }, []);
+
+  const loadLogo = async () => {
+    try {
+      const logos = await fetchLogosWithCache();
+      // Use dark logo for black header
+      if (logos.logo_dark_bg) {
+        setLogoUrl(logos.logo_dark_bg);
+      }
+    } catch (error) {
+      console.error('Error loading logo:', error);
+    }
+  };
 
   // Feature tile component matching your web app design
   const FeatureTile = ({ title, icon, count, onPress, color = '#007AFF' }: any) => (
