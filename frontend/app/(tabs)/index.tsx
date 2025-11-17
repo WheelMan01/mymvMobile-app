@@ -243,22 +243,39 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   header: {
-    marginBottom: 32,
-  },
-  userSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 122, 255, 0.8)',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: 'rgba(0, 122, 255, 0.9)',
     borderRadius: 12,
+    marginBottom: 24,
   },
-  userName: {
-    fontSize: 20,
+  menuButton: {
+    padding: 8,
+  },
+  brandSection: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  brandText: {
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
-    marginLeft: 12,
-    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  profileButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 4,
+  },
+  userName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+    marginLeft: 8,
+    maxWidth: 80,
   },
   gridRow: {
     flexDirection: 'row',
