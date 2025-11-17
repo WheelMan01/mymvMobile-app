@@ -49,6 +49,7 @@ export default function TabsLayout() {
         name="services"
         options={{
           title: 'Services',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="shield-checkmark" size={size} color={color} />
           ),
@@ -58,6 +59,7 @@ export default function TabsLayout() {
         name="discover"
         options={{
           title: 'Discover',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="compass" size={size} color={color} />
           ),
@@ -67,6 +69,7 @@ export default function TabsLayout() {
         name="profile"
         options={{
           title: 'Profile',
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" size={size} color={color} />
           ),
