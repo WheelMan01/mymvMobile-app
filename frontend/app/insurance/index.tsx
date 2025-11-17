@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
 import { format } from 'date-fns';
+import AppHeader from '../../components/AppHeader';
 
 interface InsurancePolicy {
   id: string;
