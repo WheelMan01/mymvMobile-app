@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
+    backgroundColor: 'rgba(0, 122, 255, 0.2)',
   },
   featureTitle: {
     fontSize: 13,
