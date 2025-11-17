@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#999',
+    color: '#ccc',
     textAlign: 'center',
   },
 });
