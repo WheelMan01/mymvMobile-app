@@ -209,6 +209,22 @@ export default function AddInsurance() {
           </View>
         </View>
 
+        {/* Insurance Provider */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Insurance Provider *</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={provider}
+              onValueChange={(value) => setProvider(value)}
+              style={styles.picker}
+            >
+              {insuranceProviders.map((providerName) => (
+                <Picker.Item key={providerName} label={providerName} value={providerName} />
+              ))}
+            </Picker>
+          </View>
+        </View>
+
         {/* Policy Details */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Policy Details</Text>
