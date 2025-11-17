@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import backendConfig from '../backend-config.json';
 
-const API_BASE = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL || 'https://auto-specs-hub-1.preview.emergentagent.com';
+const API_BASE = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL || 'https://autospecs.preview.emergentagent.com';
 const CACHE_KEY = 'app_logos_cache';
 const CACHE_EXPIRY_KEY = 'app_logos_cache_expiry';
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds

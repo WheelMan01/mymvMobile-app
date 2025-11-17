@@ -5,13 +5,13 @@
 **The ONLY correct working database URL is:**
 
 ```
-https://auto-specs-hub-1.preview.emergentagent.com
+https://autospecs.preview.emergentagent.com
 ```
 
 **DELETE AND NEVER USE:**
-- ❌ https://carmgmt-hub.preview.emergentagent.com
-- ❌ https://mymv-api-docs.preview.emergentagent.com
-- ❌ https://mobile-spec-sync.preview.emergentagent.com
+- ❌ https://autospecs.preview.emergentagent.com
+- ❌ https://autospecs.preview.emergentagent.com
+- ❌ https://autospecs.preview.emergentagent.com
 
 ## Testing Proof:
 
@@ -21,13 +21,13 @@ https://auto-specs-hub-1.preview.emergentagent.com
 ## Files that must have this URL:
 
 1. `/app/frontend/.env`
-   - `EXPO_PUBLIC_BACKEND_URL=https://mobile-spec-sync.preview.emergentagent.com`
+   - `EXPO_PUBLIC_BACKEND_URL=https://autospecs.preview.emergentagent.com`
 
 2. `/app/frontend/backend-config.json`
    - `"backendUrl": null` (uses .env)
 
 3. `/app/frontend/services/logoService.ts`
-   - Fallback: `https://mobile-spec-sync.preview.emergentagent.com`
+   - Fallback: `https://autospecs.preview.emergentagent.com`
 
 ## If login doesn't work:
 

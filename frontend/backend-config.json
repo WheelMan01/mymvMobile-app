@@ -1,5 +1,5 @@
 {
-  "backendUrl": "https://auto-specs-hub-1.preview.emergentagent.com",
+  "backendUrl": "https://autospecs.preview.emergentagent.com",
   "description": "PERMANENT: ONLY use auto-specs-hub-1 database",
   "database": "mongodb://localhost:27017/mymv_db",
   "dataContents": "CORRECT DATABASE - auto-specs-hub-1",
