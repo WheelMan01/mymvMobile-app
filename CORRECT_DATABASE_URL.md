@@ -5,8 +5,12 @@
 **The ONLY correct working database URL is:**
 
 ```
-https://carmgmt-hub.preview.emergentagent.com
+https://mobile-spec-sync.preview.emergentagent.com
 ```
+
+**DELETE AND NEVER USE:**
+- ❌ https://carmgmt-hub.preview.emergentagent.com
+- ❌ https://mymv-api-docs.preview.emergentagent.com
 
 ## Testing Proof:
 
