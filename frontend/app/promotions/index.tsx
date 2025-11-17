@@ -252,121 +252,180 @@ export default function Promotions() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1a1a1a', // Dark background like web app
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#1a1a1a',
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E5EA',
+    borderBottomColor: '#333',
     paddingTop: 48,
   },
   backButton: {
     padding: 8,
+    marginRight: 12,
+  },
+  headerContent: {
+    flex: 1,
   },
   headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1C1C1E',
-  },
-  filterContainer: {
-    flexDirection: 'row',
-    padding: 16,
-    gap: 8,
-    backgroundColor: '#fff',
-  },
-  filterChip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: '#F2F2F7',
-  },
-  filterChipActive: {
-    backgroundColor: '#007AFF',
-  },
-  filterChipText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#8E8E93',
-  },
-  filterChipTextActive: {
+    fontSize: 24,
+    fontWeight: 'bold',
     color: '#fff',
   },
-  list: {
+  headerSubtitle: {
+    fontSize: 12,
+    color: '#999',
+    marginTop: 2,
+  },
+  listContent: {
     padding: 16,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#1a1a1a',
   },
-  bannerCard: {
+  loadingText: {
+    color: '#999',
+    marginTop: 12,
+    fontSize: 14,
+  },
+  promoCard: {
     backgroundColor: '#fff',
     borderRadius: 12,
     marginBottom: 16,
     overflow: 'hidden',
-    elevation: 2,
+    elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.25,
     shadowRadius: 4,
   },
-  backgroundImage: {
-    width: '100%',
-    height: 220,
-    position: 'absolute',
+  featuredBadge: {
+    backgroundColor: '#fbbf24',
+    paddingVertical: 8,
+    alignItems: 'center',
   },
-  fullImage: {
-    width: '100%',
-    height: 200,
+  featuredText: {
+    color: '#1a1a1a',
+    fontSize: 11,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
   },
-  overlay: {
-    padding: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    minHeight: 220,
+  premiumBadge: {
+    backgroundColor: '#8b5cf6',
+    paddingVertical: 8,
+    alignItems: 'center',
   },
-  providerName: {
-    fontSize: 12,
-    color: '#8E8E93',
-    textTransform: 'uppercase',
-    marginBottom: 8,
-    fontWeight: '600',
+  premiumText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+  },
+  cardContent: {
+    padding: 16,
   },
   title: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#1C1C1E',
+    color: '#1a1a1a',
+    marginBottom: 4,
+  },
+  supplierName: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  categoryTag: {
+    backgroundColor: '#e0f2fe',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 4,
+    alignSelf: 'flex-start',
     marginBottom: 12,
   },
-  description: {
-    fontSize: 15,
-    color: '#666',
-    marginBottom: 20,
-    lineHeight: 22,
+  categoryText: {
+    color: '#0369a1',
+    fontSize: 11,
+    fontWeight: '600',
   },
-  ctaButton: {
+  description: {
+    fontSize: 14,
+    color: '#4a4a4a',
+    lineHeight: 20,
+    marginBottom: 16,
+  },
+  promoCodeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#dbeafe',
+    borderWidth: 2,
+    borderColor: '#3b82f6',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+  },
+  promoCodeLeft: {
+    flex: 1,
+  },
+  promoCodeLabel: {
+    fontSize: 10,
+    color: '#1e40af',
+    fontWeight: 'bold',
+    marginBottom: 2,
+  },
+  promoCodeValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1e3a8a',
+  },
+  copyButton: {
+    padding: 8,
+  },
+  copyIcon: {
+    fontSize: 20,
+  },
+  copiedText: {
+    fontSize: 12,
+    color: '#16a34a',
+    fontWeight: 'bold',
+  },
+  expiryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#007AFF',
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignSelf: 'flex-start',
+    marginBottom: 16,
   },
-  ctaText: {
+  expiryIcon: {
+    fontSize: 16,
+    marginRight: 6,
+  },
+  expiryText: {
+    fontSize: 13,
+    color: '#666',
+  },
+  claimButton: {
+    backgroundColor: '#2563eb',
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  claimButtonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: '600',
-    marginRight: 4,
+    fontWeight: 'bold',
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#1a1a1a',
     padding: 32,
   },
   emptyIcon: {
@@ -375,14 +434,13 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#1C1C1E',
-    marginTop: 8,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 8,
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#8E8E93',
-    marginTop: 8,
+    color: '#999',
     textAlign: 'center',
   },
 });
