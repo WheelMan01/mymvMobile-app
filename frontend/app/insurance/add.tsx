@@ -178,15 +178,38 @@ export default function AddInsurance() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Expiry Date (YYYY-MM-DD) *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g., 2025-12-31"
-              value={expiryDate}
-              onChangeText={setExpiryDate}
-            />
-            <Text style={styles.hint}>Format: Year-Month-Day (e.g., 2025-12-31)</Text>
+            <Text style={styles.label}>Expiry Date *</Text>
+            <TouchableOpacity 
+              style={styles.dateButton}
+              onPress={() => setShowDatePicker(true)}
+            >
+              <Ionicons name="calendar-outline" size={20} color="#007AFF" />
+              <Text style={styles.dateButtonText}>{formatAustralianDate(expiryDate)}</Text>
+              <Ionicons name="chevron-down" size={20} color="#8E8E93" />
+            </TouchableOpacity>
+            <Text style={styles.hint}>Tap to change date</Text>
           </View>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={expiryDate}
+              mode="date"
+              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+              onChange={handleDateChange}
+              minimumDate={new Date()}
+            />
+          )}
+          
+          {showDatePicker && Platform.OS === 'ios' && (
+            <View style={styles.datePickerButtons}>
+              <TouchableOpacity 
+                style={styles.datePickerButton}
+                onPress={() => setShowDatePicker(false)}
+              >
+                <Text style={styles.datePickerButtonText}>Done</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
 
         <TouchableOpacity 
