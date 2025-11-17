@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   },
   expiryText: {
     fontSize: 13,
-    color: '#666',
+    color: '#fff',
   },
   claimButton: {
     backgroundColor: '#2563eb',
