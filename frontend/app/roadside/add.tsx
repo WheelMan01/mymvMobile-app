@@ -29,14 +29,14 @@ export default function AddRoadside() {
     try {
       await api.post('/roadside-assistance', {
         vehicle_id: selectedVehicleId,
-        provider_id: providerId,
-        membership_type: membershipType,
+        provider_id: 'default-provider-id',
+        provider_name: 'NRMA Roadside Assistance',
         membership_number: membershipNumber,
-        start_date: startDate.toISOString(),
-        end_date: endDate.toISOString(),
-        emergency_contact: emergencyContact,
-        coverage_details: coverageDetails || undefined,
-        membership_card: undefined
+        annual_premium: 149.00,
+        expiry_date: endDate.toISOString().split('T')[0],
+        plan_type: membershipType,
+        coverage_details: coverageDetails || '',
+        documents: []
       });
 
       Alert.alert('Success', 'Roadside assistance membership added successfully!', [
