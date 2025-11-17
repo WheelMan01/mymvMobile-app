@@ -103,12 +103,19 @@ export default function Dashboard() {
     }
   };
 
-  // Feature tile component with modern, slim icons
+  // Feature tile component with neon glow icons
   const FeatureTile = ({ title, icon, count, onPress, color = '#00BFFF' }: any) => (
     <TouchableOpacity style={styles.featureTile} onPress={onPress} activeOpacity={0.8}>
       <View style={styles.featureTileContent}>
         <View style={styles.iconContainer}>
-          <Ionicons name={icon} size={48} color={color} style={{ fontWeight: '300' }} />
+          {/* Multiple icon layers for neon glow effect */}
+          <View style={{ position: 'absolute' }}>
+            <Ionicons name={icon} size={52} color={color} style={{ opacity: 0.3 }} />
+          </View>
+          <View style={{ position: 'absolute' }}>
+            <Ionicons name={icon} size={50} color={color} style={{ opacity: 0.5 }} />
+          </View>
+          <Ionicons name={icon} size={48} color={color} />
         </View>
         <Text style={styles.featureTitle}>{title}</Text>
         {count !== undefined && count > 0 && (
