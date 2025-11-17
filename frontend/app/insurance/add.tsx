@@ -222,12 +222,20 @@ export default function AddInsurance() {
           <Text style={styles.sectionTitle}>Insurance Provider *</Text>
           <View style={styles.pickerContainer}>
             <Picker
-              selectedValue={provider}
-              onValueChange={(value) => setProvider(value)}
+              selectedValue={selectedProviderName}
+              onValueChange={(value) => {
+                setSelectedProviderName(value);
+                // Find the provider ID for the selected name
+                const provider = providers.find(p => p.name === value);
+                if (provider) {
+                  setSelectedProviderId(provider.id);
+                }
+              }}
               style={styles.picker}
             >
-              {insuranceProviders.map((providerName) => (
-                <Picker.Item key={providerName} label={providerName} value={providerName} />
+              <Picker.Item label="Select a provider..." value="" />
+              {providers.map((provider) => (
+                <Picker.Item key={provider.id} label={provider.name} value={provider.name} />
               ))}
             </Picker>
           </View>
