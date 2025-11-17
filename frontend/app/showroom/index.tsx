@@ -223,23 +223,10 @@ export default function ShowroomScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerTop}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => router.back()}
-          >
-            <Ionicons name="arrow-back" size={24} color="#FFF" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Showroom</Text>
-          <TouchableOpacity
-            style={styles.homeButton}
-            onPress={() => router.push('/')}
-          >
-            <Ionicons name="home" size={24} color="#FFF" />
-          </TouchableOpacity>
-        </View>
+      <AppHeader title="Showroom" />
+      
+      {/* Tabs */}
+      <View style={styles.tabsWrapper}>
         <View style={styles.tabContainer}>
           <TouchableOpacity
             style={[styles.tab, viewMode === 'all' && styles.activeTab]}
