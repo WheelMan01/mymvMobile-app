@@ -20,7 +20,7 @@ https://mobile-spec-sync.preview.emergentagent.com
 ## Files that must have this URL:
 
 1. `/app/frontend/.env`
-   - `EXPO_PUBLIC_BACKEND_URL=https://carmgmt-hub.preview.emergentagent.com`
+   - `EXPO_PUBLIC_BACKEND_URL=https://mobile-spec-sync.preview.emergentagent.com`
 
 2. `/app/frontend/backend-config.json`
    - `"backendUrl": null` (uses .env)
