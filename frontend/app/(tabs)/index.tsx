@@ -194,7 +194,7 @@ export default function Dashboard() {
           />
           <FeatureTile
             title="myFinance"
-            icon="cash-outline"
+            icon="logo-usd"
             count={stats.active_finance_products}
             color="#00BFFF"
             onPress={() => router.push('/finance')}
