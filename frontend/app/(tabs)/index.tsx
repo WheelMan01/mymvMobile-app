@@ -233,6 +233,12 @@ export default function Dashboard() {
 
         <View style={{ height: 40 }} />
       </ScrollView>
+
+      {/* Hamburger Menu */}
+      <HamburgerMenu 
+        visible={menuVisible} 
+        onClose={() => setMenuVisible(false)} 
+      />
     </ImageBackground>
   );
 }
