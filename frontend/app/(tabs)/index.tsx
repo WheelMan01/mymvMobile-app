@@ -180,21 +180,21 @@ export default function Dashboard() {
         <View style={styles.gridRow}>
           <FeatureTile
             title="myMV"
-            icon="car"
+            icon="car-outline"
             count={stats.total_vehicles}
             color="#00BFFF"
             onPress={() => router.push('/vehicles')}
           />
           <FeatureTile
             title="myInsurance"
-            icon="shield-checkmark"
+            icon="shield-checkmark-outline"
             count={stats.active_insurance_policies}
             color="#00BFFF"
             onPress={() => router.push('/insurance')}
           />
           <FeatureTile
             title="myFinance"
-            icon="cash"
+            icon="cash-outline"
             count={stats.active_finance_products}
             color="#00BFFF"
             onPress={() => router.push('/finance')}
@@ -205,20 +205,20 @@ export default function Dashboard() {
         <View style={styles.gridRow}>
           <FeatureTile
             title="myRoadside"
-            icon="car-sport"
+            icon="car-sport-outline"
             count={stats.active_roadside_memberships}
             color="#00BFFF"
             onPress={() => router.push('/roadside')}
           />
           <FeatureTile
             title="myService"
-            icon="construct"
+            icon="construct-outline"
             color="#00BFFF"
             onPress={() => router.push('/service-booking')}
           />
           <FeatureTile
             title="myMarket"
-            icon="cart"
+            icon="cart-outline"
             color="#00BFFF"
             onPress={() => router.push('/marketplace')}
           />
@@ -228,19 +228,19 @@ export default function Dashboard() {
         <View style={styles.gridRow}>
           <FeatureTile
             title="Showroom"
-            icon="storefront"
+            icon="storefront-outline"
             color="#00BFFF"
             onPress={() => router.push('/showroom')}
           />
           <FeatureTile
             title="Promotions"
-            icon="pricetag"
+            icon="pricetag-outline"
             color="#00BFFF"
             onPress={() => router.push('/promotions')}
           />
           <FeatureTile
             title="Logout"
-            icon="log-out"
+            icon="log-out-outline"
             color="#00BFFF"
             onPress={() => router.push('/auth/login')}
           />
