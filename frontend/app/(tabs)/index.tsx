@@ -248,10 +248,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 12,
-    paddingTop: 48,
+    paddingTop: 25,
     paddingBottom: 6,
     backgroundColor: '#007AFF',
-    marginBottom: 120,
+    marginBottom: 200,
   },
   menuButton: {
     padding: 4,
