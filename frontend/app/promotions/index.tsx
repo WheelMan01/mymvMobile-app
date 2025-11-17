@@ -323,12 +323,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1a1a1a',
+    color: '#fff',
     marginBottom: 4,
   },
   supplierName: {
     fontSize: 14,
-    color: '#666',
+    color: '#00BFFF',
     fontWeight: '600',
     marginBottom: 8,
   },
