@@ -37,19 +37,24 @@ export default function Profile() {
         {/* Options */}
         <View style={styles.optionsSection}>
           <ProfileOption
+            icon="settings-outline"
+            title="Settings"
+            onPress={() => router.push('/(tabs)/settings')}
+          />
+          <ProfileOption
             icon="person-outline"
             title="Edit Profile"
-            onPress={() => {}}
+            onPress={() => router.push('/(tabs)/settings')}
           />
           <ProfileOption
             icon="notifications-outline"
             title="Notifications"
-            onPress={() => {}}
+            onPress={() => router.push('/(tabs)/settings')}
           />
           <ProfileOption
             icon="lock-closed-outline"
             title="Privacy & Security"
-            onPress={() => {}}
+            onPress={() => router.push('/(tabs)/settings')}
           />
           <ProfileOption
             icon="help-circle-outline"
