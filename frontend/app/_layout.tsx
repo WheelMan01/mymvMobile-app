@@ -1,10 +1,12 @@
 import React from 'react';
 import { Stack } from 'expo-router';
-import { AuthProvider } from '../contexts/AuthContext';
+// TEMPORARILY DISABLED TO DEBUG BLACK SCREEN
+// import { AuthProvider } from '../contexts/AuthContext';
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
+    // TEMPORARILY REMOVED AuthProvider TO DEBUG
+    // <AuthProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen name="auth/login" />
@@ -12,6 +14,6 @@ export default function RootLayout() {
         <Stack.Screen name="auth/pin-login" />
         <Stack.Screen name="(tabs)" />
       </Stack>
-    </AuthProvider>
+    // </AuthProvider>
   );
 }
