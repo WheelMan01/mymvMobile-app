@@ -1,80 +1,81 @@
 <analysis>
-The trajectory documents a complex and volatile development cycle, primarily centered around resolving environmental issues caused by forking a project. The initial problem was a complete data mismatch, which the AI correctly traced to an incorrect  in the  file. The debugging process was tortuous, involving multiple incorrect backend URLs (, ) and persistent Metro bundler caching issues before the correct data-rich backend () was identified and configured.
+The trajectory details a volatile development cycle marked by persistent environmental and dependency issues. The core problem was a recurring loss of data after forking, which the AI correctly traced to an incorrect . A permanent solution was implemented by creating a  file to override the  variable, ensuring the app consistently points to the data-rich  backend.
 
-Following this fix, the task pivoted to implementing new features. First, a myService (Service Booking) feature was built out, including a list screen, a complex booking form, and a calendar picker with Australian date formatting. The work was then abruptly redirected to a Promotions page. The AI initially built the wrong version of this feature (a banner ad system) based on a confusing specification, but then corrected its mistake by implementing the *correct* Direct Promotions system, which includes promo codes and a copy-to-clipboard function. The final interaction involved fixing a crash by installing a missing package () and providing the user with detailed instructions on how to safely handle the next environment fork to prevent a recurrence of the initial data loss issues. The user's primary language is English.
+After resolving the data issue, the AI implemented a Vehicle Showroom feature. However, this work coincided with a critical, hard-to-diagnose Expo Go crash. The debugging process was extensive, involving misdiagnoses of caching and network tunnel issues. The true root cause was a series of package incompatibilities, primarily  and , which are unstable with the current Expo Go version. The AI eventually resolved this by downgrading the application to a stable stack: , , and .
+
+Frustrated with the ongoing Expo Go issues, the user has decided to pause fixing it and has redirected focus to implementing a Marketplace feature, for which the AI's last action was to create a comprehensive specification guide. The user's primary language is English. The next agent should respond in English.
 </analysis>
 
 <product_requirements>
-The project is the myMV Customer Mobile App, an Expo-based application for managing vehicles and related services. It integrates with a FastAPI backend, and the correct, data-rich URL for the current environment is .
+The project is the myMV Customer Mobile App, an Expo-based application for managing vehicles and related services. The application must consistently connect to the  backend.
 
-**Implemented Features:**
-
-1.  **Service Booking (myService):**
-    *   A list screen () fetches and displays existing service bookings from the  endpoint. Dates are displayed in Australian format (DD/MM/YYYY).
-    *   A form () allows users to book a new service.
-    *   The form includes a native calendar picker () for date selection, correctly handling both web and mobile platforms.
-
-2.  **Direct Promotions:**
-    *   A dedicated promotions screen () that fetches promo card data from the  endpoint.
-    *   It displays a single, scrollable list of promotions, matching the web application's design.
-    *   Features include Featured Offer and Premium Only badges, a promo code with a Copy to Clipboard button (using ), and a Claim Offer button that tracks clicks and opens an external link.
+**Implemented/Specified Features:**
+1.  **Service Booking**: Users can view existing service bookings and book new ones via a form with a native calendar picker.
+2.  **Direct Promotions**: A screen displays a list of promotions with a Copy to Clipboard feature.
+3.  **Vehicle Showroom**: A TikTok-style vertical scrolling feed for viewing user-uploaded and marketplace vehicles, with like, comment, and favorite functionality.
+4.  **Marketplace**: The most recent requirement is to build out the marketplace. It must display a combined list of vehicles from two sources:
+    *   **Customer Listings**: From .
+    *   **Dealer Ads**: From .
+    Dealer ads should be visually distinguished with a Dealer badge. The full specification for this has been documented.
 </product_requirements>
 
 <key_technical_concepts>
-- **Frontend:** React Native, Expo,  for file-based routing.
-- **API & State:**  and  for API calls,  for session management.
-- **Environment Management:** Critical debugging and configuration of  in  to handle forked environments.
-- **Cache Busting:** Aggressive clearing of Metro bundler cache (, ) and restarting Expo services (expo: ERROR (not running)
-expo: started).
-- **UI Components:** Use of ,  for forms, and  for user interaction.
+- **Environment Management**: A  file is used to persistently store the correct backend URL, overriding the  file to prevent data loss after environment forks.
+- **Dependency Management**: The project was stabilized by downgrading key packages to resolve a critical Expo Go crash. The current stable stack is React 18, Expo Router v3, and React Navigation v6.
+- **API Integration**:  is used for API calls, with session management handled by a React .
 </key_technical_concepts>
 
 <code_architecture>
-The application is a monorepo with an Expo frontend. Development has been focused on adding and correcting features within the frontend application directory.
+The application is a standard Expo project with a file-based routing system managed by .
 
 **Directory Structure:**
 
 
 -   ****
-    -   **Importance:** This file is the root cause of the major data and login issues. It defines the backend URL the app connects to.
-    -   **Changes:** The  was changed multiple times. It was ultimately set to the correct URL for this environment: . This resolved the data loss and authentication problems.
+    -   **Importance**: This file is the permanent fix to prevent data loss. It stores the correct backend URL, which is read by the application at runtime, taking precedence over the  file.
+    -   **Changes**: Created to hardcode . It was later updated with extensive comments to prevent accidental changes.
 
 -   ****
-    -   **Importance:** This screen lists all the user's service bookings.
-    -   **Changes:** The API call was updated from  to the correct  endpoint. The UI was updated to correctly map the API response fields ( instead of ) and to format the date string to an Australian format (DD/MM/YYYY).
+    -   **Importance**: Manages user authentication state and provides the API URL to the rest of the app.
+    -   **Changes**: Modified to import  and use its  value. It has fallback logic to use  if the JSON value is null.
 
 -   ****
-    -   **Importance:** This new screen contains the form for creating a new service booking.
-    -   **Changes:** Created from scratch based on a detailed specification. It was later modified to replace a simple text input for the date with a native calendar picker using , with platform-specific logic to ensure it works on both web and mobile.
+    -   **Importance**: The main screen for the Vehicle Showroom feature, designed as a TikTok-style vertical feed.
+    -   **Changes**: Created from scratch based on user specifications. It uses  for UI effects and includes a header with a back button.
 
 -   ****
-    -   **Importance:** Displays promotions to the user.
-    -   **Changes:** This file underwent a complete rewrite. The initial implementation (a tabbed banner system) was incorrect. It was replaced with the correct Direct Promotions system, which features a single list of promo cards, a dark theme, and functionality to copy promo codes to the clipboard. The package  was installed to support this.
+    -   **Importance**: This is a main tab screen that acts as a launchpad for discovery-related features.
+    -   **Changes**: A new  card was added to allow users to navigate to the new  screen.
 
 -   ****
-    -   **Importance:** Manages frontend dependencies.
-    -   **Changes:** The following packages were added to support new features: , , and .
+    -   **Importance**: Manages all frontend dependencies. It has been the source of and solution to critical app crashes.
+    -   **Changes**: This file has been heavily modified. After failed attempts to upgrade, it was ultimately downgraded to a stable configuration to fix a persistent Expo Go crash. Key versions include , , and .
+
+-   ****
+    -   **Importance**: This is the most recently created file. It is a complete and detailed specification for the Marketplace feature, including the Dealer Ads system.
+    -   **Changes**: Created from scratch. It defines the data models, all required API endpoints, and mobile implementation logic for fetching and combining customer listings and dealer ads into a single, unified view.
 </code_architecture>
 
 <pending_tasks>
-- **Implement Service Booking Details/Edit/Delete:** The specification included flows for viewing, editing, and deleting service bookings (e.g., a  screen), which have not been implemented.
-- **Fix Vehicle Detail Page:** The original task to fix the broken vehicle detail page () was superseded by other priorities and remains outstanding.
+- **Fix Expo Go Crash**: The user has paused this, but the underlying issue preventing Expo Go from working (likely related to package versions or build complexity) is the highest priority technical debt.
+- **Implement Service Booking Details**: The screens to view, edit, or delete a service booking have not been created.
+- **Fix Vehicle Detail Page**: The original task to fix the vehicle detail page is still outstanding.
+- **Seed Dealer Data**: The Dealer Showroom page is empty because the  collection in the database has no data.
 </pending_tasks>
 
 <current_work>
-The most recent work was a critical fix and consultation phase.
+The most recent work was a direct response to the user's request to pivot away from fixing the persistent Expo Go crash and instead focus on the Marketplace feature. The user provided specifications for a Dealer Marketplace system that needed to be integrated with the existing customer marketplace.
 
-First, the AI engineer completely rebuilt the Promotions page () to align with the correct specification for Direct Promotions. This involved replacing a tabbed Banner Ad system with a single-list Promo Card system, which includes a copy-to-clipboard feature for promo codes.
+The AI's last actions were to create and populate a comprehensive specification document: .
 
-Immediately after this rebuild, the app crashed due to a missing dependency. The final actions were:
-1.  **Installing the missing package:**  was added to .
-2.  **Restarting the Expo service:** expo: stopped
-expo: started was run to apply the change.
-3.  **Confirming the fix:** The user confirmed that worked.
+This document meticulously details the entire dealer ad system, including:
+-   The data model for dealer ads.
+-   The full set of public and dealer-authenticated API endpoints (, , etc.).
+-   Crucially, it provides a clear implementation plan for the mobile app to fetch data from two separate endpoints ( for customers and  for dealers), combine them into a single list, and render them with a Dealer badge to differentiate the ad types.
 
-The conversation then pivoted to the user's concern about future environment forks causing the same data loss issues. The AI's last action was providing a detailed Pre-Fork Checklist and Post-Fork Instructions to guide the user on how to safely manage the  in the  file during the next fork, thereby preventing a repeat of the initial problems.
+No code has been written for this implementation yet; the work concluded after the specification document was finalized.
 </current_work>
 
 <optional_next_step>
-Awaiting user's decision on whether to fork the environment now or continue with development. If continuing, I will ask whether to work on the Service Booking details page or the original Vehicle details page fix.
+Implement the Marketplace UI logic as defined in , starting with fetching and combining data from the two required API endpoints.
 </optional_next_step>
