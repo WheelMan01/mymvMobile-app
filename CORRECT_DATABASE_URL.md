@@ -26,7 +26,7 @@ https://mobile-spec-sync.preview.emergentagent.com
    - `"backendUrl": null` (uses .env)
 
 3. `/app/frontend/services/logoService.ts`
-   - Fallback: `https://carmgmt-hub.preview.emergentagent.com`
+   - Fallback: `https://mobile-spec-sync.preview.emergentagent.com`
 
 ## If login doesn't work:
 
