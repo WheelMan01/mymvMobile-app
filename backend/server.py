@@ -668,6 +668,286 @@ async def create_marketplace_listing(listing_data: dict, current_user: dict = De
         raise HTTPException(status_code=500, detail="Failed to create listing")
 
 
+# ===== SETTINGS ENDPOINTS =====
+
+# Account/Profile
+@api_router.put("/user/profile")
+async def update_user_profile(profile_data: ProfileUpdate, current_user: dict = Depends(get_current_user)):
+    """Update user profile information"""
+    user_id = current_user['user_id']
+    
+    update_dict = {}
+    if profile_data.first_name is not None:
+        update_dict['first_name'] = profile_data.first_name
+    if profile_data.last_name is not None:
+        update_dict['last_name'] = profile_data.last_name
+    if profile_data.email is not None:
+        # Check if email already exists
+        existing = await db.users.find_one({"email": profile_data.email, "_id": {"$ne": ObjectId(user_id)}})
+        if existing:
+            raise HTTPException(status_code=400, detail="Email already in use")
+        update_dict['email'] = profile_data.email
+    if profile_data.mobile is not None:
+        update_dict['mobile'] = profile_data.mobile
+    
+    if update_dict:
+        await db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {"$set": update_dict}
+        )
+    
+    return {"message": "Profile updated successfully"}
+
+
+# Security - Password Change
+@api_router.post("/user/change-password")
+async def change_password(password_data: PasswordChange, current_user: dict = Depends(get_current_user)):
+    """Change user password"""
+    user_id = current_user['user_id']
+    
+    # Get user from database
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Verify current password
+    if not verify_password(password_data.current_password, user['password']):
+        raise HTTPException(status_code=400, detail="Current password is incorrect")
+    
+    # Update password
+    new_hashed_password = hash_password(password_data.new_password)
+    await db.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {"password": new_hashed_password}}
+    )
+    
+    return {"message": "Password updated successfully"}
+
+
+# Notifications
+@api_router.get("/user/notification-preferences")
+async def get_notification_preferences(current_user: dict = Depends(get_current_user)):
+    """Get user notification preferences"""
+    user_id = current_user['user_id']
+    
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Get preferences or use defaults
+    preferences = user.get('notification_preferences', {
+        'sms': True,
+        'email': True,
+        'push': True,
+        'alert_reminders': True,
+        'service_reminders': True,
+        'marketing_emails': False
+    })
+    
+    return {"preferences": preferences}
+
+
+@api_router.put("/user/notification-preferences")
+async def update_notification_preferences(prefs: NotificationPreferences, current_user: dict = Depends(get_current_user)):
+    """Update user notification preferences"""
+    user_id = current_user['user_id']
+    
+    preferences_dict = prefs.model_dump()
+    
+    await db.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {"notification_preferences": preferences_dict}}
+    )
+    
+    return {
+        "message": "Notification preferences updated successfully",
+        "preferences": preferences_dict
+    }
+
+
+# Billing & Membership
+@api_router.post("/user/upgrade-subscription")
+async def upgrade_subscription(upgrade: SubscriptionUpgrade, current_user: dict = Depends(get_current_user)):
+    """Upgrade user subscription tier"""
+    user_id = current_user['user_id']
+    
+    valid_tiers = ["premium_monthly", "premium_annual"]
+    if upgrade.subscription_tier not in valid_tiers:
+        raise HTTPException(status_code=400, detail="Invalid subscription tier")
+    
+    await db.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {
+            "subscription_tier": upgrade.subscription_tier,
+            "subscription_status": "active"
+        }}
+    )
+    
+    return {
+        "message": f"Successfully upgraded to {upgrade.subscription_tier}",
+        "subscription_tier": upgrade.subscription_tier
+    }
+
+
+@api_router.post("/user/request-cancellation")
+async def request_cancellation(request: CancellationRequest, current_user: dict = Depends(get_current_user)):
+    """Request account cancellation"""
+    user_id = current_user['user_id']
+    
+    # Mark account as suspended
+    await db.users.update_one(
+        {"_id": ObjectId(user_id)},
+        {"$set": {
+            "subscription_status": "cancelled",
+            "cancellation_reason": request.reason,
+            "cancellation_date": datetime.utcnow()
+        }}
+    )
+    
+    return {
+        "message": "Your account has been suspended. Your data will be retained for a grace period before permanent deletion."
+    }
+
+
+# Transfers
+@api_router.get("/users/lookup/{member_number}")
+async def lookup_member(member_number: str, current_user: dict = Depends(get_current_user)):
+    """Lookup a member by member number"""
+    user = await db.users.find_one({"member_id": member_number})
+    if not user:
+        raise HTTPException(status_code=404, detail="Member not found")
+    
+    return {
+        "data": {
+            "user_id": str(user['_id']),
+            "first_name": user.get('first_name', ''),
+            "last_name": user.get('last_name', ''),
+            "email": user['email'],
+            "mobile": user.get('mobile', user.get('phone', '')),
+            "member_number": user['member_id']
+        }
+    }
+
+
+@api_router.post("/transfers/initiate")
+async def initiate_transfer(transfer: TransferInitiate, current_user: dict = Depends(get_current_user)):
+    """Initiate a vehicle transfer"""
+    user_id = current_user['user_id']
+    
+    # Verify user has premium subscription
+    user = await db.users.find_one({"_id": ObjectId(user_id)})
+    subscription_tier = user.get('subscription_tier', 'basic')
+    if subscription_tier not in ['premium_monthly', 'premium_annual']:
+        raise HTTPException(status_code=403, detail="Premium subscription required")
+    
+    # Verify vehicle exists and belongs to user
+    vehicle = await db.vehicles.find_one({
+        "_id": ObjectId(transfer.vehicle_id),
+        "user_id": user_id
+    })
+    if not vehicle:
+        raise HTTPException(status_code=400, detail="Vehicle not found or not owned by user")
+    
+    # Create transfer record
+    transfer_record = {
+        "vehicle_id": transfer.vehicle_id,
+        "from_user_id": user_id,
+        "new_owner_member_number": transfer.new_owner_member_number,
+        "new_owner_name": transfer.new_owner_name,
+        "new_owner_mobile": transfer.new_owner_mobile,
+        "new_owner_email": transfer.new_owner_email,
+        "status": "pending",
+        "created_at": datetime.utcnow()
+    }
+    
+    result = await db.transfers.insert_one(transfer_record)
+    
+    return {
+        "message": "Transfer request submitted successfully. The new owner will receive an email notification."
+    }
+
+
+@api_router.get("/transfers/pending")
+async def get_pending_transfers(current_user: dict = Depends(get_current_user)):
+    """Get user's pending transfers"""
+    user_id = current_user['user_id']
+    
+    transfers = await db.transfers.find({
+        "from_user_id": user_id,
+        "status": "pending"
+    }).to_list(100)
+    
+    # Enrich with vehicle data
+    result_transfers = []
+    for transfer in transfers:
+        vehicle = await db.vehicles.find_one({"_id": ObjectId(transfer['vehicle_id'])})
+        if vehicle:
+            result_transfers.append({
+                "id": str(transfer['_id']),
+                "vehicle": {
+                    "id": str(vehicle['_id']),
+                    "year": vehicle.get('year'),
+                    "make": vehicle.get('make'),
+                    "model": vehicle.get('model'),
+                    "rego": vehicle.get('rego')
+                },
+                "new_owner_name": transfer['new_owner_name'],
+                "new_owner_member_number": transfer['new_owner_member_number'],
+                "created_at": transfer['created_at'].isoformat()
+            })
+    
+    return {"data": {"transfers": result_transfers}}
+
+
+@api_router.get("/transfers/quarantined")
+async def get_quarantined_vehicles(current_user: dict = Depends(get_current_user)):
+    """Get user's quarantined vehicles"""
+    user_id = current_user['user_id']
+    
+    # Get vehicles that are marked for deletion (transferred but in grace period)
+    vehicles = await db.vehicles.find({
+        "user_id": user_id,
+        "status": "quarantined"
+    }).to_list(100)
+    
+    result_vehicles = []
+    for vehicle in vehicles:
+        result_vehicles.append({
+            "id": str(vehicle['_id']),
+            "year": vehicle.get('year'),
+            "make": vehicle.get('make'),
+            "model": vehicle.get('model'),
+            "rego": vehicle.get('rego'),
+            "quarantine_end_date": vehicle.get('quarantine_end_date', datetime.utcnow()).isoformat()
+        })
+    
+    return {"data": {"vehicles": result_vehicles}}
+
+
+@api_router.post("/transfers/{transfer_id}/reject")
+async def cancel_transfer(transfer_id: str, current_user: dict = Depends(get_current_user)):
+    """Cancel a pending transfer"""
+    user_id = current_user['user_id']
+    
+    # Verify transfer exists and belongs to user
+    transfer = await db.transfers.find_one({
+        "_id": ObjectId(transfer_id),
+        "from_user_id": user_id,
+        "status": "pending"
+    })
+    
+    if not transfer:
+        raise HTTPException(status_code=404, detail="Transfer not found")
+    
+    # Update transfer status
+    await db.transfers.update_one(
+        {"_id": ObjectId(transfer_id)},
+        {"$set": {"status": "cancelled"}}
+    )
+    
+    return {"message": "Transfer cancelled successfully"}
+
+
 # Include router
 app.include_router(api_router)
 
