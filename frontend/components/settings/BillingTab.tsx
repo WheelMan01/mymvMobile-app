@@ -14,9 +14,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import { useRouter } from 'expo-router';
 import axios from 'axios';
-import backendConfig from '../../backend-config.json';
 
-const API_URL = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
+
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://auto-specs-hub-1.preview.emergentagent.com';
 
 export default function BillingTab() {
   const { user, token, logout } = useAuth();

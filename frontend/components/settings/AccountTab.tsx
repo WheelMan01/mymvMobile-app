@@ -12,9 +12,9 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
-import backendConfig from '../../backend-config.json';
 
-const API_URL = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
+
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://auto-specs-hub-1.preview.emergentagent.com';
 
 export default function AccountTab() {
   const { user, token } = useAuth();
