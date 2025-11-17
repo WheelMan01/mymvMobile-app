@@ -324,7 +324,7 @@ const styles = StyleSheet.create({
   },
   countText: {
     fontSize: 11,
-    color: '#007AFF',
+    color: '#FFFFFF',
     fontWeight: '600',
   },
 });
