@@ -281,7 +281,8 @@ const styles = StyleSheet.create({
   gridRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    marginBottom: 20,
+    paddingHorizontal: 8,
   },
   featureTile: {
     width: (width - 64) / 3,
