@@ -4,12 +4,24 @@ import { AuthProvider } from '../contexts/AuthContext';
 
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="auth/login" />
-        <Stack.Screen name="test" />
-      </Stack>
-    </AuthProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="auth/login" options={{ headerShown: false }} />
+      <Stack.Screen name="auth/register" options={{ headerShown: false }} />
+      <Stack.Screen name="auth/pin-login" options={{ headerShown: false }} />
+      <Stack.Screen 
+        name="(tabs)" 
+        options={{ headerShown: false }}
+      />
+    </Stack>
   );
 }
+
+// Wrap the export with AuthProvider
+const WrappedLayout = () => (
+  <AuthProvider>
+    <RootLayout />
+  </AuthProvider>
+);
+
+export { WrappedLayout as default };
