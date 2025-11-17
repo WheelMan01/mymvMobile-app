@@ -113,7 +113,7 @@ export default function Vehicles() {
               style={styles.addVehicleButton}
               onPress={() => router.push('/vehicles/add')}
             >
-              <Ionicons name="add-circle" size={24} color="#007AFF" />
+              <Ionicons name="add-circle" size={24} color="#00BFFF" />
               <Text style={styles.addVehicleText}>Add New Vehicle</Text>
             </TouchableOpacity>
           }
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   addVehicleText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#007AFF',
+    color: '#00BFFF',
     marginLeft: 8,
   },
   vehicleCard: {
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
   addButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#00BFFF',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 24,

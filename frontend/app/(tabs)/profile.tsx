@@ -14,7 +14,7 @@ export default function Profile() {
     router.replace('/auth/login');
   };
 
-  const ProfileOption = ({ icon, title, onPress, color = '#007AFF' }: any) => (
+  const ProfileOption = ({ icon, title, onPress, color = '#00BFFF' }: any) => (
     <TouchableOpacity style={styles.option} onPress={onPress}>
       <Ionicons name={icon} size={24} color={color} />
       <Text style={[styles.optionText, { color }]}>{title}</Text>
@@ -29,7 +29,7 @@ export default function Profile() {
       <ScrollView style={styles.content}>
         {/* User Info */}
         <View style={styles.userSection}>
-          <Ionicons name="person-circle" size={80} color="#007AFF" />
+          <Ionicons name="person-circle" size={80} color="#00BFFF" />
           <Text style={styles.userName}>{user?.full_name || 'User'}</Text>
           <Text style={styles.userEmail}>{user?.email || 'user@example.com'}</Text>
         </View>

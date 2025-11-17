@@ -34,7 +34,7 @@ export default function Discover() {
           title="Vehicle Showroom"
           description="Browse vehicles in TikTok-style feed"
           icon="car-sport"
-          color="#007AFF"
+          color="#00BFFF"
           route="/showroom"
         />
 

@@ -52,7 +52,7 @@ export default function HamburgerMenu({ visible, onClose }: HamburgerMenuProps) 
           {/* Header */}
           <View style={styles.header}>
             <View style={styles.userInfo}>
-              <Ionicons name="person-circle" size={60} color="#007AFF" />
+              <Ionicons name="person-circle" size={60} color="#00BFFF" />
               <View style={styles.userDetails}>
                 <Text style={styles.userName}>{user?.full_name || 'User'}</Text>
                 <Text style={styles.userEmail}>{user?.email || 'user@example.com'}</Text>

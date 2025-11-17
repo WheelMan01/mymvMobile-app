@@ -108,7 +108,7 @@ export default function Roadside() {
           onPress={() => router.push(`/roadside/${membership.id}`)}
         >
           <Text style={styles.detailsButtonText}>View Details</Text>
-          <Ionicons name="chevron-forward" size={16} color="#007AFF" />
+          <Ionicons name="chevron-forward" size={16} color="#00BFFF" />
         </TouchableOpacity>
       </View>
     );
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   detailsButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#007AFF',
+    color: '#00BFFF',
     marginRight: 4,
   },
   emptyContainer: {

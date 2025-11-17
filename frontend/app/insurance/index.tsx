@@ -63,7 +63,7 @@ export default function Insurance() {
     const type = types[0]?.toLowerCase();
     switch (type) {
       case 'ctp': return '#34C759';
-      case 'comprehensive': return '#007AFF';
+      case 'comprehensive': return '#00BFFF';
       case 'third_party': return '#FF9500';
       default: return '#8E8E93';
     }
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   filterButtonActive: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#00BFFF',
   },
   filterText: {
     fontSize: 14,

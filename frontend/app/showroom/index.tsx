@@ -148,7 +148,7 @@ export default function ShowroomScreen() {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color="#00BFFF" />
       </View>
     );
   }
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.2)'
   },
   activeTab: {
-    backgroundColor: '#007AFF'
+    backgroundColor: '#00BFFF'
   },
   tabText: {
     color: '#FFF',
@@ -573,7 +573,7 @@ const styles = StyleSheet.create({
     marginBottom: 24
   },
   emptyButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#00BFFF',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8

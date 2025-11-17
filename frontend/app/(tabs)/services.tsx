@@ -34,7 +34,7 @@ export default function Services() {
           title="Service Booking"
           description="Book vehicle maintenance and repairs"
           icon="construct"
-          color="#007AFF"
+          color="#00BFFF"
           route="/service-booking"
         />
 

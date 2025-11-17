@@ -104,7 +104,7 @@ export default function Dashboard() {
   };
 
   // Feature tile component matching your web app design
-  const FeatureTile = ({ title, icon, count, onPress, color = '#007AFF' }: any) => (
+  const FeatureTile = ({ title, icon, count, onPress, color = '#00BFFF' }: any) => (
     <TouchableOpacity style={styles.featureTile} onPress={onPress} activeOpacity={0.7}>
       <View style={styles.featureTileContent}>
         <View style={[styles.iconContainer, { backgroundColor: 'rgba(0, 122, 255, 0.1)' }]}>
@@ -182,21 +182,21 @@ export default function Dashboard() {
             title="myMV"
             icon="car"
             count={stats.total_vehicles}
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/vehicles')}
           />
           <FeatureTile
             title="myInsurance"
             icon="shield-checkmark"
             count={stats.active_insurance_policies}
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/insurance')}
           />
           <FeatureTile
             title="myFinance"
             icon="cash"
             count={stats.active_finance_products}
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/finance')}
           />
         </View>
@@ -207,19 +207,19 @@ export default function Dashboard() {
             title="myRoadside"
             icon="car-sport"
             count={stats.active_roadside_memberships}
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/roadside')}
           />
           <FeatureTile
             title="myService"
             icon="construct"
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/service-booking')}
           />
           <FeatureTile
             title="myMarket"
             icon="cart"
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/marketplace')}
           />
         </View>
@@ -229,19 +229,19 @@ export default function Dashboard() {
           <FeatureTile
             title="Showroom"
             icon="storefront"
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/showroom')}
           />
           <FeatureTile
             title="Promotions"
             icon="pricetag"
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/promotions')}
           />
           <FeatureTile
             title="Logout"
             icon="log-out"
-            color="#007AFF"
+            color="#00BFFF"
             onPress={() => router.push('/auth/login')}
           />
         </View>
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#007AFF',
+    backgroundColor: '#00BFFF',
   },
   loadingText: {
     color: '#fff',
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: '#007AFF',
+    backgroundColor: '#00BFFF',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,

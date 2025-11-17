@@ -57,7 +57,7 @@ export default function ServiceBooking() {
     switch (status) {
       case 'Confirmed': return '#34C759';
       case 'Pending': return '#FF9500';
-      case 'In Progress': return '#007AFF';
+      case 'In Progress': return '#00BFFF';
       case 'Completed': return '#8E8E93';
       case 'Cancelled': return '#FF3B30';
       default: return '#8E8E93';
@@ -99,7 +99,7 @@ export default function ServiceBooking() {
 
       <View style={styles.viewButton}>
         <Text style={styles.viewButtonText}>View Details</Text>
-        <Ionicons name="chevron-forward" size={16} color="#007AFF" />
+        <Ionicons name="chevron-forward" size={16} color="#00BFFF" />
       </View>
     </TouchableOpacity>
   );
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
   viewButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#007AFF',
+    color: '#00BFFF',
     marginRight: 4,
   },
   emptyContainer: {

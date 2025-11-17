@@ -162,7 +162,7 @@ export default function Marketplace() {
           <View style={styles.priceRow}>
             <Text style={styles.price}>${listing.price.toLocaleString()}</Text>
             <TouchableOpacity style={styles.contactButton}>
-              <Ionicons name="chatbubble-outline" size={16} color="#007AFF" />
+              <Ionicons name="chatbubble-outline" size={16} color="#00BFFF" />
               <Text style={styles.contactButtonText}>Contact</Text>
             </TouchableOpacity>
           </View>
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1C1C1E',
   },
   filterChipActive: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#00BFFF',
   },
   filterChipText: {
     fontSize: 12,
@@ -421,13 +421,13 @@ const styles = StyleSheet.create({
   contactButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#007AFF20',
+    backgroundColor: '#00BFFF20',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
   },
   contactButtonText: {
-    color: '#007AFF',
+    color: '#00BFFF',
     fontSize: 14,
     fontWeight: '600',
     marginLeft: 6,
