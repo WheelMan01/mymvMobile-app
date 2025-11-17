@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import AppHeader from '../../components/AppHeader';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, Alert, Image, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
