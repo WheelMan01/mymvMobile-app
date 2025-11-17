@@ -258,7 +258,7 @@ export default function ShowroomScreen() {
       <ScrollView
         ref={scrollViewRef}
         pagingEnabled
-        showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={true}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         style={styles.verticalScroll}
