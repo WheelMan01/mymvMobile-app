@@ -282,7 +282,8 @@ const styles = StyleSheet.create({
     marginBottom: 280,
   },
   menuButton: {
-    padding: 4,
+    padding: 12,
+    marginLeft: -8,
   },
   brandSection: {
     flex: 1,
