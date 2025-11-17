@@ -505,61 +505,63 @@ class SettingsAPITester:
             self.log_test("Initiate Transfer", False, f"Exception: {str(e)}")
 
     def run_all_tests(self):
-        """Run all backend tests"""
-        print("=" * 60)
-        print("BACKEND API TESTING - PIN LOGIN INTEGRATION")
+        """Run all Settings API tests"""
+        print("🚀 STARTING SETTINGS API COMPREHENSIVE TESTING")
         print("=" * 60)
         print(f"Testing backend: {self.base_url}")
         print(f"Test email: {TEST_EMAIL}")
         print(f"Test PIN: {TEST_PIN}")
         print("=" * 60)
+        
+        # Step 1: Authenticate
+        if not self.authenticate():
+            print("❌ Authentication failed. Cannot proceed with tests.")
+            return False
+        
+        # Step 2: Run all tests
+        self.test_get_current_user()
+        self.test_update_profile()
+        self.test_change_password()
+        self.test_notification_preferences()
+        self.test_subscription_management()
+        self.test_vehicle_transfers()
+        
+        # Step 3: Summary
+        self.print_summary()
+        return True
+    
+    def print_summary(self):
+        """Print test summary"""
+        print("=" * 60)
+        print("📊 TEST SUMMARY")
+        print("=" * 60)
+        
+        total_tests = len(self.test_results)
+        passed_tests = sum(1 for result in self.test_results if result["success"])
+        failed_tests = total_tests - passed_tests
+        
+        print(f"Total Tests: {total_tests}")
+        print(f"✅ Passed: {passed_tests}")
+        print(f"❌ Failed: {failed_tests}")
+        print(f"Success Rate: {(passed_tests/total_tests)*100:.1f}%")
         print()
         
-        # Test sequence
-        tests = [
-            ("PIN Login Success", self.test_pin_login_success),
-            ("Vehicles Endpoint", self.test_vehicles_endpoint),
-            ("PIN Login Wrong PIN", self.test_pin_login_wrong_pin),
-            ("PIN Login Wrong Email", self.test_pin_login_wrong_email),
-            ("PIN Login Invalid Email Format", self.test_pin_login_invalid_email_format),
-            ("Old Format Check", self.test_old_pin_login_format),
-        ]
-        
-        passed = 0
-        total = len(tests)
-        
-        for test_name, test_func in tests:
-            try:
-                if test_func():
-                    passed += 1
-            except Exception as e:
-                self.log_test(test_name, False, f"Test crashed: {str(e)}")
-        
-        print("=" * 60)
-        print("TEST SUMMARY")
-        print("=" * 60)
-        print(f"Passed: {passed}/{total}")
-        print(f"Failed: {total - passed}/{total}")
-        print(f"Success Rate: {(passed/total)*100:.1f}%")
-        print()
-        
-        # Show failed tests
-        failed_tests = [r for r in self.test_results if not r["success"]]
-        if failed_tests:
-            print("FAILED TESTS:")
-            for test in failed_tests:
-                print(f"❌ {test['test']}: {test['details']}")
+        if failed_tests > 0:
+            print("❌ FAILED TESTS:")
+            for result in self.test_results:
+                if not result["success"]:
+                    print(f"   • {result['test']}: {result['details']}")
             print()
         
-        return passed == total
+        print("✅ PASSED TESTS:")
+        for result in self.test_results:
+            if result["success"]:
+                print(f"   • {result['test']}")
+
 
 if __name__ == "__main__":
-    tester = BackendTester()
+    tester = SettingsAPITester()
     success = tester.run_all_tests()
     
-    if success:
-        print("🎉 ALL TESTS PASSED - Backend integration working correctly!")
-        sys.exit(0)
-    else:
-        print("⚠️  SOME TESTS FAILED - Check details above")
+    if not success:
         sys.exit(1)
