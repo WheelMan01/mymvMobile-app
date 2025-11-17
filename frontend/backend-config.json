@@ -1,5 +1,5 @@
 {
-  "backendUrl": "https://vehicle-buddy-6.preview.emergentagent.com",
+  "backendUrl": "https://mobile-spec-sync.preview.emergentagent.com",
   "description": "PERMANENT BACKEND URL - This file survives forks and overrides .env",
   "lastUpdated": "2025-01-XX"
 }
