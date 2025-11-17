@@ -28,7 +28,29 @@ export default function AddInsurance() {
   useEffect(() => {
     // Initialize date text with default date
     setDateText(format(expiryDate, 'dd/MM/yyyy'));
+    loadProviders();
   }, []);
+
+  const loadProviders = async () => {
+    try {
+      setLoadingProviders(true);
+      const response = await api.get('/insurance-providers');
+      if (response.data.status === 'success') {
+        setProviders(response.data.data.providers);
+        // Set first provider as default if available
+        if (response.data.data.providers.length > 0) {
+          const firstProvider = response.data.data.providers[0];
+          setSelectedProviderId(firstProvider.id);
+          setSelectedProviderName(firstProvider.name);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading providers:', error);
+      Alert.alert('Error', 'Failed to load insurance providers');
+    } finally {
+      setLoadingProviders(false);
+    }
+  };
 
   // Format date input as user types
   const handleDateInput = (text: string) => {
