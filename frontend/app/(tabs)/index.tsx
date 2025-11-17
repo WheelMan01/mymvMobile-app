@@ -26,6 +26,7 @@ export default function Dashboard() {
   });
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [logoUrl, setLogoUrl] = useState<string | null>(null);
 
   const fetchStats = async () => {
     try {
