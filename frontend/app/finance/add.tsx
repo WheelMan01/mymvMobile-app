@@ -36,7 +36,7 @@ export default function AddFinance() {
 
     setLoading(true);
     try {
-      await api.post('/finance-loans', {
+      const response = await api.post('/finance-loans', {
         vehicle_id: selectedVehicleId,
         lender: 'Commonwealth Bank', // Default lender
         loan_type: 'personal',
@@ -51,13 +51,26 @@ export default function AddFinance() {
         documents: []
       });
 
-      Alert.alert('Success', 'Finance product added successfully!', [
-        { text: 'OK', onPress: () => router.back() }
-      ]);
+      // Explicitly check for success
+      if (response.status === 201 || response.status === 200) {
+        setLoading(false);
+        Alert.alert(
+          'Success', 
+          'Finance product added successfully!',
+          [
+            { 
+              text: 'OK', 
+              onPress: () => {
+                router.back();
+              }
+            }
+          ]
+        );
+      }
     } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.detail || 'Failed to add finance product');
-    } finally {
       setLoading(false);
+      console.error('Error adding finance:', error);
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to add finance product');
     }
   };
 
