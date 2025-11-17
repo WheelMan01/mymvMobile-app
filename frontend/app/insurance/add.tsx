@@ -34,15 +34,13 @@ export default function AddInsurance() {
   const loadProviders = async () => {
     try {
       setLoadingProviders(true);
-      const response = await api.get('/insurance-providers');
-      if (response.data.status === 'success') {
-        setProviders(response.data.data.providers);
-        // Set first provider as default if available
-        if (response.data.data.providers.length > 0) {
-          const firstProvider = response.data.data.providers[0];
-          setSelectedProviderId(firstProvider.id);
-          setSelectedProviderName(firstProvider.name);
-        }
+      const response = await api.get('/providers?provider_type=Insurance');
+      setProviders(response.data);
+      // Set first provider as default if available
+      if (response.data.length > 0) {
+        const firstProvider = response.data[0];
+        setSelectedProviderId(firstProvider.id);
+        setSelectedProviderName(firstProvider.name);
       }
     } catch (error) {
       console.error('Error loading providers:', error);
