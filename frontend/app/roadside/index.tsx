@@ -158,14 +158,14 @@ export default function Roadside() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1C1C1E',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5EA',
     paddingTop: 48,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   membershipCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     borderRadius: 12,
     padding: 20,
     marginBottom: 16,

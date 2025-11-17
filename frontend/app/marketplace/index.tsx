@@ -245,14 +245,14 @@ export default function Marketplace() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1C1C1E',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5EA',
     paddingTop: 48,
@@ -270,14 +270,14 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5EA',
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1C1C1E',
     borderRadius: 10,
     paddingHorizontal: 12,
     height: 40,
@@ -292,13 +292,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
     gap: 8,
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
   },
   filterChip: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1C1C1E',
   },
   filterChipActive: {
     backgroundColor: '#007AFF',
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   listingCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     borderRadius: 12,
     marginBottom: 16,
     overflow: 'hidden',
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1C1C1E',
     justifyContent: 'center',
     alignItems: 'center',
   },

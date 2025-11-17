@@ -76,7 +76,7 @@ export default function Profile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
   },
   content: {
     flex: 1,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   userSection: {
     alignItems: 'center',
     padding: 32,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1C1C1E',
   },
   userName: {
     fontSize: 24,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     borderBottomWidth: 1,
     borderBottomColor: '#E5E5EA',
   },

@@ -69,7 +69,7 @@ export default function Services() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
+    backgroundColor: '#1C1C1E',
   },
   content: {
     flex: 1,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     padding: 16,
     borderRadius: 12,
     marginBottom: 12,

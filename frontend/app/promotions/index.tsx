@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   promoCard: {
-    backgroundColor: '#fff',
+    backgroundColor: '#1C1C1E',
     borderRadius: 12,
     marginBottom: 16,
     overflow: 'hidden',
