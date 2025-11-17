@@ -173,15 +173,7 @@ export default function Marketplace() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#007AFF" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Marketplace</Text>
-        <TouchableOpacity onPress={() => router.push('/marketplace/sell')} style={styles.sellButton}>
-          <Ionicons name="add-circle" size={24} color="#007AFF" />
-        </TouchableOpacity>
-      </View>
+      <AppHeader title="Marketplace" />
 
       {/* Search Bar */}
       <View style={styles.searchContainer}>
