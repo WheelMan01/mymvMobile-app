@@ -32,9 +32,60 @@ export default function Marketplace() {
   const fetchListings = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/marketplace-listings');
-      setListings(response.data);
+      // Fetch customer listings
+      const customerResponse = await api.get('/marketplace/listings');
+      const customerListings = customerResponse.data?.data?.listings || [];
+      
+      // Fetch dealer ads
+      const dealerResponse = await api.get('/marketplace/dealer-ads');
+      const dealerAds = dealerResponse.data?.ads || [];
+      
+      // Normalize customer listings
+      const normalizedCustomer = customerListings.map((item: any) => ({
+        id: item.id,
+        vehicle_id: item.vehicle_id,
+        title: `${item.vehicle_details?.year || ''} ${item.vehicle_details?.make || ''} ${item.vehicle_details?.model || ''}`.trim(),
+        make: item.vehicle_details?.make || '',
+        model: item.vehicle_details?.model || '',
+        year: item.vehicle_details?.year || 0,
+        price: item.price || 0,
+        odometer: item.vehicle_details?.odometer || 0,
+        condition: item.condition || 'Used',
+        description: item.description || '',
+        images: item.photos || [],
+        contact_name: item.seller_info?.name || '',
+        contact_phone: item.seller_info?.phone || '',
+        listed_date: item.created_at,
+        source: 'customer'
+      }));
+      
+      // Normalize dealer ads
+      const normalizedDealer = dealerAds.map((item: any) => ({
+        id: item.id,
+        dealer_id: item.dealer_id,
+        dealer_name: item.dealer_name,
+        title: `${item.year || ''} ${item.make || ''} ${item.model || ''}`.trim(),
+        make: item.make || '',
+        model: item.model || '',
+        year: item.year || 0,
+        price: item.price || 0,
+        odometer: item.odometer || 0,
+        condition: 'Dealer',
+        description: item.description || '',
+        images: item.photos || [],
+        contact_name: item.dealer_name || '',
+        contact_phone: '',
+        listed_date: item.created_at,
+        source: 'dealer'
+      }));
+      
+      // Combine and sort by date (newest first)
+      const combined = [...normalizedCustomer, ...normalizedDealer];
+      combined.sort((a, b) => new Date(b.listed_date).getTime() - new Date(a.listed_date).getTime());
+      
+      setListings(combined);
     } catch (error: any) {
+      console.error('Error fetching listings:', error);
       Alert.alert('Error', 'Failed to load marketplace listings');
     } finally {
       setLoading(false);
