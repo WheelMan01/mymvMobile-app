@@ -142,7 +142,15 @@ export default function Dashboard() {
           </TouchableOpacity>
           
           <View style={styles.brandSection}>
-            <Text style={styles.brandText}>myMV</Text>
+            {logoUrl ? (
+              <Image
+                source={{ uri: logoUrl }}
+                style={styles.logo}
+                resizeMode="contain"
+              />
+            ) : (
+              <Text style={styles.brandText}>myMV</Text>
+            )}
           </View>
           
           <TouchableOpacity 
