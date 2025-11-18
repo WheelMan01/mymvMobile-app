@@ -146,7 +146,7 @@ export default function EditFinance() {
     console.log('✅ Validation passed, updating finance...');
     setLoading(true);
     try {
-      const response = await api.put(`/finance-products/${params.id}`, {
+      const response = await api.put(`/finance-loans/${params.id}`, {
         vehicle_id: selectedVehicleId,
         lender: selectedLenderName,
         loan_type: loanType,
