@@ -125,7 +125,17 @@ export default function EditFinance() {
   };
 
   const handleSubmit = async () => {
-    console.log('🔵 FINANCE SUBMIT CLICKED');
+    console.log('🔵 FINANCE UPDATE CLICKED');
+    console.log('Form values:', {
+      id: params.id,
+      selectedVehicleId,
+      selectedLenderName,
+      loanAmount,
+      interestRate,
+      termMonths,
+      monthlyPayment,
+      startDate: startDate.toISOString().split('T')[0]
+    });
     
     if (!selectedVehicleId || !selectedLenderName || !loanAmount || !interestRate || !termMonths || !monthlyPayment) {
       console.log('❌ Validation failed');
@@ -133,10 +143,10 @@ export default function EditFinance() {
       return;
     }
 
-    console.log('✅ Validation passed, submitting finance...');
+    console.log('✅ Validation passed, updating finance...');
     setLoading(true);
     try {
-      const response = await api.post('/finance-loans', {
+      const response = await api.put(`/finance-loans/${params.id}`, {
         vehicle_id: selectedVehicleId,
         lender: selectedLenderName,
         loan_type: loanType,
@@ -151,15 +161,25 @@ export default function EditFinance() {
         documents: []
       });
 
-      console.log('✅ Finance save successful, response:', response.status);
+      console.log('✅ Finance update successful, response:', response.status);
       setLoading(false);
-      console.log('🔙 Navigating back...');
-      router.back();
-      console.log('✅ Navigation complete');
+      Alert.alert(
+        'Success',
+        'Finance loan updated successfully!',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('🔙 Navigating back...');
+              router.back();
+            }
+          }
+        ]
+      );
     } catch (error: any) {
       setLoading(false);
-      console.error('❌ Error adding finance:', error);
-      const errorMessage = error.response?.data?.detail || error.message || 'Failed to add finance product';
+      console.error('❌ Error updating finance:', error);
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to update finance product';
       Alert.alert('Error', errorMessage);
     }
   };
