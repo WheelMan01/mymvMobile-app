@@ -252,7 +252,7 @@ export default function Finance() {
           onPress: async () => {
             try {
               console.log('🗑️ Deleting loan:', product.id);
-              const response = await api.delete(`/finance-products/${product.id}`);
+              const response = await api.delete(`/finance-loans/${product.id}`);
               console.log('✅ Delete response:', response);
               
               Alert.alert(
