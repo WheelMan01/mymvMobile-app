@@ -18,20 +18,28 @@ export default function EditRoadside() {
   const [selectedProviderId, setSelectedProviderId] = useState('');
   const [selectedProviderName, setSelectedProviderName] = useState('');
   
-  // Form state
-  const [selectedVehicleId, setSelectedVehicleId] = useState('');
-  const [membershipType, setMembershipType] = useState('basic');
-  const [membershipNumber, setMembershipNumber] = useState('');
-  const [annualPremium, setAnnualPremium] = useState('');
-  const [emergencyContact, setEmergencyContact] = useState('');
-  const [coverageDetails, setCoverageDetails] = useState('');
-  const [expiryDate, setExpiryDate] = useState(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000));
-  const [expiryDateText, setExpiryDateText] = useState(format(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), 'dd/MM/yyyy'));
+  // Form state - Initialize with params
+  const [selectedVehicleId, setSelectedVehicleId] = useState(params.vehicle_id as string || '');
+  const [membershipType, setMembershipType] = useState(params.plan_type as string || 'basic');
+  const [membershipNumber, setMembershipNumber] = useState(params.membership_number as string || '');
+  const [annualPremium, setAnnualPremium] = useState(params.annual_premium as string || '');
+  const [emergencyContact, setEmergencyContact] = useState(params.provider_phone as string || '');
+  const [coverageDetails, setCoverageDetails] = useState(params.coverage_details as string || '');
+  
+  // Initialize expiry date from params
+  const initExpiryDate = params.expiry_date ? new Date(params.expiry_date as string) : new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+  const [expiryDate, setExpiryDate] = useState(initExpiryDate);
+  const [expiryDateText, setExpiryDateText] = useState(format(initExpiryDate, 'dd/MM/yyyy'));
   const [loading, setLoading] = useState(false);
 
   // Fetch roadside providers on mount
   useEffect(() => {
     fetchRoadsideProviders();
+    // Set the provider after params are loaded
+    if (params.provider_id) {
+      setSelectedProviderId(params.provider_id as string);
+      setSelectedProviderName(params.provider_name as string || '');
+    }
   }, []);
 
   const fetchRoadsideProviders = async () => {
