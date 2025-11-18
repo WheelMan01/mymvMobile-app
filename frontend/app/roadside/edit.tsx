@@ -92,8 +92,9 @@ export default function EditRoadside() {
   };
 
   const handleSubmit = async () => {
-    console.log('🔵 ROADSIDE SUBMIT CLICKED');
+    console.log('🔵 ROADSIDE UPDATE CLICKED');
     console.log('Form values:', {
+      id: params.id,
       selectedVehicleId,
       selectedProviderId,
       selectedProviderName,
@@ -116,10 +117,10 @@ export default function EditRoadside() {
       return;
     }
 
-    console.log('✅ Validation passed, submitting roadside...');
+    console.log('✅ Validation passed, updating roadside...');
     setLoading(true);
     try {
-      const response = await api.post('/roadside-assistance', {
+      const response = await api.put(`/roadside-assistance/${params.id}`, {
         vehicle_id: selectedVehicleId,
         provider_id: selectedProviderId,
         provider_name: selectedProviderName,
@@ -132,15 +133,25 @@ export default function EditRoadside() {
         documents: []
       });
 
-      console.log('✅ Roadside save successful, response:', response.status);
+      console.log('✅ Roadside update successful, response:', response.status);
       setLoading(false);
-      console.log('🔙 Navigating back...');
-      router.back();
-      console.log('✅ Navigation complete');
+      Alert.alert(
+        'Success',
+        'Roadside assistance updated successfully!',
+        [
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('🔙 Navigating back...');
+              router.back();
+            }
+          }
+        ]
+      );
     } catch (error: any) {
       setLoading(false);
-      console.error('❌ Error adding roadside:', error);
-      const errorMessage = error.response?.data?.detail || error.message || 'Failed to add roadside membership';
+      console.error('❌ Error updating roadside:', error);
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to update roadside membership';
       Alert.alert('Error', errorMessage);
     }
   };
