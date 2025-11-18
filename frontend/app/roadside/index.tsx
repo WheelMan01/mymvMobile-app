@@ -232,42 +232,30 @@ export default function Roadside() {
   };
 
   const handleDelete = (membership: RoadsideMembership) => {
-    Alert.alert(
-      'Delete Roadside Assistance',
-      `Are you sure you want to delete this ${membership.provider_name} membership? This action cannot be undone.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              console.log('🗑️ Deleting membership:', membership.id);
-              const response = await api.delete(`/roadside-assistance/${membership.id}`);
-              console.log('✅ Delete response:', response);
-              
-              Alert.alert(
-                'Success',
-                'Roadside assistance deleted successfully',
-                [
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      // Refresh the list
-                      fetchMemberships();
-                    },
-                  },
-                ]
-              );
-            } catch (error: any) {
-              console.error('❌ Error deleting membership:', error);
-              const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete membership';
-              Alert.alert('Error', errorMessage);
-            }
-          },
-        },
-      ]
-    );
+    setMembershipToDelete(membership);
+    setDeleteDialogVisible(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!membershipToDelete) return;
+    
+    try {
+      console.log('🗑️ Deleting membership:', membershipToDelete.id);
+      await api.delete(`/roadside-assistance/${membershipToDelete.id}`);
+      console.log('✅ Membership deleted successfully');
+      setDeleteDialogVisible(false);
+      setMembershipToDelete(null);
+      fetchMemberships();
+    } catch (error: any) {
+      console.error('❌ Error deleting membership:', error);
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete membership';
+      Alert.alert('Error', errorMessage);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteDialogVisible(false);
+    setMembershipToDelete(null);
   };
 
   const DetailedMembershipCard = ({ membership }: { membership: RoadsideMembership }) => {
