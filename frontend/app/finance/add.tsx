@@ -24,6 +24,7 @@ export default function AddFinance() {
   const [termMonths, setTermMonths] = useState('');
   const [monthlyPayment, setMonthlyPayment] = useState('');
   const [startDate, setStartDate] = useState(new Date());
+  const [startDateText, setStartDateText] = useState(format(new Date(), 'dd/MM/yyyy'));
   const [accountNumber, setAccountNumber] = useState('');
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
