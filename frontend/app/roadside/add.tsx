@@ -278,6 +278,29 @@ export default function AddRoadside() {
           </View>
 
           <View style={styles.inputGroup}>
+            <Text style={styles.label}>Annual Premium ($) (Optional)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="e.g., 149.00"
+              value={annualPremium}
+              onChangeText={setAnnualPremium}
+              keyboardType="decimal-pad"
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Expiry Date (DD/MM/YYYY) *</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="DD/MM/YYYY"
+              value={expiryDateText}
+              onChangeText={formatExpiryDateInput}
+              keyboardType="numeric"
+              maxLength={10}
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
             <Text style={styles.label}>Emergency Contact Number *</Text>
             <TextInput
               style={styles.input}
@@ -289,10 +312,10 @@ export default function AddRoadside() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Coverage Details</Text>
+            <Text style={styles.label}>Coverage Details (Optional)</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
-              placeholder="Enter coverage details (optional)"
+              placeholder="Enter coverage details"
               value={coverageDetails}
               onChangeText={setCoverageDetails}
               multiline
