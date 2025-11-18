@@ -126,12 +126,12 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   title: {
-    fontSize: 36,
-    fontWeight: 'bold',
+    ...typography.h1,
     color: '#007AFF',
     marginBottom: 8,
   },
   subtitle: {
+    ...typography.body,
     fontSize: 16,
     color: '#666',
   },
