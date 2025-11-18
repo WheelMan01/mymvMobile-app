@@ -79,35 +79,42 @@ export default function AddFinance() {
   };
 
   const handleSubmit = async () => {
-    if (!selectedVehicleId || !loanAmount || !interestRate || !termMonths || !monthlyPayment) {
+    console.log('🔵 FINANCE SUBMIT CLICKED');
+    
+    if (!selectedVehicleId || !selectedLenderName || !loanAmount || !interestRate || !termMonths || !monthlyPayment) {
+      console.log('❌ Validation failed');
       Alert.alert('Error', 'Please fill in all required fields');
       return;
     }
 
+    console.log('✅ Validation passed, submitting finance...');
     setLoading(true);
     try {
-      await api.post('/finance-loans', {
+      const response = await api.post('/finance-loans', {
         vehicle_id: selectedVehicleId,
-        lender: 'Commonwealth Bank', // Default lender
-        loan_type: 'personal',
+        lender: selectedLenderName,
+        loan_type: loanType,
         loan_amount: parseFloat(loanAmount),
         interest_rate: parseFloat(interestRate),
         loan_term_months: parseInt(termMonths),
         monthly_payment: parseFloat(monthlyPayment),
         start_date: startDate.toISOString().split('T')[0],
         end_date: calculateEndDate().toISOString().split('T')[0],
-        account_number: '',
-        notes: '',
+        account_number: accountNumber || '',
+        notes: notes || '',
         documents: []
       });
 
-      Alert.alert('Success', 'Finance product added successfully!', [
-        { text: 'OK', onPress: () => router.back() }
-      ]);
-    } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.detail || 'Failed to add finance product');
-    } finally {
+      console.log('✅ Finance save successful, response:', response.status);
       setLoading(false);
+      console.log('🔙 Navigating back...');
+      router.back();
+      console.log('✅ Navigation complete');
+    } catch (error: any) {
+      setLoading(false);
+      console.error('❌ Error adding finance:', error);
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to add finance product';
+      Alert.alert('Error', errorMessage);
     }
   };
 
