@@ -211,13 +211,28 @@ export default function Roadside() {
   };
 
   const handleEdit = (membership: RoadsideMembership) => {
-    Alert.alert('Coming Soon', 'Edit functionality will be available soon.');
+    // Navigate to edit screen with membership data
+    router.push({
+      pathname: '/roadside/edit',
+      params: {
+        id: membership.id,
+        vehicle_id: membership.vehicle_id,
+        provider_id: membership.provider_id,
+        provider_name: membership.provider_name,
+        membership_number: membership.membership_number,
+        plan_type: membership.plan_type,
+        annual_premium: membership.annual_premium.toString(),
+        expiry_date: membership.expiry_date,
+        coverage_details: membership.coverage_details || '',
+        provider_phone: membership.provider_phone || '',
+      },
+    });
   };
 
   const handleDelete = (membership: RoadsideMembership) => {
     Alert.alert(
       'Delete Roadside Assistance',
-      'Are you sure you want to delete this roadside assistance membership? This action cannot be undone.',
+      `Are you sure you want to delete this ${membership.provider_name} membership? This action cannot be undone.`,
       [
         { text: 'Cancel', style: 'cancel' },
         {
@@ -225,12 +240,27 @@ export default function Roadside() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await api.delete(`/roadside-assistance/${membership.id}`);
-              Alert.alert('Success', 'Roadside assistance deleted successfully');
-              fetchMemberships();
-            } catch (error) {
-              console.error('Error deleting membership:', error);
-              Alert.alert('Error', 'Failed to delete membership');
+              console.log('🗑️ Deleting membership:', membership.id);
+              const response = await api.delete(`/roadside-assistance/${membership.id}`);
+              console.log('✅ Delete response:', response);
+              
+              Alert.alert(
+                'Success',
+                'Roadside assistance deleted successfully',
+                [
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      // Refresh the list
+                      fetchMemberships();
+                    },
+                  },
+                ]
+              );
+            } catch (error: any) {
+              console.error('❌ Error deleting membership:', error);
+              const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete membership';
+              Alert.alert('Error', errorMessage);
             }
           },
         },
