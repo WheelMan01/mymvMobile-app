@@ -175,6 +175,10 @@ export default function AddFinance() {
               <ActivityIndicator size="small" color="#FF9500" />
               <Text style={styles.loadingText}>Loading lenders...</Text>
             </View>
+          ) : lenders.length === 0 ? (
+            <View style={styles.emptyBox}>
+              <Text style={styles.emptyText}>No finance lenders available. Please add lenders in the admin panel first.</Text>
+            </View>
           ) : (
             <View style={styles.pickerContainer}>
               <Picker
