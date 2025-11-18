@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
 import { format } from 'date-fns';
@@ -46,6 +46,14 @@ export default function Insurance() {
       setLoading(false);
     }
   };
+
+  // Refresh data when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      console.log('📱 Insurance screen focused - refreshing data');
+      fetchPolicies();
+    }, [])
+  );
 
   useEffect(() => {
     fetchPolicies();
