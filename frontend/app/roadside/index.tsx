@@ -36,6 +36,8 @@ export default function Roadside() {
   const [vehicles, setVehicles] = useState<{ [key: string]: Vehicle }>({});
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [membershipToDelete, setMembershipToDelete] = useState<RoadsideMembership | null>(null);
 
   const fetchMemberships = async () => {
     setLoading(true);
