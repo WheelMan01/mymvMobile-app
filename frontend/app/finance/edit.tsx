@@ -17,22 +17,30 @@ export default function EditFinance() {
   const [loadingLenders, setLoadingLenders] = useState(true);
   const [selectedLenderName, setSelectedLenderName] = useState('');
   
-  // Form state
-  const [selectedVehicleId, setSelectedVehicleId] = useState('');
-  const [loanType, setLoanType] = useState('chattel-mortgage');
-  const [loanAmount, setLoanAmount] = useState('');
-  const [interestRate, setInterestRate] = useState('');
-  const [termMonths, setTermMonths] = useState('');
-  const [monthlyPayment, setMonthlyPayment] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [startDateText, setStartDateText] = useState(format(new Date(), 'dd/MM/yyyy'));
-  const [accountNumber, setAccountNumber] = useState('');
-  const [notes, setNotes] = useState('');
+  // Form state - Initialize with params
+  const [selectedVehicleId, setSelectedVehicleId] = useState(params.vehicle_id as string || '');
+  const [loanType, setLoanType] = useState(params.loan_type as string || 'chattel-mortgage');
+  const [loanAmount, setLoanAmount] = useState(params.loan_amount as string || '');
+  const [interestRate, setInterestRate] = useState(params.interest_rate as string || '');
+  const [termMonths, setTermMonths] = useState(params.loan_term_months as string || '');
+  const [monthlyPayment, setMonthlyPayment] = useState(params.monthly_payment as string || '');
+  
+  // Initialize start date from params
+  const initStartDate = params.start_date ? new Date(params.start_date as string) : new Date();
+  const [startDate, setStartDate] = useState(initStartDate);
+  const [startDateText, setStartDateText] = useState(format(initStartDate, 'dd/MM/yyyy'));
+  
+  const [accountNumber, setAccountNumber] = useState(params.account_number as string || '');
+  const [notes, setNotes] = useState(params.notes as string || '');
   const [loading, setLoading] = useState(false);
 
   // Fetch finance lenders on mount
   useEffect(() => {
     fetchFinanceLenders();
+    // Set the lender after params are loaded
+    if (params.lender) {
+      setSelectedLenderName(params.lender as string);
+    }
   }, []);
 
   // Auto-calculate monthly payment
