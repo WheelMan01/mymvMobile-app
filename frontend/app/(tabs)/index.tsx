@@ -373,12 +373,4 @@ const styles = StyleSheet.create({
     marginTop: 4,
     letterSpacing: 0.3,
   },
-  countBadge: {
-    marginTop: 4,
-  },
-  countText: {
-    fontSize: 11,
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
 });
