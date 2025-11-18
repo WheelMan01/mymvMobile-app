@@ -424,10 +424,13 @@ export default function Insurance() {
         {/* Add Policy Button */}
         <TouchableOpacity
           style={styles.addPolicyButton}
-          onPress={() => router.push('/insurance/add')}
+          onPress={() => router.push({
+            pathname: '/insurance/add',
+            params: { preselectedType: activeTab }
+          })}
         >
           <Ionicons name="add-circle" size={24} color="#00BFFF" />
-          <Text style={styles.addPolicyText}>Add New Policy</Text>
+          <Text style={styles.addPolicyText}>Add New {activeTab.replace('-', ' ').toUpperCase()} Policy</Text>
         </TouchableOpacity>
 
         {filteredPolicies.length === 0 ? (
