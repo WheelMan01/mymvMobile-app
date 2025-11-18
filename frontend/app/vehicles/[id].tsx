@@ -1,9 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ActivityIndicator, Alert, Dimensions } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 import api from '../../services/api';
 import { format } from 'date-fns';
+
+const { width } = Dimensions.get('window');
+
+interface VehiclePhoto {
+  id: string;
+  image_url: string;
+  caption?: string;
+  admin_approved: boolean;
+  upload_date: string;
+}
 
 interface Vehicle {
   id: string;
@@ -19,6 +30,9 @@ interface Vehicle {
   purchase_date?: string;
   purchase_price?: number;
   created_at: string;
+  show_in_showroom?: boolean;
+  showroom_admin_approved?: boolean;
+  photos?: VehiclePhoto[];
 }
 
 export default function VehicleDetail() {
