@@ -99,8 +99,10 @@ export default function VehicleDetail() {
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 0.8,
+        quality: 0.3,
         base64: true,
+        maxWidth: 1024,
+        maxHeight: 1024,
       });
 
       console.log('Image picker result:', result.canceled ? 'Canceled' : 'Selected');
