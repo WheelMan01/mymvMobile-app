@@ -127,7 +127,7 @@ export default function AddFinance() {
     console.log('✅ Validation passed, submitting finance...');
     setLoading(true);
     try {
-      const response = await api.post('/finance-products', {
+      const response = await api.post('/finance-loans', {
         vehicle_id: selectedVehicleId,
         lender: selectedLenderName,
         loan_type: loanType,
