@@ -294,7 +294,11 @@ export default function AddInsurance() {
 
         <TouchableOpacity 
           style={[styles.submitButton, loading && styles.submitButtonDisabled]}
-          onPress={handleSubmit}
+          onPress={() => {
+            console.log('🟢 BUTTON CLICKED - disabled:', loading || vehicles.length === 0);
+            console.log('Loading:', loading, 'Vehicles:', vehicles.length);
+            handleSubmit();
+          }}
           disabled={loading || vehicles.length === 0}
         >
           <Text style={styles.submitButtonText}>
