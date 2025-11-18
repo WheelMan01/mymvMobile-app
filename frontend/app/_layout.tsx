@@ -1,10 +1,5 @@
-import '../global.css';
-export { ErrorBoundary } from 'expo-router';
-
-export const unstable_settings = {
-  initialRouteName: 'index',
-};
+import { Slot } from 'expo-router';
 
 export default function RootLayout() {
-  return null;
+  return <Slot />;
 }
