@@ -129,7 +129,7 @@ Import stack:
 ```
 
 ### Backend Configuration
-- Backend URL: `https://auto-specs-hub-1.preview.emergentagent.com`
+- Backend URL: `https://mymv-auto-1.preview.emergentagent.com`
 - API calls work correctly (tested with curl)
 - Backend is functional and responsive
 

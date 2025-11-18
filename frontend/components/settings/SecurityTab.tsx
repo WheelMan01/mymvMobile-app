@@ -13,7 +13,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://auto-specs-hub-1.preview.emergentagent.com';
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://mymv-auto-1.preview.emergentagent.com';
 
 export default function SecurityTab() {
   const { token } = useAuth();

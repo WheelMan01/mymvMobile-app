@@ -1,77 +1,83 @@
 <analysis>
-The trajectory documents an extensive and often tumultuous development process, beginning with environment setup and culminating in detailed feature work. A recurring, critical theme is the struggle with the correct backend URL, causing repeated login failures and data inconsistencies. The user provided several different correct URLs throughout the conversation, leading to significant rework as the AI switched between , , , and finally . This was the primary source of user frustration and wasted cycles.
+The trajectory details a complex and often difficult development cycle. The initial task was to fix the success feedback on the Add Insurance form. This simple task was derailed by a series of major application-breaking issues, primarily stemming from a failed attempt to upgrade the Expo SDK and its dependencies (like React 19 and expo-router v6). This led to a prolonged debugging phase characterized by login failures, blank/black screens, and dependency conflicts.
 
-The initial work involved a complete UI/UX overhaul of the home screen, moving from a standard tab layout to a custom dashboard with a background image and a grid of styled icons. This involved numerous iterative design changes, including modernizing icons (solid -> outline -> neon glow -> reverted to outline).
+A recurring and critical problem was the inconsistent and incorrectly cached backend URL, which caused persistent login and data-fetching failures. The AI engineer spent significant effort diagnosing and fixing this, often by clearing Metro bundler caches and restarting services. After numerous failed attempts to fix the upgraded app, the engineer correctly decided to downgrade the dependencies back to a previously stable state, which resolved the core application crashes.
 
-A major development phase was the implementation of a comprehensive, multi-tabbed Settings page, for which the AI first created a detailed specification markdown file () and then built out both the necessary backend FastAPI endpoints and the frontend React Native components.
+With the app stabilized, the engineer successfully implemented the original requests: fixing the save-and-navigate behavior for the Insurance, Finance, and Roadside forms, adding dynamic provider lists, and implementing auto-refresh on list screens using . The latest request from the user is to build a detailed insurance summary page, for which they provided a comprehensive guide. The last action taken was creating the file for this new screen.
 
-The most recent work focuses on fixing forms for adding Insurance, Finance, and Roadside products. This has involved debugging broken date pickers (implementing platform-specific solutions and then a text-based auto-formatter) and fixing provider selection (moving from a hardcoded list to fetching from a newly-revealed API endpoint). The current task is to fix the Save Insurance functionality, which successfully saves to the backend but fails to provide any success feedback to the user.
-
-The user's primary language is English. The next agent should respond in English.
+The user's primary language is English. The next agent must respond in English.
 </analysis>
 
 <product_requirements>
-The myMV Customer Mobile App is an Expo-based tool for vehicle management. The primary, non-negotiable requirement is that the app must connect to the correct backend for all data operations. The designated backend URL has been a moving target, but the last confirmed working URL is .
+The myMV Customer Mobile App is a vehicle management tool built with Expo and a FastAPI backend. The core goal is to provide users with a central place to manage their vehicle-related products like insurance, finance, and roadside assistance.
 
-**Implemented Features:**
-1.  **Custom Dashboard UI**: The default tab navigation was replaced with a custom dashboard featuring a landscape background, a custom header, and a grid of styled, semi-transparent navigation icons. A global dark theme is in place.
-2.  **Settings Page**: A comprehensive, five-tab settings screen (, , , , ) has been implemented. This involved creating backend endpoints, Pydantic models, and frontend components using .
-3.  **Marketplace Fixes**: Resolved a bug where navigating to a vehicle detail page resulted in a white screen.
-4.  **Product Forms**: Began implementation of forms for adding Insurance, Finance, and Roadside assistance products.
+**Initial Request & Resolution:**
+The primary task was to fix the user experience in the Add Product forms (Insurance, Finance, Roadside). After saving, the app would stay on the form screen with no feedback. The implemented solution ensures that upon a successful save, the app navigates back to the respective list screen, which then auto-refreshes to show the new entry.
 
-**Current Request:**
-- Fix the Add Insurance form. While the data is now saving to the backend successfully, there is no visual feedback (success message or navigation) for the user upon successful submission. This fix should then be propagated to the Finance and Roadside forms.
+**Major Detour (App Instability):**
+A significant portion of the work involved recovering the app from a broken state caused by a problematic SDK upgrade. This led to a series of critical bugs including login failures, CORS errors, and app crashes (black/white screens), which have since been resolved by downgrading dependencies.
+
+**Current Feature Development:**
+The current task is to build a detailed view for insurance policies. When a user clicks on an insurance policy from the list, they should be taken to a new screen that displays comprehensive details and provides action buttons for: Calling the provider, visiting their website, renewing the policy, editing, and deleting the policy.
 </product_requirements>
 
 <key_technical_concepts>
-- **Backend Configuration**: A  file is used to forcibly override the backend URL, bypassing  and bundler caching issues, which were a major source of problems.
-- **API-Driven UI**: The app fetches dynamic data for logos, marketplace listings, and now, insurance providers from REST API endpoints.
-- **UI/UX Customization**: Heavy use of , custom components (), and  layout modifications (hiding default tab bar) to create a unique UI.
-- **Complex Form Handling**: Implementation of forms with client-side validation, date pickers, and dynamic data fetching for pickers (e.g., insurance providers).
+- **Dependency Management**: The project underwent a failed major version upgrade (Expo SDK 54, React 19) and a subsequent downgrade to restore stability. Careful management of , , and  versions is critical.
+- **State-driven Navigation**: Using  hook from React Navigation to trigger data refetches when a screen comes into focus, ensuring lists are always up-to-date.
+- **Dynamic Routing**: Using 's file-based routing to create dynamic detail pages, such as .
+- **API-Driven Forms**: Form pickers (e.g., Insurance Providers, Finance Lenders) are populated by fetching data from dedicated backend API endpoints.
 </key_technical_concepts>
 
 <code_architecture>
-The application is a full-stack project with an Expo (React Native) frontend and a FastAPI backend.
+The application is a full-stack project with a React Native (Expo) frontend and a Python (FastAPI) backend.
 
 **Directory Structure:**
 
 
 - ****
-  - **Importance**: This file became the ultimate source of truth for the backend URL, used to override stubborn caching of  variables. Its value is read by  to set the API base URL.
-  - **Changes**: This file was created and modified multiple times to point to different URLs. The final, correct URL is .
-
-- ****
-  - **Importance**: This is the file for the Add Insurance form and has been the focus of the most recent debugging efforts. It contains logic for form state, validation, date handling, and API submission.
-  - **Changes**: It has undergone significant changes: the date picker was implemented and fixed multiple times (for web vs. mobile and date formats), and the provider selection was changed from a hardcoded list to dynamically fetching from . Most recently, extensive  statements were added to debug the save functionality.
-
-- ****
-  - **Importance**: This context manages user authentication and provides the  API instance, which gets its base URL from  or . It's central to how the app communicates with the backend.
-  - **Changes**: It was frequently inspected to debug a persistent login issue caused by incorrect backend URLs.
+  - **Importance**: The form for adding a new insurance policy. It was the epicenter of the initial bug fixes.
+  - **Changes**: The  function was modified to remove the web-problematic  and now directly calls  upon successful API submission. The date picker was replaced with a formatted text input.
 
 - ** & **
-  - **Importance**: These files define the backend API.
-  - **Changes**: They were modified to add the full suite of endpoints and Pydantic models required for the multi-tabbed Settings page (profile updates, password changes, etc.).
+  - **Importance**: Forms for adding Finance and Roadside assistance products.
+  - **Changes**: They were updated to mirror the functionality of the insurance form, including fetching providers from an API (, ) and implementing the save and navigate back behavior.
+
+- ** &  & **
+  - **Importance**: These files display the lists of the user's respective products.
+  - **Changes**: The  hook was added to each file. This hook refetches the product list from the API every time the user navigates to the screen, ensuring newly added items are immediately visible.
 
 - ****
-    - **Importance**: This is the main dashboard screen.
-    - **Changes**: It was heavily modified for UI/UX, including icon style changes (outline, neon glow, and back to outline), tile design, and layout adjustments.
+  - **Importance**: The main dashboard/home screen of the application.
+  - **Changes**: The code for rendering the count badges on the navigation tiles was removed, as requested by the user, to simplify the UI.
 
+- ****
+  - **Importance**: This is the new, dynamically routed screen for displaying the details of a single insurance policy.
+  - **Changes**: This file was just created and is currently a placeholder. It is the focus of the current task.
+
+- ****
+  - **Importance**: Defines all frontend dependencies.
+  - **Changes**: This file was heavily modified during the SDK upgrade/downgrade cycle. It now contains the stable, downgraded versions of , , , etc., that are known to work.
 </code_architecture>
 
 <pending_tasks>
-- **Fix Finance & Roadside Forms**: Apply the same dynamic provider fetching and date-picker fixes to the Add Finance and Add Roadside Assistance forms.
-- **Review Full Settings Page**: The settings page was built but hasn't been fully tested by the user. A full review may be required.
-- **General Code Cleanup**: Remove the extensive  statements added for debugging the insurance form.
+- **Implement Typography System**: Apply the new system fonts ( for iOS,  for Android) and font weights across all ~30 files in the app, as per the phase-in plan.
+- **Propagate Detail Pages**: After completing the insurance detail page, create similar detail, edit, and delete functionality for the Finance and Roadside assistance sections.
 </pending_tasks>
 
 <current_work>
-The immediate task is fixing the user feedback mechanism on the **Add Insurance form** located at .
+The current task is the implementation of the **Insurance Policy Detail Screen**, based on a comprehensive guide provided by the user. The goal is to create a new page that a user navigates to when they tap on an insurance policy in the list.
 
-The previous engineer successfully debugged why the form wasn't saving, which was a combination of incorrect API endpoints and authentication issues related to the constantly changing database URL. The final state of that debugging effort confirmed, via a user-provided console screenshot, that the form **is now successfully saving the data**. The API call returns a  (Created), which is the correct success response.
+This new screen, located at , will display:
+- Vehicle information.
+- Policy details (number, premium, expiry).
+- An Expiring Soon status tag based on the expiry date.
+- Five action buttons: Call Provider, Visit Website, Renew Now, Edit Details, and Delete.
 
-However, the user sees nothing happen. The current problem is that the success-handling logic within the  function is not executing. This means the  message and the  call are not being triggered, leaving the user on the form with no indication that their action was successful. The last action taken by the previous engineer was to add extensive  statements to the  function to trace the execution flow and identify why the success block is being skipped.
+The implementation will involve fetching detailed policy data (including provider contact info which the backend auto-joins), vehicle data, and using React Native's  API for the call and website buttons. The Edit and Delete buttons will trigger navigation to an edit form or an API call to delete the policy, respectively.
+
+The previous engineer's last action was to create the placeholder file for this new screen: . The immediate next step is to make the items in the insurance list () tappable so they navigate to this new detail screen.
 </current_work>
 
 <optional_next_step>
-Fix the success-handling logic in the  function of  to ensure the success alert is displayed and the user is navigated away from the form after a successful save.
+Update  to wrap each list item in a  that navigates to the new detail screen , passing the  as a parameter.
 </optional_next_step>

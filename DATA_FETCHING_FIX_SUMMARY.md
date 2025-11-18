@@ -75,7 +75,7 @@ The frontend code was incorrectly trying to access `response.data` directly inst
 ## Testing Credentials
 - **Email**: `anthony@wheelsfinance.com.au`
 - **PIN**: `1234`
-- **Live Backend**: `https://autospecs.preview.emergentagent.com`
+- **Live Backend**: `https://mymv-auto-1.preview.emergentagent.com`
 
 ## API Testing Results
 
