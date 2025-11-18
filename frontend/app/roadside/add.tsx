@@ -212,6 +212,57 @@ export default function AddRoadside() {
           </View>
         </View>
 
+        {/* Roadside Provider */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Roadside Provider *</Text>
+          {loadingProviders ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="small" color="#FF3B30" />
+              <Text style={styles.loadingText}>Loading providers...</Text>
+            </View>
+          ) : providers.length === 0 ? (
+            <View style={styles.emptyBox}>
+              <Text style={styles.emptyText}>No roadside providers available. Please add providers in the admin panel first.</Text>
+            </View>
+          ) : (
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedProviderId}
+                onValueChange={(itemValue, itemIndex) => {
+                  setSelectedProviderId(itemValue);
+                  const provider = providers.find(p => p.id === itemValue);
+                  if (provider) {
+                    setSelectedProviderName(provider.name);
+                  }
+                }}
+                style={styles.picker}
+              >
+                <Picker.Item label="Select a provider" value="" />
+                {providers.map((provider) => (
+                  <Picker.Item key={provider.id} label={provider.name} value={provider.id} />
+                ))}
+              </Picker>
+            </View>
+          )}
+        </View>
+
+        {/* Plan Type */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Plan Type *</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={membershipType}
+              onValueChange={(itemValue) => setMembershipType(itemValue)}
+              style={styles.picker}
+            >
+              <Picker.Item label="Basic" value="basic" />
+              <Picker.Item label="Premium" value="premium" />
+              <Picker.Item label="Family" value="family" />
+              <Picker.Item label="Business" value="business" />
+            </Picker>
+          </View>
+        </View>
+
         {/* Membership Details */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Membership Details</Text>
