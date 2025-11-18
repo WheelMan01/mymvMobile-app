@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   input: {
+    ...typography.body,
     flex: 1,
     fontSize: 16,
     color: '#333',
@@ -180,9 +181,8 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   loginButtonText: {
+    ...typography.buttonLarge,
     color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
   },
   divider: {
     flexDirection: 'row',
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
   },
   dividerText: {
+    ...typography.caption,
     marginHorizontal: 16,
     color: '#666',
     fontSize: 14,
