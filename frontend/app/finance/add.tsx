@@ -47,15 +47,23 @@ export default function AddFinance() {
 
   const fetchFinanceLenders = async () => {
     try {
-      console.log('Fetching finance lenders...');
+      console.log('🔵 Fetching finance lenders from /api/finance-lenders...');
       const response = await api.get('/finance-lenders');
-      console.log('Finance lenders response:', response.data);
+      console.log('✅ Finance lenders response:', response);
+      console.log('Response data:', response.data);
+      console.log('Response status:', response.status);
       
-      if (response.data.status === 'success') {
+      if (response.data && response.data.status === 'success') {
+        console.log('✅ Lenders found:', response.data.data.lenders.length);
         setLenders(response.data.data.lenders);
+      } else {
+        console.log('❌ Unexpected response format:', response.data);
       }
     } catch (error) {
-      console.error('Error fetching finance lenders:', error);
+      console.error('❌ Error fetching finance lenders:', error);
+      console.error('Error response:', error.response);
+      console.error('Error status:', error.response?.status);
+      console.error('Error data:', error.response?.data);
     } finally {
       setLoadingLenders(false);
     }
