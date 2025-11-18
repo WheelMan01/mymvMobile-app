@@ -88,6 +88,7 @@ export default function VehicleDetail() {
 
   const pickAndUploadImage = async () => {
     try {
+      console.log('Starting image picker...');
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
         Alert.alert('Permission Required', 'Please grant camera roll permissions to upload photos');
@@ -102,20 +103,42 @@ export default function VehicleDetail() {
         base64: true,
       });
 
-      if (!result.canceled && result.assets[0].base64) {
+      console.log('Image picker result:', result.canceled ? 'Canceled' : 'Selected');
+
+      if (!result.canceled && result.assets[0]) {
         setUploading(true);
+        
+        if (!result.assets[0].base64) {
+          Alert.alert('Error', 'Failed to convert image to base64');
+          setUploading(false);
+          return;
+        }
+
+        console.log('Uploading photo for vehicle:', id);
+        console.log('Base64 length:', result.assets[0].base64.length);
         
         const payload = {
           image_base64: result.assets[0].base64,
         };
 
-        await api.post(`/vehicles/${id}/photos`, payload);
+        const response = await api.post(`/vehicles/${id}/photos`, payload);
+        console.log('Upload response:', response.data);
+        
         Alert.alert('Success', 'Photo uploaded successfully!');
         await fetchVehicleDetails();
       }
     } catch (error: any) {
       console.error('Error uploading photo:', error);
-      Alert.alert('Error', error.response?.data?.detail || 'Failed to upload photo');
+      console.error('Error details:', error.response?.data);
+      
+      let errorMessage = 'Failed to upload photo';
+      if (error.response?.data?.detail) {
+        errorMessage = error.response.data.detail;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      Alert.alert('Upload Error', errorMessage);
     } finally {
       setUploading(false);
     }
