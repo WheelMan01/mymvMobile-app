@@ -122,15 +122,14 @@ export default function AddInsurance() {
         documents: []
       });
 
-      Alert.alert('Success', 'Insurance policy added successfully!', [
-        { text: 'OK', onPress: () => router.back() }
-      ]);
+      // Success! Navigate back immediately (works better in web preview)
+      setLoading(false);
+      router.back();
     } catch (error: any) {
+      setLoading(false);
       console.error('Error adding insurance:', error);
       const errorMessage = error.response?.data?.detail || error.message || 'Failed to add insurance policy';
       Alert.alert('Error', errorMessage);
-    } finally {
-      setLoading(false);
     }
   };
 
