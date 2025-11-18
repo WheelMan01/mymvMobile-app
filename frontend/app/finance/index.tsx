@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import AppHeader from '../../components/AppHeader';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, RefreshControl, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, RefreshControl, Alert, Linking, ActivityIndicator } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
@@ -21,6 +21,18 @@ interface FinanceProduct {
   account_number?: string;
   notes?: string;
   documents?: string[];
+  lender_phone?: string;
+  lender_email?: string;
+  lender_website?: string;
+  lender_logo?: string;
+}
+
+interface Vehicle {
+  id: string;
+  rego_number: string;
+  make: string;
+  model: string;
+  year: number;
 }
 
 export default function Finance() {
