@@ -630,20 +630,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 15,
   },
-  refinanceButton: {
-    backgroundColor: '#FCD34D',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 16,
-    borderRadius: 12,
-    gap: 10,
-  },
-  refinanceButtonText: {
-    color: '#000',
-    fontWeight: '700',
-    fontSize: 16,
-  },
   editButton: {
     flex: 1,
     backgroundColor: '#1E293B',
