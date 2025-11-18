@@ -1,23 +1,10 @@
-import React from 'react';
-import { Stack } from 'expo-router';
-import { AuthProvider } from '../contexts/AuthContext';
+import '../global.css';
+export { ErrorBoundary } from 'expo-router';
 
-function RootLayoutNav() {
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="auth/login" />
-      <Stack.Screen name="auth/register" />
-      <Stack.Screen name="auth/pin-login" />
-      <Stack.Screen name="(tabs)" />
-    </Stack>
-  );
-}
+export const unstable_settings = {
+  initialRouteName: 'index',
+};
 
 export default function RootLayout() {
-  return (
-    <AuthProvider>
-      <RootLayoutNav />
-    </AuthProvider>
-  );
+  return null;
 }
