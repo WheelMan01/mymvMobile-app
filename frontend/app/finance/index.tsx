@@ -307,13 +307,10 @@ export default function Finance() {
       product.end_date
     );
 
-    if (!vehicle) {
-      return (
-        <View style={styles.card}>
-          <ActivityIndicator size="small" color="#00BFFF" />
-        </View>
-      );
-    }
+    // Show card with placeholder if vehicle not loaded yet
+    const vehicleDisplay = vehicle 
+      ? `${vehicle.rego_number} - ${vehicle.make} ${vehicle.model}`
+      : 'Loading vehicle...';
 
     return (
       <View style={styles.card}>
