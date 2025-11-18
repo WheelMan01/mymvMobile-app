@@ -312,33 +312,40 @@ export default function Roadside() {
 
         {/* Action Buttons */}
         <View style={styles.actions}>
+          {/* Emergency Call - Full Width */}
           <TouchableOpacity
             style={styles.emergencyCallButton}
             onPress={() => handleCallProvider(membership)}
           >
-            <Ionicons name="call" size={18} color="#fff" />
+            <Ionicons name="call" size={20} color="#fff" />
             <Text style={styles.emergencyButtonText}>Call Provider (24/7)</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.websiteButton} onPress={() => handleVisitWebsite(membership)}>
-            <Ionicons name="globe" size={18} color="#000" />
-            <Text style={styles.buttonText}>Visit Website</Text>
-          </TouchableOpacity>
+          {/* Secondary Actions - Two Column Grid */}
+          <View style={styles.secondaryActions}>
+            <TouchableOpacity style={styles.secondaryButton} onPress={() => handleVisitWebsite(membership)}>
+              <Ionicons name="globe-outline" size={20} color="#00BFFF" />
+              <Text style={styles.secondaryButtonText}>Website</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={styles.renewButton} onPress={() => handleRenewNow(membership)}>
-            <Ionicons name="refresh" size={18} color="#fff" />
-            <Text style={styles.renewButtonText}>Renew Now</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.secondaryButton} onPress={() => handleRenewNow(membership)}>
+              <Ionicons name="refresh-outline" size={20} color="#00BFFF" />
+              <Text style={styles.secondaryButtonText}>Renew</Text>
+            </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(membership)}>
-            <Ionicons name="create" size={18} color="#fff" />
-            <Text style={styles.editButtonText}>Edit Details</Text>
-          </TouchableOpacity>
+          {/* Edit and Delete - Two Column Grid */}
+          <View style={styles.secondaryActions}>
+            <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(membership)}>
+              <Ionicons name="create-outline" size={20} color="#10B981" />
+              <Text style={styles.editButtonText}>Edit</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(membership)}>
-            <Ionicons name="trash" size={18} color="#fff" />
-            <Text style={styles.deleteButtonText}>Delete</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.deleteButton} onPress={() => handleDelete(membership)}>
+              <Ionicons name="trash-outline" size={20} color="#EF4444" />
+              <Text style={styles.deleteButtonText}>Delete</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
