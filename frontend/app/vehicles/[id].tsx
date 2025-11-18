@@ -142,13 +142,23 @@ export default function VehicleDetail() {
       console.error('Error details:', error.response?.data);
       
       let errorMessage = 'Failed to upload photo';
-      if (error.response?.data?.detail) {
-        errorMessage = error.response.data.detail;
-      } else if (error.message) {
-        errorMessage = error.message;
-      }
       
-      Alert.alert('Upload Error', errorMessage);
+      // Check for 404 - endpoint doesn't exist
+      if (error.response?.status === 404) {
+        errorMessage = 'Photo upload feature is not yet available. The backend API endpoint needs to be implemented.';
+        Alert.alert(
+          'Feature Not Available',
+          'The photo upload feature requires backend API support that is currently being developed. Please check back later or contact support.',
+          [{ text: 'OK' }]
+        );
+      } else {
+        if (error.response?.data?.detail) {
+          errorMessage = error.response.data.detail;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        Alert.alert('Upload Error', errorMessage);
+      }
     } finally {
       setUploading(false);
     }
