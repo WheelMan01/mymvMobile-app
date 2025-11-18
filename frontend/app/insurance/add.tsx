@@ -385,6 +385,21 @@ const styles = StyleSheet.create({
   policyTypeTextActive: {
     color: '#fff',
   },
+  policyTypeDisplay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 16,
+    borderWidth: 2,
+    borderColor: '#E5E5EA',
+  },
+  policyTypeDisplayText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#1C1C1E',
+    marginLeft: 12,
+  },
   inputGroup: {
     marginBottom: 16,
   },
