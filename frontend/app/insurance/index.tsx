@@ -436,6 +436,26 @@ export default function Insurance() {
           ))
         )}
       </ScrollView>
+
+      {/* Custom Delete Confirmation Dialog */}
+      {deleteDialogVisible && policyToDelete && (
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Delete Insurance Policy</Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to delete this {policyToDelete.provider} policy? This action cannot be undone.
+            </Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.modalCancelButton} onPress={cancelDelete}>
+                <Text style={styles.modalCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalDeleteButton} onPress={confirmDelete}>
+                <Text style={styles.modalDeleteText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
