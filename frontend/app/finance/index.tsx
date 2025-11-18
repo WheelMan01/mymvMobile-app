@@ -319,7 +319,7 @@ export default function Finance() {
           <View style={styles.headerLeft}>
             <Ionicons name="card" size={28} color="#FCD34D" />
             <Text style={styles.headerTitle}>
-              {vehicle.rego_number} - {vehicle.make} {vehicle.model}
+              {vehicleDisplay}
             </Text>
           </View>
         </View>
