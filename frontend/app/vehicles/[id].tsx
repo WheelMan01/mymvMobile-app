@@ -151,26 +151,96 @@ export default function VehicleDetail() {
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Vehicle Image */}
-        <View style={styles.imageContainer}>
-          {vehicle.image ? (
-            <Image 
-              source={{ uri: vehicle.image }} 
-              style={styles.vehicleImage} 
-              resizeMode="cover"
-              onError={(error) => {
-                console.log('Failed to load vehicle image:', vehicle.image, error.nativeEvent);
-              }}
-              onLoad={() => {
-                console.log('Successfully loaded vehicle image:', vehicle.image);
-              }}
-            />
+        {/* Photo Carousel or Placeholder */}
+        <View style={styles.photoCarouselContainer}>
+          {vehicle.photos && vehicle.photos.length > 0 ? (
+            <>
+              <ScrollView
+                horizontal
+                pagingEnabled
+                showsHorizontalScrollIndicator={false}
+                onScroll={handlePhotoScroll}
+                scrollEventThrottle={16}
+                style={styles.carousel}
+              >
+                {vehicle.photos.map((photo, index) => (
+                  <Image
+                    key={photo.id}
+                    source={{ uri: photo.image_url }}
+                    style={styles.carouselImage}
+                    resizeMode="cover"
+                  />
+                ))}
+              </ScrollView>
+              
+              {/* Photo Counter */}
+              <View style={styles.photoCounter}>
+                <Text style={styles.photoCounterText}>
+                  {currentPhotoIndex + 1} / {vehicle.photos.length}
+                </Text>
+              </View>
+
+              {/* Photo Indicators */}
+              <View style={styles.photoIndicators}>
+                {vehicle.photos.map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.indicator,
+                      index === currentPhotoIndex && styles.activeIndicator,
+                    ]}
+                  />
+                ))}
+              </View>
+            </>
           ) : (
             <View style={styles.imagePlaceholder}>
-              <Ionicons name="car" size={80} color="#8E8E93" />
-              <Text style={styles.placeholderText}>No image available</Text>
+              <Ionicons name="camera-outline" size={80} color="#8E8E93" />
+              <Text style={styles.placeholderText}>No photos yet</Text>
+              <Text style={styles.placeholderSubtext}>Upload your first photo</Text>
             </View>
           )}
+
+          {/* Upload Photo Button - Floating */}
+          <TouchableOpacity
+            style={styles.uploadPhotoButton}
+            onPress={pickAndUploadImage}
+            disabled={uploading}
+          >
+            {uploading ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <Ionicons name="camera" size={24} color="#fff" />
+            )}
+          </TouchableOpacity>
+        </View>
+
+        {/* Showroom Toggle Card */}
+        <View style={styles.showroomCard}>
+          <View style={styles.showroomInfo}>
+            <Ionicons name="star" size={24} color="#FFD60A" />
+            <View style={styles.showroomTextContainer}>
+              <Text style={styles.showroomTitle}>Showroom Status</Text>
+              <Text style={styles.showroomStatus}>
+                {vehicle.showroom_admin_approved
+                  ? '✅ Approved & Live'
+                  : vehicle.show_in_showroom
+                  ? '⏳ Pending Approval'
+                  : '❌ Not in Showroom'}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            style={[
+              styles.showroomButton,
+              vehicle.show_in_showroom && styles.showroomButtonActive,
+            ]}
+            onPress={toggleShowroom}
+          >
+            <Text style={styles.showroomButtonText}>
+              {vehicle.show_in_showroom ? 'Remove' : 'Add to Showroom'}
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Vehicle Name */}
