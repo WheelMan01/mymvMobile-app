@@ -331,25 +331,6 @@ export default function VehicleDetail() {
           </View>
         )}
 
-        {/* Vehicle Photos & Showroom */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Photos & Showroom</Text>
-          
-          <TouchableOpacity 
-            style={styles.actionCard} 
-            onPress={() => router.push(`/vehicles/photos/${id}`)}
-          >
-            <View style={styles.actionIcon}>
-              <Ionicons name="images" size={24} color="#00BFFF" />
-            </View>
-            <View style={styles.actionContent}>
-              <Text style={styles.actionTitle}>Manage Photos</Text>
-              <Text style={styles.actionSubtitle}>Upload and manage vehicle photos</Text>
-            </View>
-            <Ionicons name="chevron-forward" size={20} color="#C7C7CC" />
-          </TouchableOpacity>
-        </View>
-
         {/* Quick Actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Related Services</Text>
