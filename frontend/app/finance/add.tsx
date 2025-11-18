@@ -495,4 +495,11 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
     paddingTop: 12,
   },
+  emptyBox: {
+    backgroundColor: '#FFF9E6',
+    borderRadius: 8,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#FFD700',
+  },
 });
