@@ -77,6 +77,34 @@ export default function AddFinance() {
     return parseFloat(payment.toFixed(2));
   };
 
+  const formatStartDateInput = (text: string) => {
+    const cleaned = text.replace(/[^\d]/g, '');
+    let formatted = cleaned;
+    
+    if (cleaned.length >= 2) {
+      formatted = cleaned.slice(0, 2) + '/' + cleaned.slice(2);
+    }
+    if (cleaned.length >= 4) {
+      formatted = cleaned.slice(0, 2) + '/' + cleaned.slice(2, 4) + '/' + cleaned.slice(4, 8);
+    }
+    
+    setStartDateText(formatted);
+    
+    if (cleaned.length === 8) {
+      try {
+        const day = parseInt(cleaned.slice(0, 2));
+        const month = parseInt(cleaned.slice(2, 4)) - 1;
+        const year = parseInt(cleaned.slice(4, 8));
+        const date = new Date(year, month, day);
+        if (!isNaN(date.getTime())) {
+          setStartDate(date);
+        }
+      } catch (e) {
+        console.log('Invalid date');
+      }
+    }
+  };
+
   const calculateEndDate = () => {
     if (termMonths) {
       const months = parseInt(termMonths);
