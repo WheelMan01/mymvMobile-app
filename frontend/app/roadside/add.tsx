@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useVehicles } from '../../hooks/useVehicles';
@@ -9,43 +10,113 @@ import { format } from 'date-fns';
 export default function AddRoadside() {
   const router = useRouter();
   const { vehicles } = useVehicles();
+  
+  // Providers state
+  const [providers, setProviders] = useState([]);
+  const [loadingProviders, setLoadingProviders] = useState(true);
+  const [selectedProviderId, setSelectedProviderId] = useState('');
+  const [selectedProviderName, setSelectedProviderName] = useState('');
+  
+  // Form state
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
-  const [providerId, setProviderId] = useState('default-provider');
-  const [membershipType, setMembershipType] = useState<'Basic' | 'Premium'>('Basic');
+  const [membershipType, setMembershipType] = useState('basic');
   const [membershipNumber, setMembershipNumber] = useState('');
+  const [annualPremium, setAnnualPremium] = useState('');
   const [emergencyContact, setEmergencyContact] = useState('');
   const [coverageDetails, setCoverageDetails] = useState('');
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000));
+  const [expiryDate, setExpiryDate] = useState(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000));
+  const [expiryDateText, setExpiryDateText] = useState(format(new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), 'dd/MM/yyyy'));
   const [loading, setLoading] = useState(false);
 
+  // Fetch roadside providers on mount
+  useEffect(() => {
+    fetchRoadsideProviders();
+  }, []);
+
+  const fetchRoadsideProviders = async () => {
+    try {
+      console.log('🔵 Fetching roadside providers from /api/roadside-providers...');
+      const response = await api.get('/roadside-providers');
+      console.log('✅ Roadside providers response:', response);
+      console.log('Response data:', response.data);
+      
+      if (response.data && response.data.status === 'success') {
+        console.log('✅ Providers found:', response.data.data.providers.length);
+        setProviders(response.data.data.providers);
+      } else {
+        console.log('❌ Unexpected response format:', response.data);
+      }
+    } catch (error) {
+      console.error('❌ Error fetching roadside providers:', error);
+      console.error('Error response:', error.response);
+    } finally {
+      setLoadingProviders(false);
+    }
+  };
+
+  const formatExpiryDateInput = (text: string) => {
+    const cleaned = text.replace(/[^\d]/g, '');
+    let formatted = cleaned;
+    
+    if (cleaned.length >= 2) {
+      formatted = cleaned.slice(0, 2) + '/' + cleaned.slice(2);
+    }
+    if (cleaned.length >= 4) {
+      formatted = cleaned.slice(0, 2) + '/' + cleaned.slice(2, 4) + '/' + cleaned.slice(4, 8);
+    }
+    
+    setExpiryDateText(formatted);
+    
+    if (cleaned.length === 8) {
+      try {
+        const day = parseInt(cleaned.slice(0, 2));
+        const month = parseInt(cleaned.slice(2, 4)) - 1;
+        const year = parseInt(cleaned.slice(4, 8));
+        const date = new Date(year, month, day);
+        if (!isNaN(date.getTime())) {
+          setExpiryDate(date);
+        }
+      } catch (e) {
+        console.log('Invalid date');
+      }
+    }
+  };
+
   const handleSubmit = async () => {
-    if (!selectedVehicleId || !membershipNumber || !emergencyContact) {
-      Alert.alert('Error', 'Please fill in all required fields');
+    console.log('🔵 ROADSIDE SUBMIT CLICKED');
+    
+    if (!selectedVehicleId || !selectedProviderId || !membershipNumber || !emergencyContact) {
+      console.log('❌ Validation failed');
+      Alert.alert('Error', 'Please fill in all required fields (Vehicle, Provider, Membership Number, Emergency Contact)');
       return;
     }
 
+    console.log('✅ Validation passed, submitting roadside...');
     setLoading(true);
     try {
-      await api.post('/roadside-assistance', {
+      const response = await api.post('/roadside-assistance', {
         vehicle_id: selectedVehicleId,
-        provider_id: 'default-provider-id',
-        provider_name: 'NRMA Roadside Assistance',
+        provider_id: selectedProviderId,
+        provider_name: selectedProviderName,
         membership_number: membershipNumber,
-        annual_premium: 149.00,
-        expiry_date: endDate.toISOString().split('T')[0],
+        annual_premium: annualPremium ? parseFloat(annualPremium) : 149.00,
+        expiry_date: expiryDate.toISOString().split('T')[0],
         plan_type: membershipType,
         coverage_details: coverageDetails || '',
+        emergency_contact: emergencyContact,
         documents: []
       });
 
-      Alert.alert('Success', 'Roadside assistance membership added successfully!', [
-        { text: 'OK', onPress: () => router.back() }
-      ]);
-    } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.detail || 'Failed to add roadside membership');
-    } finally {
+      console.log('✅ Roadside save successful, response:', response.status);
       setLoading(false);
+      console.log('🔙 Navigating back...');
+      router.back();
+      console.log('✅ Navigation complete');
+    } catch (error: any) {
+      setLoading(false);
+      console.error('❌ Error adding roadside:', error);
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to add roadside membership';
+      Alert.alert('Error', errorMessage);
     }
   };
 
