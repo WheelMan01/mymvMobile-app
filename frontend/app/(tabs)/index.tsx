@@ -104,7 +104,7 @@ export default function Dashboard() {
   };
 
   // Feature tile component with modern, slim icons
-  const FeatureTile = ({ title, icon, count, onPress, color = '#00BFFF', customIcon }: any) => (
+  const FeatureTile = ({ title, icon, onPress, color = '#00BFFF', customIcon }: any) => (
     <TouchableOpacity style={styles.featureTile} onPress={onPress} activeOpacity={0.8}>
       <View style={styles.featureTileContent}>
         <View style={styles.iconContainer}>
@@ -115,11 +115,6 @@ export default function Dashboard() {
           )}
         </View>
         <Text style={styles.featureTitle}>{title}</Text>
-        {count !== undefined && count > 0 && (
-          <View style={styles.countBadge}>
-            <Text style={styles.countText}>({count})</Text>
-          </View>
-        )}
       </View>
     </TouchableOpacity>
   );
