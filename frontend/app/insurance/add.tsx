@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useVehicles } from '../../hooks/useVehicles';
 import api from '../../services/api';
@@ -9,9 +9,20 @@ import { format } from 'date-fns';
 
 export default function AddInsurance() {
   const router = useRouter();
+  const params = useLocalSearchParams();
   const { vehicles } = useVehicles();
+  
+  // Map tab types to form types
+  const getInitialPolicyType = (): 'CTP' | 'Comprehensive' | 'Third Party' => {
+    const preselected = params.preselectedType as string;
+    if (preselected === 'ctp') return 'CTP';
+    if (preselected === 'comprehensive') return 'Comprehensive';
+    if (preselected === 'third-party') return 'Third Party';
+    return 'Comprehensive'; // default
+  };
+  
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
-  const [policyType, setPolicyType] = useState<'CTP' | 'Comprehensive' | 'Third Party'>('Comprehensive');
+  const [policyType, setPolicyType] = useState<'CTP' | 'Comprehensive' | 'Third Party'>(getInitialPolicyType());
   const [selectedProviderId, setSelectedProviderId] = useState('');
   const [selectedProviderName, setSelectedProviderName] = useState('');
   const [policyNumber, setPolicyNumber] = useState('');
