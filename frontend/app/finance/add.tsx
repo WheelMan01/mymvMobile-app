@@ -159,6 +159,49 @@ export default function AddFinance() {
           )}
         </View>
 
+        {/* Finance Lender */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Finance Lender *</Text>
+          {loadingLenders ? (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="small" color="#FF9500" />
+              <Text style={styles.loadingText}>Loading lenders...</Text>
+            </View>
+          ) : (
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedLenderName}
+                onValueChange={(itemValue) => setSelectedLenderName(itemValue)}
+                style={styles.picker}
+              >
+                <Picker.Item label="Select a lender" value="" />
+                {lenders.map((lender) => (
+                  <Picker.Item key={lender.id} label={lender.name} value={lender.name} />
+                ))}
+              </Picker>
+            </View>
+          )}
+        </View>
+
+        {/* Loan Type */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Loan Type *</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={loanType}
+              onValueChange={(itemValue) => setLoanType(itemValue)}
+              style={styles.picker}
+            >
+              <Picker.Item label="Chattel Mortgage" value="chattel-mortgage" />
+              <Picker.Item label="Personal Loan" value="personal" />
+              <Picker.Item label="Lease" value="lease" />
+              <Picker.Item label="Commercial Loan" value="commercial" />
+              <Picker.Item label="Hire Purchase" value="hire-purchase" />
+              <Picker.Item label="Novated Lease" value="novated-lease" />
+            </Picker>
+          </View>
+        </View>
+
         {/* Loan Details */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Loan Details</Text>
@@ -197,13 +240,12 @@ export default function AddFinance() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Monthly Payment ($) *</Text>
+            <Text style={styles.label}>Monthly Payment (Auto-calculated)</Text>
             <TextInput
-              style={styles.input}
-              placeholder="e.g., 566"
+              style={[styles.input, styles.inputDisabled]}
+              placeholder="Will be calculated"
               value={monthlyPayment}
-              onChangeText={setMonthlyPayment}
-              keyboardType="numeric"
+              editable={false}
             />
           </View>
 
@@ -217,13 +259,36 @@ export default function AddFinance() {
 
           {termMonths && (
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>End Date (Calculated)</Text>
+              <Text style={styles.label}>End Date (Auto-calculated)</Text>
               <View style={styles.dateDisplay}>
                 <Ionicons name="calendar-outline" size={20} color="#8E8E93" />
                 <Text style={styles.dateText}>{format(calculateEndDate(), 'dd MMM yyyy')}</Text>
               </View>
             </View>
           )}
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Account Number (Optional)</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter account number"
+              value={accountNumber}
+              onChangeText={setAccountNumber}
+            />
+          </View>
+
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Notes (Optional)</Text>
+            <TextInput
+              style={[styles.input, styles.textArea]}
+              placeholder="Additional notes"
+              value={notes}
+              onChangeText={setNotes}
+              multiline
+              numberOfLines={4}
+              textAlignVertical="top"
+            />
+          </View>
         </View>
 
         <TouchableOpacity 
