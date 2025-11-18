@@ -84,9 +84,25 @@ export default function AddRoadside() {
 
   const handleSubmit = async () => {
     console.log('🔵 ROADSIDE SUBMIT CLICKED');
+    console.log('Form values:', {
+      selectedVehicleId,
+      selectedProviderId,
+      selectedProviderName,
+      membershipNumber,
+      emergencyContact,
+      membershipType,
+      annualPremium,
+      expiryDate: expiryDate.toISOString().split('T')[0]
+    });
     
     if (!selectedVehicleId || !selectedProviderId || !membershipNumber || !emergencyContact) {
       console.log('❌ Validation failed');
+      console.log('Missing fields:', {
+        vehicleId: !selectedVehicleId ? 'MISSING' : 'OK',
+        providerId: !selectedProviderId ? 'MISSING' : 'OK',
+        membershipNumber: !membershipNumber ? 'MISSING' : 'OK',
+        emergencyContact: !emergencyContact ? 'MISSING' : 'OK'
+      });
       Alert.alert('Error', 'Please fill in all required fields (Vehicle, Provider, Membership Number, Emergency Contact)');
       return;
     }
