@@ -103,14 +103,18 @@ export default function AddInsurance() {
   };
 
   const handleSubmit = async () => {
+    console.log('🔵 SUBMIT CLICKED');
+    
     if (!selectedVehicleId || !selectedProviderName || !policyNumber || !premium) {
+      console.log('❌ Validation failed');
       Alert.alert('Error', 'Please fill in all required fields (Vehicle, Provider, Policy Number, Premium)');
       return;
     }
 
+    console.log('✅ Validation passed, submitting...');
     setLoading(true);
     try {
-      await api.post('/insurance-policies', {
+      const response = await api.post('/insurance-policies', {
         vehicle_id: selectedVehicleId,
         provider_id: selectedProviderId,
         provider: selectedProviderName,
@@ -122,12 +126,15 @@ export default function AddInsurance() {
         documents: []
       });
 
+      console.log('✅ Save successful, response:', response.status);
       // Success! Navigate back immediately (works better in web preview)
       setLoading(false);
+      console.log('🔙 Navigating back...');
       router.back();
+      console.log('✅ Navigation complete');
     } catch (error: any) {
       setLoading(false);
-      console.error('Error adding insurance:', error);
+      console.error('❌ Error adding insurance:', error);
       const errorMessage = error.response?.data?.detail || error.message || 'Failed to add insurance policy';
       Alert.alert('Error', errorMessage);
     }
