@@ -192,49 +192,18 @@ export default function AddInsurance() {
           )}
         </View>
 
-        {/* Policy Type */}
+        {/* Policy Type - Display Only */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Policy Type *</Text>
-          <View style={styles.policyTypeButtons}>
-            <TouchableOpacity
-              style={[
-                styles.policyTypeButton,
-                policyType === 'CTP' && styles.policyTypeButtonActive
-              ]}
-              onPress={() => setPolicyType('CTP')}
-            >
-              <Ionicons name="shield" size={20} color={policyType === 'CTP' ? '#fff' : '#34C759'} />
-              <Text style={[
-                styles.policyTypeText,
-                policyType === 'CTP' && styles.policyTypeTextActive
-              ]}>CTP (Green Slip)</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.policyTypeButton,
-                policyType === 'Comprehensive' && styles.policyTypeButtonActive
-              ]}
-              onPress={() => setPolicyType('Comprehensive')}
-            >
-              <Ionicons name="shield-checkmark" size={20} color={policyType === 'Comprehensive' ? '#fff' : '#007AFF'} />
-              <Text style={[
-                styles.policyTypeText,
-                policyType === 'Comprehensive' && styles.policyTypeTextActive
-              ]}>Comprehensive</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.policyTypeButton,
-                policyType === 'Third Party' && styles.policyTypeButtonActive
-              ]}
-              onPress={() => setPolicyType('Third Party')}
-            >
-              <Ionicons name="shield-half" size={20} color={policyType === 'Third Party' ? '#fff' : '#FF9500'} />
-              <Text style={[
-                styles.policyTypeText,
-                policyType === 'Third Party' && styles.policyTypeTextActive
-              ]}>Third Party</Text>
-            </TouchableOpacity>
+          <Text style={styles.sectionTitle}>Policy Type</Text>
+          <View style={styles.policyTypeDisplay}>
+            <Ionicons 
+              name={policyType === 'CTP' ? 'shield' : policyType === 'Comprehensive' ? 'shield-checkmark' : 'warning'} 
+              size={24} 
+              color="#00BFFF" 
+            />
+            <Text style={styles.policyTypeDisplayText}>
+              {policyType === 'CTP' ? 'CTP (Green Slip)' : policyType}
+            </Text>
           </View>
         </View>
 
