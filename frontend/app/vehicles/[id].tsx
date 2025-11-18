@@ -50,10 +50,33 @@ export default function VehicleDetail() {
   const fetchVehicleDetails = async () => {
     try {
       setLoading(true);
-      // Fetch vehicle with photos
-      const response = await api.get(`/vehicles/${id}/photos`);
-      console.log('Vehicle with photos response:', response.data);
-      setVehicle(response.data);
+      console.log('Fetching vehicle details for ID:', id);
+      
+      // Try to fetch vehicle with photos first
+      try {
+        const response = await api.get(`/vehicles/${id}/photos`);
+        console.log('Vehicle with photos response:', response.data);
+        setVehicle(response.data);
+        return;
+      } catch (photoError: any) {
+        console.log('Photo endpoint failed, trying vehicle list fallback');
+        
+        // Fallback: Fetch from vehicle list
+        const response = await api.get('/vehicles');
+        const vehiclesList = response.data?.data?.vehicles || response.data?.vehicles || response.data || [];
+        const foundVehicle = vehiclesList.find((v: any) => v.id === id);
+        
+        if (foundVehicle) {
+          setVehicle({
+            ...foundVehicle,
+            photos: [],
+            show_in_showroom: false,
+            showroom_admin_approved: false,
+          });
+        } else {
+          throw new Error('Vehicle not found');
+        }
+      }
     } catch (error: any) {
       console.error('Error fetching vehicle details:', error);
       Alert.alert('Error', 'Failed to load vehicle details');
