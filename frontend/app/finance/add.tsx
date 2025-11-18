@@ -421,4 +421,33 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
   },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 8,
+  },
+  loadingText: {
+    marginTop: 10,
+    color: '#8E8E93',
+  },
+  pickerContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E5E5EA',
+    overflow: 'hidden',
+  },
+  picker: {
+    height: 50,
+  },
+  inputDisabled: {
+    backgroundColor: '#F5F5F5',
+    color: '#8E8E93',
+  },
+  textArea: {
+    height: 100,
+    textAlignVertical: 'top',
+    paddingTop: 12,
+  },
 });
