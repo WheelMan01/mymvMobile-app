@@ -40,6 +40,8 @@ export default function VehicleDetail() {
   const { id } = useLocalSearchParams();
   const [vehicle, setVehicle] = useState<Vehicle | null>(null);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
   useEffect(() => {
     fetchVehicleDetails();
@@ -48,23 +50,10 @@ export default function VehicleDetail() {
   const fetchVehicleDetails = async () => {
     try {
       setLoading(true);
-      // Fetch all vehicles and filter for the specific one
-      const response = await api.get('/vehicles');
-      console.log('Vehicles list response:', response.data);
-      
-      // Handle nested response structure
-      const vehiclesList = response.data?.data?.vehicles || response.data?.vehicles || response.data || [];
-      
-      // Find the specific vehicle by ID
-      const foundVehicle = vehiclesList.find((v: any) => v.id === id);
-      
-      if (foundVehicle) {
-        setVehicle(foundVehicle);
-      } else {
-        console.error('Vehicle not found with ID:', id);
-        Alert.alert('Error', 'Vehicle not found');
-        router.back();
-      }
+      // Fetch vehicle with photos
+      const response = await api.get(`/vehicles/${id}/photos`);
+      console.log('Vehicle with photos response:', response.data);
+      setVehicle(response.data);
     } catch (error: any) {
       console.error('Error fetching vehicle details:', error);
       Alert.alert('Error', 'Failed to load vehicle details');
@@ -72,6 +61,60 @@ export default function VehicleDetail() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const pickAndUploadImage = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        Alert.alert('Permission Required', 'Please grant camera roll permissions to upload photos');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+        base64: true,
+      });
+
+      if (!result.canceled && result.assets[0].base64) {
+        setUploading(true);
+        
+        const payload = {
+          image_base64: result.assets[0].base64,
+        };
+
+        await api.post(`/vehicles/${id}/photos`, payload);
+        Alert.alert('Success', 'Photo uploaded successfully!');
+        await fetchVehicleDetails();
+      }
+    } catch (error: any) {
+      console.error('Error uploading photo:', error);
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to upload photo');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const toggleShowroom = async () => {
+    if (!vehicle) return;
+
+    try {
+      const response = await api.post(`/vehicles/${id}/toggle-showroom`);
+      Alert.alert('Success', response.data.message);
+      await fetchVehicleDetails();
+    } catch (error: any) {
+      console.error('Error toggling showroom:', error);
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to toggle showroom');
+    }
+  };
+
+  const handlePhotoScroll = (event: any) => {
+    const offsetX = event.nativeEvent.contentOffset.x;
+    const index = Math.round(offsetX / width);
+    setCurrentPhotoIndex(index);
   };
 
   if (loading) {
