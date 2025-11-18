@@ -325,14 +325,6 @@ export default function AddRoadside() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Start Date</Text>
-            <View style={styles.dateDisplay}>
-              <Ionicons name="calendar-outline" size={20} color="#8E8E93" />
-              <Text style={styles.dateText}>{format(startDate, 'dd MMM yyyy')}</Text>
-            </View>
-          </View>
-
-          <View style={styles.inputGroup}>
             <Text style={styles.label}>End Date (Expiry)</Text>
             <View style={styles.dateDisplay}>
               <Ionicons name="calendar-outline" size={20} color="#8E8E93" />
