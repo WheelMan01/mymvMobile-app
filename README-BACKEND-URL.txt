@@ -2,7 +2,7 @@
 ║                                                                ║
 ║         🔴 CRITICAL: YOUR PRODUCTION BACKEND URL 🔴           ║
 ║                                                                ║
-║   Backend: https://mymv-auto-1.preview.emergentagent.com  ║
+║   Backend: https://vehicle-hub-118.preview.emergentagent.com  ║
 ║   Database: mongodb://localhost:27017/mymv_db                  ║
 ║                                                                ║
 ║   ⚠️  DO NOT CHANGE OR YOU WILL LOSE ALL YOUR DATA! ⚠️       ║
@@ -32,7 +32,7 @@
 
    Expected to see:
    {
-     "backendUrl": "https://mymv-auto-1.preview.emergentagent.com",
+     "backendUrl": "https://vehicle-hub-118.preview.emergentagent.com",
      ...
    }
 

@@ -5,7 +5,7 @@
 ```
 ⚠️ IF YOU CHANGE THIS URL, YOU WILL LOSE ALL YOUR DATA! ⚠️
 
-Backend URL: https://mymv-auto-1.preview.emergentagent.com
+Backend URL: https://vehicle-hub-118.preview.emergentagent.com
 Database: mongodb://localhost:27017/mymv_db
 ```
 
@@ -28,7 +28,7 @@ Database: mongodb://localhost:27017/mymv_db
 **File:** `/app/frontend/backend-config.json`
 ```json
 {
-  "backendUrl": "https://mymv-auto-1.preview.emergentagent.com",
+  "backendUrl": "https://vehicle-hub-118.preview.emergentagent.com",
   "description": "PERMANENT BACKEND URL"
 }
 ```
@@ -36,7 +36,7 @@ Database: mongodb://localhost:27017/mymv_db
 ### 2. Environment File (Gets reset on fork):
 **File:** `/app/frontend/.env`
 ```
-EXPO_PUBLIC_BACKEND_URL=https://mymv-auto-1.preview.emergentagent.com
+EXPO_PUBLIC_BACKEND_URL=https://vehicle-hub-118.preview.emergentagent.com
 ```
 
 ---
@@ -50,7 +50,7 @@ cat /app/frontend/backend-config.json
 **Expected output:**
 ```json
 {
-  "backendUrl": "https://mymv-auto-1.preview.emergentagent.com",
+  "backendUrl": "https://vehicle-hub-118.preview.emergentagent.com",
   ...
 }
 ```
@@ -72,7 +72,7 @@ sudo supervisorctl restart expo
 
 ```bash
 # Test login
-curl -X POST https://mymv-auto-1.preview.emergentagent.com/api/auth/pin-login \
+curl -X POST https://vehicle-hub-118.preview.emergentagent.com/api/auth/pin-login \
   -H "Content-Type: application/json" \
   -d '{"email":"anthony@wheelsfinance.com.au","pin":"1234"}'
 
