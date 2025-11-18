@@ -119,11 +119,19 @@ export default function VehicleDetail() {
         console.log('Uploading photo for vehicle:', id);
         console.log('Base64 length:', result.assets[0].base64.length);
         
+        // Warn if image is still large
+        if (result.assets[0].base64.length > 1000000) {
+          console.warn('Large image detected:', result.assets[0].base64.length, 'bytes');
+        }
+        
         const payload = {
           image_base64: result.assets[0].base64,
         };
 
-        const response = await api.post(`/vehicles/${id}/photos`, payload);
+        // Set a longer timeout for large uploads
+        const response = await api.post(`/vehicles/${id}/photos`, payload, {
+          timeout: 60000, // 60 seconds
+        });
         console.log('Upload response:', response.data);
         
         Alert.alert('Success', 'Photo uploaded successfully!');
