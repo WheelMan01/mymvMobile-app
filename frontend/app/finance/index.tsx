@@ -53,22 +53,38 @@ export default function Finance() {
       
       setProducts(productsData);
       
-      // Fetch vehicles for each loan
+      // Fetch vehicles for each loan with timeout
       const vehicleIds = [...new Set(productsData.map((p: FinanceProduct) => p.vehicle_id))];
       const vehicleMap: { [key: string]: Vehicle } = {};
       
-      await Promise.all(
-        vehicleIds.map(async (vehicleId) => {
-          try {
-            const vehicleResponse = await api.get(`/vehicles/${vehicleId}`);
-            const vehicleData = vehicleResponse.data?.data?.vehicle || vehicleResponse.data;
-            vehicleMap[vehicleId] = vehicleData;
-          } catch (error) {
-            console.error(`Error fetching vehicle ${vehicleId}:`, error);
-          }
-        })
+      const fetchWithTimeout = async (vehicleId: string) => {
+        try {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+          
+          const vehicleResponse = await api.get(`/vehicles/${vehicleId}`);
+          clearTimeout(timeoutId);
+          
+          const vehicleData = vehicleResponse.data?.data?.vehicle || vehicleResponse.data;
+          vehicleMap[vehicleId] = vehicleData;
+        } catch (error) {
+          console.error(`Error fetching vehicle ${vehicleId}:`, error);
+          // Create placeholder vehicle data
+          vehicleMap[vehicleId] = {
+            id: vehicleId,
+            rego_number: 'Unknown',
+            make: 'Unknown',
+            model: 'Vehicle',
+            year: 0,
+          };
+        }
+      };
+      
+      await Promise.allSettled(
+        vehicleIds.map((vehicleId) => fetchWithTimeout(vehicleId))
       );
       
+      console.log('✅ Vehicles fetched:', Object.keys(vehicleMap).length);
       setVehicles(vehicleMap);
     } catch (error: any) {
       console.error('Error fetching finance loans:', error);
