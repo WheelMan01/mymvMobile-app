@@ -41,6 +41,8 @@ export default function Finance() {
   const [vehicles, setVehicles] = useState<{ [key: string]: Vehicle }>({});
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<FinanceProduct | null>(null);
 
   const fetchProducts = async () => {
     setLoading(true);
