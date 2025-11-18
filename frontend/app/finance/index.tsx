@@ -45,7 +45,7 @@ export default function Finance() {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/finance-products');
+      const response = await api.get('/finance-loans');
       console.log('Finance API response:', response.data);
       
       const productsData = response.data?.data?.loans || [];
