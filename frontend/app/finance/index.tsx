@@ -243,41 +243,30 @@ export default function Finance() {
   };
 
   const handleDelete = (product: FinanceProduct) => {
-    Alert.alert(
-      'Delete Finance Loan',
-      `Are you sure you want to delete this ${product.lender} loan? This action cannot be undone.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              console.log('🗑️ Deleting loan:', product.id);
-              const response = await api.delete(`/finance-loans/${product.id}`);
-              console.log('✅ Delete response:', response);
-              
-              Alert.alert(
-                'Success',
-                'Finance loan deleted successfully',
-                [
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      fetchProducts();
-                    },
-                  },
-                ]
-              );
-            } catch (error: any) {
-              console.error('❌ Error deleting loan:', error);
-              const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete loan';
-              Alert.alert('Error', errorMessage);
-            }
-          },
-        },
-      ]
-    );
+    setProductToDelete(product);
+    setDeleteDialogVisible(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!productToDelete) return;
+    
+    try {
+      console.log('🗑️ Deleting loan:', productToDelete.id);
+      await api.delete(`/finance-loans/${productToDelete.id}`);
+      console.log('✅ Loan deleted successfully');
+      setDeleteDialogVisible(false);
+      setProductToDelete(null);
+      fetchProducts();
+    } catch (error: any) {
+      console.error('❌ Error deleting loan:', error);
+      const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete loan';
+      Alert.alert('Error', errorMessage);
+    }
+  };
+
+  const cancelDelete = () => {
+    setDeleteDialogVisible(false);
+    setProductToDelete(null);
   };
 
   const DetailedFinanceCard = ({ product }: { product: FinanceProduct }) => {
