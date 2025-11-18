@@ -437,6 +437,26 @@ export default function Finance() {
           ))
         )}
       </ScrollView>
+
+      {/* Custom Delete Confirmation Dialog */}
+      {deleteDialogVisible && productToDelete && (
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Delete Finance Loan</Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to delete this {productToDelete.lender} loan? This action cannot be undone.
+            </Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.modalCancelButton} onPress={cancelDelete}>
+                <Text style={styles.modalCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalDeleteButton} onPress={confirmDelete}>
+                <Text style={styles.modalDeleteText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 }
