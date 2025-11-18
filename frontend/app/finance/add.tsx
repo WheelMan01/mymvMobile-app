@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert, ActivityIndicator } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useVehicles } from '../../hooks/useVehicles';
@@ -9,14 +10,63 @@ import { format } from 'date-fns';
 export default function AddFinance() {
   const router = useRouter();
   const { vehicles } = useVehicles();
+  
+  // Lenders state
+  const [lenders, setLenders] = useState([]);
+  const [loadingLenders, setLoadingLenders] = useState(true);
+  const [selectedLenderName, setSelectedLenderName] = useState('');
+  
+  // Form state
   const [selectedVehicleId, setSelectedVehicleId] = useState('');
-  const [providerId, setProviderId] = useState('default-provider');
+  const [loanType, setLoanType] = useState('chattel-mortgage');
   const [loanAmount, setLoanAmount] = useState('');
   const [interestRate, setInterestRate] = useState('');
   const [termMonths, setTermMonths] = useState('');
   const [monthlyPayment, setMonthlyPayment] = useState('');
   const [startDate, setStartDate] = useState(new Date());
+  const [accountNumber, setAccountNumber] = useState('');
+  const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Fetch finance lenders on mount
+  useEffect(() => {
+    fetchFinanceLenders();
+  }, []);
+
+  // Auto-calculate monthly payment
+  useEffect(() => {
+    if (loanAmount && interestRate && termMonths) {
+      const calculated = calculateMonthlyPayment(
+        parseFloat(loanAmount),
+        parseFloat(interestRate),
+        parseInt(termMonths)
+      );
+      setMonthlyPayment(calculated.toString());
+    }
+  }, [loanAmount, interestRate, termMonths]);
+
+  const fetchFinanceLenders = async () => {
+    try {
+      console.log('Fetching finance lenders...');
+      const response = await api.get('/finance-lenders');
+      console.log('Finance lenders response:', response.data);
+      
+      if (response.data.status === 'success') {
+        setLenders(response.data.data.lenders);
+      }
+    } catch (error) {
+      console.error('Error fetching finance lenders:', error);
+    } finally {
+      setLoadingLenders(false);
+    }
+  };
+
+  const calculateMonthlyPayment = (amount, rate, months) => {
+    const monthlyRate = (rate / 100) / 12;
+    const payment = (amount * monthlyRate * Math.pow(1 + monthlyRate, months)) / 
+                    (Math.pow(1 + monthlyRate, months) - 1);
+    return parseFloat(payment.toFixed(2));
+  };
 
   const calculateEndDate = () => {
     if (termMonths) {
