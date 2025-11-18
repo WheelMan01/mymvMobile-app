@@ -220,40 +220,6 @@ export default function Finance() {
     }
   };
 
-  const handleRefinance = async (product: FinanceProduct) => {
-    const website = product.lender_website;
-
-    if (!website) {
-      Alert.alert(
-        'No Refinance Link',
-        'Refinance link is not available. Please contact your lender directly.',
-        [
-          {
-            text: 'Call Lender',
-            onPress: () => handleCallLender(product),
-          },
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-        ]
-      );
-      return;
-    }
-
-    try {
-      const canOpen = await Linking.canOpenURL(website);
-      if (canOpen) {
-        await Linking.openURL(website);
-      } else {
-        Alert.alert('Error', 'Cannot open refinance link');
-      }
-    } catch (error) {
-      console.error('Error opening refinance link:', error);
-      Alert.alert('Error', 'Failed to open refinance link');
-    }
-  };
-
   const handleEdit = (product: FinanceProduct) => {
     router.push({
       pathname: '/finance/edit',
