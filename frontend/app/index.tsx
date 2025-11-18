@@ -1,25 +1,18 @@
-import React, { useEffect } from 'react';
-import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useAuth } from '../contexts/AuthContext';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
 
 export default function Index() {
-  const { user, isLoading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isLoading) {
-      if (user) {
-        router.replace('/(tabs)');
-      } else {
-        router.replace('/auth/login');
-      }
-    }
-  }, [user, isLoading]);
-
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color="#007AFF" />
+      <Text style={styles.title}>myMV Customer App</Text>
+      <Text style={styles.subtitle}>Vehicle Management Platform</Text>
+      
+      <Link href="/auth/login" asChild>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Go to Login</Text>
+        </TouchableOpacity>
+      </Link>
     </View>
   );
 }
