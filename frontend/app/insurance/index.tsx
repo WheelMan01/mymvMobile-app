@@ -237,42 +237,63 @@ export default function Insurance() {
     Alert.alert('Coming Soon', 'Edit functionality will be available soon.');
   };
 
-  const handleDelete = (policy: InsurancePolicy) => {
-    Alert.alert(
-      'Delete Insurance Policy',
-      `Are you sure you want to delete this ${policy.provider} policy? This action cannot be undone.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              console.log('🗑️ Deleting policy:', policy.id);
-              const response = await api.delete(`/insurance-policies/${policy.id}`);
-              console.log('✅ Delete response:', response);
-              
-              Alert.alert(
-                'Success',
-                'Insurance policy deleted successfully',
-                [
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      fetchPolicies();
+  const handleDelete = async (policy: InsurancePolicy) => {
+    // Web-compatible confirmation
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm(
+        `Are you sure you want to delete this ${policy.provider} policy? This action cannot be undone.`
+      );
+      if (!confirmed) return;
+      
+      try {
+        console.log('🗑️ Deleting policy:', policy.id);
+        await api.delete(`/insurance-policies/${policy.id}`);
+        console.log('✅ Policy deleted successfully');
+        alert('Insurance policy deleted successfully');
+        fetchPolicies();
+      } catch (error: any) {
+        console.error('❌ Error deleting policy:', error);
+        const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete policy';
+        alert('Error: ' + errorMessage);
+      }
+    } else {
+      // Mobile Alert
+      Alert.alert(
+        'Delete Insurance Policy',
+        `Are you sure you want to delete this ${policy.provider} policy? This action cannot be undone.`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Delete',
+            style: 'destructive',
+            onPress: async () => {
+              try {
+                console.log('🗑️ Deleting policy:', policy.id);
+                const response = await api.delete(`/insurance-policies/${policy.id}`);
+                console.log('✅ Delete response:', response);
+                
+                Alert.alert(
+                  'Success',
+                  'Insurance policy deleted successfully',
+                  [
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        fetchPolicies();
+                      },
                     },
-                  },
-                ]
-              );
-            } catch (error: any) {
-              console.error('❌ Error deleting policy:', error);
-              const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete policy';
-              Alert.alert('Error', errorMessage);
-            }
+                  ]
+                );
+              } catch (error: any) {
+                console.error('❌ Error deleting policy:', error);
+                const errorMessage = error.response?.data?.detail || error.message || 'Failed to delete policy';
+                Alert.alert('Error', errorMessage);
+              }
+            },
           },
-        },
-      ]
-    );
+        ]
+      );
+    }
   };
 
   const DetailedPolicyCard = ({ policy }: { policy: InsurancePolicy }) => {
