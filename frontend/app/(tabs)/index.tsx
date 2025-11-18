@@ -180,14 +180,12 @@ export default function Dashboard() {
           <FeatureTile
             title="myMV"
             icon="car-outline"
-            count={stats.total_vehicles}
             color="#00BFFF"
             onPress={() => router.push('/vehicles')}
           />
           <FeatureTile
             title="myInsurance"
             icon="shield-checkmark-outline"
-            count={stats.active_insurance_policies}
             color="#00BFFF"
             onPress={() => router.push('/insurance')}
           />
@@ -196,7 +194,6 @@ export default function Dashboard() {
             customIcon={
               <Text style={{ fontSize: 48, color: '#00BFFF', fontWeight: '200' }}>$</Text>
             }
-            count={stats.active_finance_products}
             color="#00BFFF"
             onPress={() => router.push('/finance')}
           />
