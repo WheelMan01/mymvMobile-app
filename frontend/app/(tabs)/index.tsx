@@ -204,7 +204,6 @@ export default function Dashboard() {
           <FeatureTile
             title="myRoadside"
             icon="car-sport-outline"
-            count={stats.active_roadside_memberships}
             color="#00BFFF"
             onPress={() => router.push('/roadside')}
           />
