@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 
 // Use environment variable directly - more reliable across platforms
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://mymv-auto-1.preview.emergentagent.com';
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://auto-specs-hub-1.preview.emergentagent.com';
 console.log('🔧 AuthContext API_URL:', API_URL);
 
 // Helper functions for storage (supports both native and web)
