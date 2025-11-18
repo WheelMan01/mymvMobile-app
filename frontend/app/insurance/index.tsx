@@ -42,6 +42,8 @@ export default function Insurance() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('ctp');
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [policyToDelete, setPolicyToDelete] = useState<InsurancePolicy | null>(null);
 
   const fetchPolicies = async () => {
     setLoading(true);
