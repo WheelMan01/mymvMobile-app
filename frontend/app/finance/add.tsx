@@ -291,11 +291,15 @@ export default function AddFinance() {
           </View>
 
           <View style={styles.inputGroup}>
-            <Text style={styles.label}>Start Date</Text>
-            <View style={styles.dateDisplay}>
-              <Ionicons name="calendar-outline" size={20} color="#8E8E93" />
-              <Text style={styles.dateText}>{format(startDate, 'dd MMM yyyy')}</Text>
-            </View>
+            <Text style={styles.label}>Start Date (DD/MM/YYYY) *</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="DD/MM/YYYY"
+              value={startDateText}
+              onChangeText={formatStartDateInput}
+              keyboardType="numeric"
+              maxLength={10}
+            />
           </View>
 
           {termMonths && (
