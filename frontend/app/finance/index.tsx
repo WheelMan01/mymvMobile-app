@@ -421,12 +421,6 @@ export default function Finance() {
             </TouchableOpacity>
           </View>
 
-          {/* Refinance Button - Full Width */}
-          <TouchableOpacity style={styles.refinanceButton} onPress={() => handleRefinance(product)}>
-            <Ionicons name="refresh-outline" size={20} color="#fff" />
-            <Text style={styles.refinanceButtonText}>Refinance</Text>
-          </TouchableOpacity>
-
           {/* Edit and Delete - Two Column Grid */}
           <View style={styles.secondaryActions}>
             <TouchableOpacity style={styles.editButton} onPress={() => handleEdit(product)}>
