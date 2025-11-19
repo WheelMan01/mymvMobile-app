@@ -22,6 +22,7 @@ import {
   toggleFavorite,
   ShowroomVehicle
 } from '../../services/showroomApi';
+import api from '../../services/api';
 import CommentsModal from '../../components/CommentsModal';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
