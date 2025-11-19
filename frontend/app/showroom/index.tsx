@@ -13,7 +13,7 @@ import {
   Platform
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import {
   getAllShowroomVehicles,
@@ -43,6 +43,13 @@ export default function ShowroomScreen() {
   useEffect(() => {
     loadVehicles();
   }, [viewMode]);
+
+  // Auto-refresh when screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      loadVehicles();
+    }, [viewMode])
+  );
 
   useEffect(() => {
     // Reset image index when vehicle changes
