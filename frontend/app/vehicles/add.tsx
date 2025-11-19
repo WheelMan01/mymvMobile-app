@@ -782,11 +782,12 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: '#0f3460',
     borderRadius: 8,
-    padding: 12,
-    fontSize: 16,
+    padding: 14,
+    fontSize: 18,
     color: '#fff',
     borderWidth: 1,
     borderColor: '#334155',
+    fontWeight: '500',
   },
   pickerContainer: {
     backgroundColor: '#0f3460',
