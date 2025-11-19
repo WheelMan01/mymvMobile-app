@@ -73,17 +73,17 @@ export default function AddVehicle() {
           if (response.data.year) setYear(response.data.year.toString());
           if (response.data.body_type) setBodyType(response.data.body_type);
 
-          Alert.alert('Success', 'Vehicle data extracted successfully! Please review and confirm.');
+          showAlert('Success', 'Vehicle data extracted successfully! Please review and confirm.');
         } catch (error: any) {
           console.error('AI Scan Error:', error);
-          Alert.alert('Scan Error', error.response?.data?.detail || 'Failed to extract data. Please enter manually.');
+          showAlert('Scan Error', error.response?.data?.detail || 'Failed to extract data. Please enter manually.');
         } finally {
           setScanning(false);
         }
       }
     } catch (error) {
       console.error('Camera Error:', error);
-      Alert.alert('Error', 'Failed to open camera');
+      showAlert('Error', 'Failed to open camera');
     }
   };
 
@@ -101,13 +101,13 @@ export default function AddVehicle() {
         setVehicleImage(`data:image/jpeg;base64,${result.assets[0].base64}`);
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to pick image');
+      showAlert('Error', 'Failed to pick image');
     }
   };
 
   const handleSubmit = async () => {
     if (!rego || !vin || !make || !model || !year) {
-      Alert.alert('Error', 'Please fill in all required fields (marked with *)');
+      showAlert('Error', 'Please fill in all required fields (marked with *)');
       return;
     }
 
@@ -124,10 +124,9 @@ export default function AddVehicle() {
         image: vehicleImage || undefined,
       });
 
-      Alert.alert('Success', 'Vehicle added successfully!');
-      router.back();
+      showAlert('Success', 'Vehicle added successfully!', () => router.back());
     } catch (error: any) {
-      Alert.alert('Error', error.message);
+      showAlert('Error', error.message);
     } finally {
       setLoading(false);
     }
