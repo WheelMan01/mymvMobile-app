@@ -20,7 +20,7 @@ interface CommentsModalProps {
   isMarketplaceListing?: boolean;
 }
 
-export default function CommentsModal({ visible, onClose, vehicleId }: CommentsModalProps) {
+export default function CommentsModal({ visible, onClose, vehicleId, isMarketplaceListing = false }: CommentsModalProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
   const [loading, setLoading] = useState(false);
