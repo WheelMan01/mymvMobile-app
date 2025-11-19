@@ -365,6 +365,25 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         vehicleDetails = item;
       }
       
+      // Extract images - check multiple possible field names
+      let images = [];
+      if (item.photos && Array.isArray(item.photos) && item.photos.length > 0) {
+        images = item.photos;
+      } else if (vehicleDetails?.photos && Array.isArray(vehicleDetails.photos) && vehicleDetails.photos.length > 0) {
+        images = vehicleDetails.photos;
+      } else if (item.image) {
+        // Single image field - convert to array
+        images = [item.image];
+      } else if (vehicleDetails?.image) {
+        images = [vehicleDetails.image];
+      } else if (item.images && Array.isArray(item.images) && item.images.length > 0) {
+        images = item.images;
+      } else if (vehicleDetails?.images && Array.isArray(vehicleDetails.images) && vehicleDetails.images.length > 0) {
+        images = vehicleDetails.images;
+      }
+      
+      console.log(`📸 Images for ${item.make} ${item.model}:`, images);
+      
       const result = {
         id: item.id,
         year: vehicleDetails?.year || item.year || 0,
@@ -372,7 +391,7 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         model: vehicleDetails?.model || item.model || 'Unknown',
         body_type: vehicleDetails?.body_type || item.body_type,
         state: vehicleDetails?.state || item.state,
-        images: item.photos || vehicleDetails?.photos || [],
+        images: images,
         has_liked: item.liked_by_current_user || false,
         is_favorited: item.favorited_by_current_user || false,
         showroom_likes: item.likes || 0,
