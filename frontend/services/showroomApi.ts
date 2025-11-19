@@ -276,6 +276,7 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         has_liked: item.liked_by_current_user || false,
         is_favorited: item.favorited_by_current_user || false,
         showroom_likes: item.likes || 0,
+        comment_count: item.comment_count || item.comments?.length || 0,
         source: actualSource,
         marketplace_listing_id: actualSource === 'marketplace' ? item.id : commentId
       };
