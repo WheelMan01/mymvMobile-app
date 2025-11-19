@@ -253,8 +253,8 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         has_liked: item.liked_by_current_user || false,
         is_favorited: item.favorited_by_current_user || false,
         showroom_likes: item.likes || 0,
-        source: isMarketplace ? 'marketplace' : 'user',
-        marketplace_listing_id: isMarketplace ? item.id : undefined
+        source: actualSource,
+        marketplace_listing_id: actualSource === 'marketplace' ? item.id : commentId
       };
       
       console.log('✅ Mapped vehicle:', {
