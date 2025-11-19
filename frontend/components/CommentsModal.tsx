@@ -146,12 +146,20 @@ export default function CommentsModal({
           {/* Vehicle Info Card */}
           {vehicleInfo && (
             <View style={styles.vehicleInfoCard}>
-              <Text style={styles.vehicleTitle}>
-                {vehicleInfo.year} {vehicleInfo.make} {vehicleInfo.model}
-              </Text>
-              {vehicleInfo.body_type && (
-                <Text style={styles.vehicleSubtitle}>{vehicleInfo.body_type}</Text>
-              )}
+              <View style={styles.vehicleInfoRow}>
+                <View style={styles.vehicleInfoText}>
+                  <Text style={styles.vehicleTitle}>
+                    {vehicleInfo.year} {vehicleInfo.make} {vehicleInfo.model}
+                  </Text>
+                  {vehicleInfo.body_type && (
+                    <Text style={styles.vehicleSubtitle}>{vehicleInfo.body_type}</Text>
+                  )}
+                </View>
+                <View style={styles.commentCountBadge}>
+                  <Text style={styles.commentCountIcon}>💬</Text>
+                  <Text style={styles.commentCountText}>{comments.length}</Text>
+                </View>
+              </View>
             </View>
           )}
 
