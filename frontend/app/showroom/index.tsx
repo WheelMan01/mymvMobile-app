@@ -285,7 +285,7 @@ export default function ShowroomScreen() {
                         key={imgIndex}
                         source={{ uri: imageUrl }}
                         style={styles.vehicleImage}
-                        resizeMode="cover"
+                        resizeMode="contain"
                       />
                     ))}
                   </ScrollView>
