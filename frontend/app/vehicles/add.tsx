@@ -126,7 +126,11 @@ export default function AddVehicle() {
 
       showAlert('Success', 'Vehicle added successfully!', () => router.back());
     } catch (error: any) {
-      showAlert('Error', error.message);
+      console.error('Error adding vehicle:', error);
+      const errorMessage = error.response?.data?.detail 
+        || error.message 
+        || (typeof error === 'string' ? error : 'Failed to add vehicle');
+      showAlert('Error', errorMessage);
     } finally {
       setLoading(false);
     }
