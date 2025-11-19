@@ -271,8 +271,24 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
     }
     
     if (Array.isArray(vehiclesData)) {
+      console.log('🚗 TOTAL vehicles from API:', vehiclesData.length);
+      console.log('🚗 ALL vehicles data:', JSON.stringify(vehiclesData, null, 2));
+      
+      // Check each vehicle's showroom status
+      vehiclesData.forEach((v: any, index: number) => {
+        console.log(`🚗 Vehicle ${index + 1}:`, {
+          id: v.id,
+          make: v.make,
+          model: v.model,
+          show_in_showroom: v.show_in_showroom,
+          showroom_approval_status: v.showroom_approval_status,
+          approval_status: v.approval_status
+        });
+      });
+      
       regularVehicles = vehiclesData.filter((v: any) => v.show_in_showroom === true);
-      console.log('🔴 Regular showroom vehicles count:', regularVehicles.length);
+      console.log('✅ FILTERED showroom vehicles count:', regularVehicles.length);
+      console.log('✅ FILTERED showroom vehicles:', JSON.stringify(regularVehicles, null, 2));
     }
     
     // Process marketplace listings
