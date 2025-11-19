@@ -380,6 +380,7 @@ export default function ShowroomScreen() {
         isMarketplaceListing={currentVehicle.source === 'marketplace'}
         vehicleSource={currentVehicle.source}
         marketplaceListingId={currentVehicle.marketplace_listing_id}
+        onCommentAdded={() => fetchVehicles()}
       />
     </View>
   );
