@@ -351,7 +351,7 @@ export default function ShowroomScreen() {
           onPress={() => setShowComments(true)}
         >
           <Text style={styles.actionIcon}>💬</Text>
-          <Text style={styles.actionCount}>0</Text>
+          <Text style={styles.actionCount}>{currentVehicle.comment_count || 0}</Text>
         </TouchableOpacity>
 
         {/* Favorite Button */}
