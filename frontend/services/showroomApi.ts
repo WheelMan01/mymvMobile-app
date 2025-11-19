@@ -17,6 +17,22 @@ export interface ShowroomListing {
   comments?: any[];
 }
 
+// Alias for ShowroomVehicle (used by showroom screen)
+export interface ShowroomVehicle {
+  id: string;
+  year: number;
+  make: string;
+  model: string;
+  body_type?: string;
+  state?: string;
+  images: string[];
+  has_liked: boolean;
+  is_favorited: boolean;
+  showroom_likes: number;
+  source: 'user' | 'marketplace';
+  marketplace_listing_id?: string;
+}
+
 // Fetch all showroom listings (includes both user vehicles and marketplace listings)
 export const fetchShowroomListings = async (): Promise<ShowroomListing[]> => {
   try {
