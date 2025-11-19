@@ -22,7 +22,14 @@ interface CommentsModalProps {
   marketplaceListingId?: string;
 }
 
-export default function CommentsModal({ visible, onClose, vehicleId, isMarketplaceListing = false }: CommentsModalProps) {
+export default function CommentsModal({ 
+  visible, 
+  onClose, 
+  vehicleId, 
+  isMarketplaceListing = false,
+  vehicleSource = 'user',
+  marketplaceListingId 
+}: CommentsModalProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -37,7 +44,8 @@ export default function CommentsModal({ visible, onClose, vehicleId, isMarketpla
   const loadComments = async () => {
     setLoading(true);
     try {
-      const data = await getComments(vehicleId);
+      // Pass source and marketplace listing ID to use correct endpoint
+      const data = await getComments(vehicleId, vehicleSource, marketplaceListingId);
       setComments(data);
     } catch (error) {
       console.error('Error loading comments:', error);
@@ -51,7 +59,8 @@ export default function CommentsModal({ visible, onClose, vehicleId, isMarketpla
 
     setSubmitting(true);
     try {
-      await addComment(vehicleId, commentText.trim());
+      // Pass source and marketplace listing ID to use correct endpoint
+      await addComment(vehicleId, commentText.trim(), vehicleSource, marketplaceListingId);
       setCommentText('');
       await loadComments(); // Reload comments
     } catch (error: any) {
