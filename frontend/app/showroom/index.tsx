@@ -64,11 +64,14 @@ export default function ShowroomScreen() {
         ? await getFavoriteVehicles()
         : await getAllShowroomVehicles();
       console.log('📋 Loaded vehicles count:', data.length);
+      console.log('📋 All vehicles:', JSON.stringify(data, null, 2));
       console.log('📋 First vehicle:', data[0]);
       setVehicles(data);
       setCurrentIndex(0);
     } catch (error) {
-      console.error('Error loading vehicles:', error);
+      console.error('❌ Error loading vehicles:', error);
+      console.error('❌ Error details:', error.response?.data);
+      console.error('❌ Error status:', error.response?.status);
     } finally {
       setLoading(false);
     }
