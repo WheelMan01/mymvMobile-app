@@ -238,6 +238,37 @@ export default function VehicleDetail() {
     setCurrentPhotoIndex(index);
   };
 
+  // Platform-specific base64 converter
+  const convertToBase64 = async (uri: string): Promise<string> => {
+    if (Platform.OS === 'web') {
+      // Web platform: Use FileReader API
+      try {
+        const response = await fetch(uri);
+        const blob = await response.blob();
+        
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64data = reader.result as string;
+            // Extract base64 part after comma (removes data:image/jpeg;base64, prefix)
+            const base64 = base64data.split(',')[1];
+            resolve(base64);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(blob);
+        });
+      } catch (error) {
+        throw new Error(`Failed to convert blob to base64: ${error}`);
+      }
+    } else {
+      // Native platform: Use FileSystem
+      const FileSystem = require('expo-file-system');
+      return await FileSystem.readAsStringAsync(uri, {
+        encoding: 'base64',
+      });
+    }
+  };
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
