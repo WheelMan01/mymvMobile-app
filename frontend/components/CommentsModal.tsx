@@ -134,12 +134,12 @@ export default function CommentsModal({
                 <View key={comment.id} style={styles.commentItem}>
                   <View style={styles.commentAvatar}>
                     <Text style={styles.avatarText}>
-                      {comment.user_name.charAt(0).toUpperCase()}
+                      {(comment.user_name || 'U').charAt(0).toUpperCase()}
                     </Text>
                   </View>
                   <View style={styles.commentContent}>
-                    <Text style={styles.commentAuthor}>{comment.user_name}</Text>
-                    <Text style={styles.commentText}>{comment.comment_text}</Text>
+                    <Text style={styles.commentAuthor}>{comment.user_name || 'Unknown User'}</Text>
+                    <Text style={styles.commentText}>{comment.comment_text || comment.text || ''}</Text>
                     <Text style={styles.commentTime}>{formatDate(comment.created_at)}</Text>
                   </View>
                 </View>
