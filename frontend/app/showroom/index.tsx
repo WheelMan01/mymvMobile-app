@@ -103,10 +103,19 @@ export default function ShowroomScreen() {
     if (vehicles.length === 0) return;
     
     const vehicle = vehicles[currentIndex];
-    console.log('🔖 Toggling favorite for vehicle:', vehicle.id, 'Current state:', vehicle.is_favorited);
+    console.log('🔖 Toggling favorite for vehicle:', {
+      id: vehicle.id,
+      source: vehicle.source,
+      marketplace_listing_id: vehicle.marketplace_listing_id,
+      current_favorited: vehicle.is_favorited
+    });
 
     try {
-      const result = await toggleFavorite(vehicle.id);
+      const result = await toggleFavorite(
+        vehicle.id, 
+        vehicle.source, 
+        vehicle.marketplace_listing_id
+      );
       console.log('🔖 Toggle result:', result);
       
       // Update local state
