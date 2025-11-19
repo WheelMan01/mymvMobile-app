@@ -69,6 +69,13 @@ export default function CommentsModal({
   const handleAddComment = async () => {
     if (!commentText.trim()) return;
 
+    console.log('💬 Adding comment with params:', {
+      vehicleId,
+      vehicleSource,
+      marketplaceListingId,
+      commentText: commentText.substring(0, 20) + '...'
+    });
+
     setSubmitting(true);
     try {
       // Pass source and marketplace listing ID to use correct endpoint
