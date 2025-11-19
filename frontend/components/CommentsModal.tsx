@@ -376,5 +376,24 @@ const styles = StyleSheet.create({
   infoSubtext: {
     fontSize: 12,
     color: '#666',
+  },
+  vehicleInfoCard: {
+    backgroundColor: '#F8F9FA',
+    borderRadius: 8,
+    padding: 16,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#E9ECEF',
+  },
+  vehicleTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 4,
+  },
+  vehicleSubtitle: {
+    fontSize: 14,
+    color: '#666',
   }
 });
