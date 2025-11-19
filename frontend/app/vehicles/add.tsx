@@ -93,6 +93,22 @@ export default function AddVehicleEnhanced() {
   const loadDropdownData = async () => {
     setLoadingDropdowns(true);
     try {
+      // Load vehicle makes
+      try {
+        const makesResponse = await api.get('/public/vehicle-makes');
+        const makesData = makesResponse.data?.data?.makes || makesResponse.data?.makes || [];
+        setMakes(makesData);
+      } catch (error) {
+        console.log('Vehicle makes API not available, using fallback list');
+        // Fallback to common makes if API not available
+        const fallbackMakes = [
+          'Audi', 'BMW', 'Chevrolet', 'Chrysler', 'Dodge', 'Ford', 'GMC', 
+          'Honda', 'Hyundai', 'Jeep', 'Kia', 'Lexus', 'Mazda', 'Mercedes-Benz',
+          'Mitsubishi', 'Nissan', 'Ram', 'Subaru', 'Tesla', 'Toyota', 'Volkswagen', 'Volvo'
+        ].map(name => ({ name }));
+        setMakes(fallbackMakes);
+      }
+      
       // Load CTP providers
       const ctpResponse = await api.get('/public/insurance-providers');
       const ctpData = ctpResponse.data?.data?.providers || [];
