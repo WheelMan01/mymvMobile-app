@@ -384,6 +384,16 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
       
       console.log(`📸 Images for ${item.make} ${item.model}:`, images);
       
+      // Only set marketplace_listing_id if this is actually a marketplace listing
+      // or if the customer vehicle has a marketplace_listing_id field
+      let marketplaceListingId = undefined;
+      if (actualSource === 'marketplace') {
+        marketplaceListingId = item.id;
+      } else if (item.marketplace_listing_id) {
+        // Customer vehicle that's also listed in marketplace
+        marketplaceListingId = item.marketplace_listing_id;
+      }
+      
       const result = {
         id: item.id,
         year: vehicleDetails?.year || item.year || 0,
@@ -397,7 +407,7 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         showroom_likes: item.likes || 0,
         comments_count: item.comments_count || 0,
         source: actualSource,
-        marketplace_listing_id: actualSource === 'marketplace' ? item.id : commentId
+        marketplace_listing_id: marketplaceListingId
       };
       
       console.log('✅ Mapped vehicle:', {
