@@ -18,6 +18,8 @@ interface CommentsModalProps {
   onClose: () => void;
   vehicleId: string;
   isMarketplaceListing?: boolean;
+  vehicleSource?: 'user' | 'marketplace';
+  marketplaceListingId?: string;
 }
 
 export default function CommentsModal({ visible, onClose, vehicleId, isMarketplaceListing = false }: CommentsModalProps) {
