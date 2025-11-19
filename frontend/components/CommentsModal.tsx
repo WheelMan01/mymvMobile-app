@@ -83,7 +83,11 @@ export default function CommentsModal({
       // Pass source and marketplace listing ID to use correct endpoint
       await addComment(vehicleId, commentText.trim(), vehicleSource, marketplaceListingId);
       setCommentText('');
+      
+      // Small delay to ensure comment is saved before fetching
+      await new Promise(resolve => setTimeout(resolve, 500));
       await loadComments(); // Reload comments
+      
       if (onCommentAdded) {
         onCommentAdded(); // Notify parent to refresh vehicle list
       }
