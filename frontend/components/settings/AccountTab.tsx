@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
+import api from '../../services/api';
 
-const API_URL = 'https://photo-showroom.preview.emergentagent.com';
+const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
 
 export default function AccountTab() {
   const { user, token } = useAuth();
