@@ -277,6 +277,14 @@ export default function AddVehicle() {
 
         <View style={{ height: 40 }} />
       </ScrollView>
+
+      <CustomAlert
+        visible={alertVisible}
+        title={alertTitle}
+        message={alertMessage}
+        onClose={() => setAlertVisible(false)}
+        onConfirm={alertOnConfirm}
+      />
     </KeyboardAvoidingView>
   );
 }
