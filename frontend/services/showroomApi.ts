@@ -238,8 +238,7 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         vehicleDetails = item.vehicle_details;
       } else if (item.vehicle) {
         vehicleDetails = item.vehicle;
-      } else if (isMarketplace) {
-        // For marketplace listings, use the item itself as vehicle details
+      } else {
         vehicleDetails = item;
       }
       
