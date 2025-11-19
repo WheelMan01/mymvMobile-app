@@ -84,6 +84,9 @@ export default function CommentsModal({
       await addComment(vehicleId, commentText.trim(), vehicleSource, marketplaceListingId);
       setCommentText('');
       await loadComments(); // Reload comments
+      if (onCommentAdded) {
+        onCommentAdded(); // Notify parent to refresh vehicle list
+      }
     } catch (error: any) {
       console.error('Error adding comment:', error);
       if (error.response?.status === 404) {
