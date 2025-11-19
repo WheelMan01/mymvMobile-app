@@ -141,16 +141,19 @@ export const addComment = async (vehicleId: string, text: string, source?: 'user
   // Determine the correct endpoint based on source
   let endpoint;
   let payload;
+  let actualId;
   
-  if (source === 'marketplace' && marketplaceListingId) {
-    // Use marketplace endpoint for dealer/marketplace vehicles
-    endpoint = `/marketplace/listings/${marketplaceListingId}/comments`;
+  if (source === 'marketplace') {
+    // Dealer listings - use vehicleId (listing ID)
+    actualId = vehicleId;
+    endpoint = `/marketplace/listings/${actualId}/comments`;
     payload = { comment_text: text };
     console.log('📱 Posting MARKETPLACE comment:', endpoint, payload);
   } else {
-    // Use showroom endpoint for regular customer vehicles
-    endpoint = `/showroom/${vehicleId}/comments`;
-    payload = { comment_text: text };  // FIXED: Use comment_text for both!
+    // Customer vehicles - use marketplaceListingId (which is actually vehicle_id)
+    actualId = marketplaceListingId || vehicleId;
+    endpoint = `/showroom/${actualId}/comments`;
+    payload = { comment_text: text };
     console.log('📱 Posting USER comment:', endpoint, payload);
   }
   
