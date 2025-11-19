@@ -361,13 +361,16 @@ export default function AddVehicleEnhanced() {
 
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Make *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g., Toyota"
-              placeholderTextColor="#64748b"
-              value={make}
-              onChangeText={setMake}
-            />
+            <View style={styles.pickerContainer}>
+              <RNPickerSelect
+                placeholder={{ label: 'Select Make', value: '' }}
+                items={makes.map(m => ({ label: m.name, value: m.name }))}
+                onValueChange={setMake}
+                value={make}
+                style={pickerSelectStyles}
+                disabled={loadingDropdowns}
+              />
+            </View>
           </View>
 
           <View style={styles.inputGroup}>
