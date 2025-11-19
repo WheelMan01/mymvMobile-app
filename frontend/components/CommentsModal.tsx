@@ -20,6 +20,7 @@ interface CommentsModalProps {
   isMarketplaceListing?: boolean;
   vehicleSource?: 'user' | 'marketplace';
   marketplaceListingId?: string;
+  onCommentAdded?: () => void;
 }
 
 export default function CommentsModal({ 
