@@ -292,6 +292,8 @@ const styles = StyleSheet.create({
   loadingText: {
     color: '#fff',
     fontSize: 18,
+    fontFamily: 'Poppins_500Medium',
+    marginTop: 10,
   },
   header: {
     flexDirection: 'row',
