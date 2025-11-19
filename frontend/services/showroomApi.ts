@@ -338,10 +338,41 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
 };
 
 // Get favorite vehicles (placeholder - implement when backend is ready)
+// Fetch user's favorite vehicles from API
 export const getFavoriteVehicles = async (): Promise<ShowroomVehicle[]> => {
   try {
-    const allVehicles = await getAllShowroomVehicles();
-    return allVehicles.filter(v => v.is_favorited);
+    console.log('🔖 Fetching favorites from API...');
+    const response = await api.get('/showroom/favorites');
+    console.log('🔖 Favorites API response:', JSON.stringify(response.data, null, 2));
+    
+    // Handle response structure
+    let favorites = [];
+    if (response.data.data && response.data.data.vehicles) {
+      favorites = response.data.data.vehicles;
+    } else if (response.data.vehicles) {
+      favorites = response.data.vehicles;
+    } else if (Array.isArray(response.data)) {
+      favorites = response.data;
+    }
+    
+    console.log('🔖 Parsed favorites count:', favorites.length);
+    
+    // Map to ShowroomVehicle format
+    return favorites.map((item: any) => ({
+      id: item.id || item.vehicle_id,
+      year: item.year || item.vehicle_details?.year || 0,
+      make: item.make || item.vehicle_details?.make || 'Unknown',
+      model: item.model || item.vehicle_details?.model || 'Unknown',
+      body_type: item.body_type || item.vehicle_details?.body_type,
+      state: item.state || item.vehicle_details?.state,
+      images: item.images || item.photos || [],
+      has_liked: item.has_liked || false,
+      is_favorited: true, // Always true for favorites
+      showroom_likes: item.showroom_likes || 0,
+      comments_count: item.comments_count || 0,
+      source: item.source || 'user',
+      marketplace_listing_id: item.vehicle_id
+    }));
   } catch (error) {
     console.error('Error fetching favorite vehicles:', error);
     return [];
