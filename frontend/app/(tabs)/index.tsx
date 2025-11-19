@@ -128,9 +128,10 @@ export default function Dashboard() {
     </TouchableOpacity>
   );
 
-  if (loading) {
+  if (!fontsLoaded || loading) {
     return (
       <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#00BFFF" />
         <Text style={styles.loadingText}>Loading...</Text>
       </View>
     );
