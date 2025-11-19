@@ -547,6 +547,58 @@ export default function VehicleDetail() {
 
         <View style={{ height: 32 }} />
       </ScrollView>
+
+      {/* Delete Photo Confirmation Modal */}
+      <Modal
+        visible={showDeleteModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowDeleteModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Ionicons name="trash" size={32} color="#FF3B30" />
+            </View>
+            <Text style={styles.modalTitle}>Delete Photo</Text>
+            <Text style={styles.modalMessage}>
+              Are you sure you want to delete this photo? This action cannot be undone.
+            </Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalButtonCancel]}
+                onPress={() => {
+                  setShowDeleteModal(false);
+                  setPhotoToDelete(null);
+                }}
+              >
+                <Text style={styles.modalButtonCancelText}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.modalButton, styles.modalButtonDelete]}
+                onPress={async () => {
+                  if (photoToDelete !== null && vehicle) {
+                    try {
+                      await api.delete(`/vehicles/${id}/photos/${vehicle.photos[photoToDelete].id}`);
+                      setShowDeleteModal(false);
+                      setPhotoToDelete(null);
+                      if (photoToDelete > 0) {
+                        setCurrentPhotoIndex(photoToDelete - 1);
+                      }
+                      await fetchVehicleDetails();
+                    } catch (error: any) {
+                      setShowDeleteModal(false);
+                      Alert.alert('Error', error.response?.data?.detail || 'Failed to delete photo');
+                    }
+                  }
+                }}
+              >
+                <Text style={styles.modalButtonDeleteText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
