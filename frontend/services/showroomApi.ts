@@ -184,7 +184,7 @@ export const getComments = fetchComments;
 export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
   try {
     const response = await api.get(`/marketplace/showroom-listings`);
-    console.log('Showroom API response:', response.data);
+    console.log('🔴 RAW Showroom API response:', JSON.stringify(response.data, null, 2));
     
     // Handle nested response structure
     let listings = response.data;
@@ -195,6 +195,8 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
     } else if (listings.listings) {
       listings = listings.listings;
     }
+    
+    console.log('🔴 Extracted listings array length:', listings?.length);
     
     if (!Array.isArray(listings)) {
       console.warn('Unexpected showroom response format:', listings);
