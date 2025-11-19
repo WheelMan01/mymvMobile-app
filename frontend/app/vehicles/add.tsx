@@ -40,7 +40,7 @@ export default function AddVehicle() {
   const requestCameraPermission = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
     if (status !== 'granted') {
-      Alert.alert('Permission Required', 'Camera permission is required to scan registration papers');
+      showAlert('Permission Required', 'Camera permission is required to scan registration papers');
       return false;
     }
     return true;
