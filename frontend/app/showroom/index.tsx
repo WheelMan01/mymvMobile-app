@@ -378,6 +378,8 @@ export default function ShowroomScreen() {
         onClose={() => setShowComments(false)}
         vehicleId={currentVehicle.id}
         isMarketplaceListing={currentVehicle.source === 'marketplace'}
+        vehicleSource={currentVehicle.source}
+        marketplaceListingId={currentVehicle.marketplace_listing_id}
       />
     </View>
   );
