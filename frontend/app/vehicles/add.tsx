@@ -23,6 +23,19 @@ export default function AddVehicle() {
   
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(false);
+  
+  // Custom alert state
+  const [alertVisible, setAlertVisible] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+  const [alertOnConfirm, setAlertOnConfirm] = useState<(() => void) | undefined>();
+  
+  const showAlert = (title: string, message: string, onConfirm?: () => void) => {
+    setAlertTitle(title);
+    setAlertMessage(message);
+    setAlertOnConfirm(() => onConfirm);
+    setAlertVisible(true);
+  };
 
   const requestCameraPermission = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
