@@ -163,7 +163,14 @@ export default function AddVehicleEnhanced() {
           // Populate form with extracted data
           if (response.data.rego) setRegoNumber(response.data.rego);
           if (response.data.vin) setVin(response.data.vin);
-          if (response.data.make) setMake(response.data.make);
+          if (response.data.make) {
+            // Try to match extracted make with dropdown options
+            const extractedMake = response.data.make;
+            const matchingMake = makes.find(m => 
+              m.name.toLowerCase() === extractedMake.toLowerCase()
+            );
+            setMake(matchingMake ? matchingMake.name : extractedMake);
+          }
           if (response.data.model) setModel(response.data.model);
           if (response.data.year) setYear(response.data.year.toString());
           if (response.data.body_type) setBodyType(response.data.body_type);
