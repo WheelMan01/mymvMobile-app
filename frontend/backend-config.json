@@ -1,4 +1,4 @@
 {
-  "backendUrl": "https://mobile-backend-sync-1.preview.emergentagent.com",
+  "backendUrl": "https://app-bridge-api.preview.emergentagent.com",
   "apiPrefix": "/api"
 }
