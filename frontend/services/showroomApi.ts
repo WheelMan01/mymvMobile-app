@@ -136,16 +136,44 @@ export const toggleFavorite = async (listingId: string): Promise<void> => {
   await api.post(`/showroom/${listingId}/favorite`);
 };
 
-// Add a comment to a showroom listing
-export const addComment = async (listingId: string, text: string): Promise<void> => {
-  await api.post(`/showroom/${listingId}/comments`, { text });
+// Add a comment - checks vehicle source and uses correct endpoint
+export const addComment = async (vehicleId: string, text: string, source?: 'user' | 'marketplace', marketplaceListingId?: string): Promise<void> => {
+  // Determine the correct endpoint based on source
+  let endpoint;
+  let payload;
+  
+  if (source === 'marketplace' && marketplaceListingId) {
+    // Use marketplace endpoint for dealer/marketplace vehicles
+    endpoint = `/marketplace/listings/${marketplaceListingId}/comments`;
+    payload = { comment_text: text };
+  } else {
+    // Use showroom endpoint for regular customer vehicles
+    endpoint = `/showroom/${vehicleId}/comments`;
+    payload = { text };
+  }
+  
+  await api.post(endpoint, payload);
 };
 
-// Fetch comments for a listing
-export const fetchComments = async (listingId: string): Promise<any[]> => {
-  const response = await api.get(`/showroom/${listingId}/comments`);
+// Fetch comments - checks vehicle source and uses correct endpoint
+export const fetchComments = async (vehicleId: string, source?: 'user' | 'marketplace', marketplaceListingId?: string): Promise<Comment[]> => {
+  // Determine the correct endpoint based on source
+  let endpoint;
+  
+  if (source === 'marketplace' && marketplaceListingId) {
+    // Use marketplace endpoint for dealer/marketplace vehicles
+    endpoint = `/marketplace/listings/${marketplaceListingId}/comments`;
+  } else {
+    // Use showroom endpoint for regular customer vehicles
+    endpoint = `/showroom/${vehicleId}/comments`;
+  }
+  
+  const response = await api.get(endpoint);
   return response.data;
 };
+
+// Alias for compatibility
+export const getComments = fetchComments;
 
 // Get all showroom vehicles (used by showroom screen)
 export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
