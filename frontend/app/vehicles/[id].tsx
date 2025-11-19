@@ -117,14 +117,12 @@ export default function VehicleDetail() {
         return;
       }
 
+      // Pick image WITHOUT base64 first (faster)
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
         aspect: [4, 3],
-        quality: 0.3,
-        base64: true,
-        maxWidth: 1024,
-        maxHeight: 1024,
+        quality: 1.0, // Pick at full quality, we'll compress manually
       });
 
       console.log('Image picker result:', result.canceled ? 'Canceled' : 'Selected');
@@ -132,52 +130,79 @@ export default function VehicleDetail() {
       if (!result.canceled && result.assets[0]) {
         setUploading(true);
         
-        if (!result.assets[0].base64) {
-          Alert.alert('Error', 'Failed to convert image to base64');
-          setUploading(false);
-          return;
-        }
+        try {
+          const imageUri = result.assets[0].uri;
+          console.log('Original image URI:', imageUri);
+          
+          // Step 1: Compress image using ImageManipulator
+          console.log('Compressing image...');
+          const manipulatedImage = await ImageManipulator.manipulateAsync(
+            imageUri,
+            [{ resize: { width: 1024 } }], // Resize to max width 1024px
+            {
+              compress: 0.3, // 30% quality
+              format: ImageManipulator.SaveFormat.JPEG,
+            }
+          );
+          
+          console.log('Compressed image URI:', manipulatedImage.uri);
+          
+          // Step 2: Convert compressed image to base64
+          console.log('Converting to base64...');
+          const base64 = await FileSystem.readAsStringAsync(manipulatedImage.uri, {
+            encoding: FileSystem.EncodingType.Base64,
+          });
+          
+          console.log('Base64 length:', base64.length, 'characters');
+          
+          // Warn if image is still large
+          if (base64.length > 1000000) {
+            console.warn('⚠️ Large image detected:', base64.length, 'bytes');
+          } else {
+            console.log('✅ Image compressed successfully:', base64.length, 'bytes');
+          }
+          
+          // Step 3: Format with data URI prefix
+          const imageWithPrefix = `data:image/jpeg;base64,${base64}`;
+          
+          const payload = {
+            image_base64: imageWithPrefix,
+          };
 
-        console.log('Uploading photo for vehicle:', id);
-        console.log('Base64 length:', result.assets[0].base64.length);
-        
-        // Warn if image is still large
-        if (result.assets[0].base64.length > 1000000) {
-          console.warn('Large image detected:', result.assets[0].base64.length, 'bytes');
+          console.log('Uploading to:', `/vehicles/${id}/photos`);
+          
+          // Step 4: Upload
+          const response = await api.post(`/vehicles/${id}/photos`, payload, {
+            timeout: 60000, // 60 seconds
+          });
+          
+          console.log('✅ Upload response:', response.data);
+          
+          // Handle new response format
+          const message = response.data.message || 'Photo uploaded successfully!';
+          Alert.alert('Success', message);
+          await fetchVehicleDetails();
+        } catch (uploadError: any) {
+          console.error('❌ Upload error:', uploadError);
+          throw uploadError;
         }
-        
-        // Format: data:image/jpeg;base64,{base64_string}
-        const imageWithPrefix = `data:image/jpeg;base64,${result.assets[0].base64}`;
-        
-        const payload = {
-          image_base64: imageWithPrefix,
-        };
-
-        // Set a longer timeout for large uploads
-        const response = await api.post(`/vehicles/${id}/photos`, payload, {
-          timeout: 60000, // 60 seconds
-        });
-        console.log('Upload response:', response.data);
-        
-        // Handle new response format
-        const message = response.data.message || 'Photo uploaded successfully!';
-        Alert.alert('Success', message);
-        await fetchVehicleDetails();
       }
     } catch (error: any) {
-      console.error('Error uploading photo:', error);
+      console.error('Error in photo upload flow:', error);
       console.error('Error details:', error.response?.data);
       
       let errorMessage = 'Failed to upload photo';
       
       // Check for 404 - endpoint doesn't exist
       if (error.response?.status === 404) {
-        errorMessage = 'Photo upload feature is not yet available. The backend API endpoint needs to be implemented.';
-        Alert.alert(
-          'Feature Not Available',
-          'The photo upload feature requires backend API support that is currently being developed. Please check back later or contact support.',
-          [{ text: 'OK' }]
-        );
+        errorMessage = 'Photo upload endpoint not found. Please check backend API.';
+        Alert.alert('API Error', errorMessage);
+      } else if (error.response?.status === 400) {
+        errorMessage = error.response.data.detail || 'Bad request - check image format';
+        Alert.alert('Upload Error', errorMessage);
+      } else if (error.response?.status === 403) {
+        errorMessage = 'Not authorized to upload photos for this vehicle';
+        Alert.alert('Authorization Error', errorMessage);
       } else {
         if (error.response?.data?.detail) {
           errorMessage = error.response.data.detail;
