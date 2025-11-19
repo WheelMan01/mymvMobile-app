@@ -159,6 +159,17 @@ export default function ShowroomScreen() {
     if (vehicles.length === 0) return;
     
     const vehicle = vehicles[currentIndex];
+    
+    console.log('🛒 SHOP TAP - Current vehicle:', {
+      index: currentIndex,
+      id: vehicle.id,
+      make: vehicle.make,
+      model: vehicle.model,
+      year: vehicle.year,
+      source: vehicle.source,
+      marketplace_listing_id: vehicle.marketplace_listing_id
+    });
+    
     if (!vehicle.marketplace_listing_id) {
       console.log('⚠️ No marketplace_listing_id for this vehicle');
       return;
@@ -172,7 +183,12 @@ export default function ShowroomScreen() {
       
       if (response.status === 200) {
         // Listing exists, navigate to it
-        console.log('✅ Listing verified, navigating...');
+        console.log('✅ Listing verified, navigating to:', vehicle.marketplace_listing_id);
+        console.log('✅ Vehicle details:', {
+          make: vehicle.make,
+          model: vehicle.model,
+          year: vehicle.year
+        });
         router.push(`/marketplace/${vehicle.marketplace_listing_id}`);
       }
     } catch (error: any) {
