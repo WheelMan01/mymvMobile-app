@@ -138,3 +138,72 @@ export const fetchComments = async (listingId: string): Promise<any[]> => {
   const response = await api.get(`/showroom/${listingId}/comments`);
   return response.data;
 };
+
+// Get all showroom vehicles (used by showroom screen)
+export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
+  try {
+    const response = await api.get(`/marketplace/showroom-listings`);
+    console.log('Showroom API response:', response.data);
+    
+    // Handle nested response structure
+    let listings = response.data;
+    if (listings.data && listings.data.listings) {
+      listings = listings.data.listings;
+    } else if (listings.data) {
+      listings = listings.data;
+    } else if (listings.listings) {
+      listings = listings.listings;
+    }
+    
+    if (!Array.isArray(listings)) {
+      console.warn('Unexpected showroom response format:', listings);
+      return [];
+    }
+    
+    // Transform API response to ShowroomVehicle format
+    return listings.map((item: any) => {
+      // Extract vehicle details from various possible structures
+      let vehicleDetails = null;
+      if (item.vehicle_details) {
+        vehicleDetails = item.vehicle_details;
+      } else if (item.vehicle) {
+        vehicleDetails = item.vehicle;
+      } else if (item.marketplace_listing) {
+        vehicleDetails = item.marketplace_listing.vehicle_details || item.marketplace_listing;
+      }
+      
+      return {
+        id: item.id || item.vehicle_id,
+        year: vehicleDetails?.year || 0,
+        make: vehicleDetails?.make || 'Unknown',
+        model: vehicleDetails?.model || 'Unknown',
+        body_type: vehicleDetails?.body_type,
+        state: vehicleDetails?.state,
+        images: item.photos || vehicleDetails?.photos || [],
+        has_liked: item.liked_by_current_user || false,
+        is_favorited: item.favorited_by_current_user || false,
+        showroom_likes: item.likes || 0,
+        source: item.type === 'marketplace' ? 'marketplace' : 'user',
+        marketplace_listing_id: item.type === 'marketplace' ? item.vehicle_id : undefined
+      };
+    });
+  } catch (error: any) {
+    console.error('Error fetching showroom vehicles:', error);
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+    }
+    return [];
+  }
+};
+
+// Get favorite vehicles (placeholder - implement when backend is ready)
+export const getFavoriteVehicles = async (): Promise<ShowroomVehicle[]> => {
+  try {
+    const allVehicles = await getAllShowroomVehicles();
+    return allVehicles.filter(v => v.is_favorited);
+  } catch (error) {
+    console.error('Error fetching favorite vehicles:', error);
+    return [];
+  }
+};
