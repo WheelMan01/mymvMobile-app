@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   },
   brandText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins_700Bold',
     color: '#fff',
     letterSpacing: 1,
   },
