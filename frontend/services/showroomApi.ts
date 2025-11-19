@@ -287,7 +287,8 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         make: result.make,
         model: result.model,
         source: result.source,
-        marketplace_listing_id: result.marketplace_listing_id
+        marketplace_listing_id: result.marketplace_listing_id,
+        comment_count: result.comment_count
       });
       
       return result;
