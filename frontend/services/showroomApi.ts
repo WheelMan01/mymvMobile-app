@@ -146,10 +146,12 @@ export const addComment = async (vehicleId: string, text: string, source?: 'user
     // Use marketplace endpoint for dealer/marketplace vehicles
     endpoint = `/marketplace/listings/${marketplaceListingId}/comments`;
     payload = { comment_text: text };
+    console.log('📱 Posting MARKETPLACE comment:', endpoint, payload);
   } else {
     // Use showroom endpoint for regular customer vehicles
     endpoint = `/showroom/${vehicleId}/comments`;
     payload = { text };
+    console.log('📱 Posting USER comment:', endpoint, payload);
   }
   
   await api.post(endpoint, payload);
