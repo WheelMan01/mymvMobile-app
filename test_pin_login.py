@@ -7,7 +7,7 @@ import requests
 import json
 
 # Backend URL
-BASE_URL = "https://vehicle-hub-118.preview.emergentagent.com/api"
+BASE_URL = "https://photo-showroom-app.preview.emergentagent.com/api"
 
 def test_pin_login():
     """Test PIN login functionality"""

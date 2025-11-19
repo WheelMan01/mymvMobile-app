@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 
 # Backend URL
-BASE_URL = "https://vehicle-hub-118.preview.emergentagent.com/api"
+BASE_URL = "https://photo-showroom-app.preview.emergentagent.com/api"
 
 def create_sample_rego_image():
     """Create a sample registration document image"""

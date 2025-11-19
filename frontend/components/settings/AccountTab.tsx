@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityInd
 import { Ionicons } from '@expo/vector-icons';
 import api from '../../services/api';
 
-const API_URL = 'https://vehicle-photo-app.preview.emergentagent.com';
+const API_URL = 'https://photo-showroom-app.preview.emergentagent.com';
 
 export default function AccountTab() {
   const [loading, setLoading] = useState(false);

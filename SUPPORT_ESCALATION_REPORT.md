@@ -129,7 +129,7 @@ Import stack:
 ```
 
 ### Backend Configuration
-- Backend URL: `https://vehicle-hub-118.preview.emergentagent.com`
+- Backend URL: `https://photo-showroom-app.preview.emergentagent.com`
 - API calls work correctly (tested with curl)
 - Backend is functional and responsive
 

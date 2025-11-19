@@ -5,13 +5,13 @@
 **The ONLY correct working database URL is:**
 
 ```
-https://vehicle-hub-118.preview.emergentagent.com
+https://photo-showroom-app.preview.emergentagent.com
 ```
 
 **DELETE AND NEVER USE:**
-- ❌ https://vehicle-hub-118.preview.emergentagent.com
-- ❌ https://vehicle-hub-118.preview.emergentagent.com
-- ❌ https://vehicle-hub-118.preview.emergentagent.com
+- ❌ https://photo-showroom-app.preview.emergentagent.com
+- ❌ https://photo-showroom-app.preview.emergentagent.com
+- ❌ https://photo-showroom-app.preview.emergentagent.com
 
 ## Testing Proof:
 
@@ -21,13 +21,13 @@ https://vehicle-hub-118.preview.emergentagent.com
 ## Files that must have this URL:
 
 1. `/app/frontend/.env`
-   - `EXPO_PUBLIC_BACKEND_URL=https://vehicle-hub-118.preview.emergentagent.com`
+   - `EXPO_PUBLIC_BACKEND_URL=https://photo-showroom-app.preview.emergentagent.com`
 
 2. `/app/frontend/backend-config.json`
    - `"backendUrl": null` (uses .env)
 
 3. `/app/frontend/services/logoService.ts`
-   - Fallback: `https://vehicle-hub-118.preview.emergentagent.com`
+   - Fallback: `https://photo-showroom-app.preview.emergentagent.com`
 
 ## If login doesn't work:
 

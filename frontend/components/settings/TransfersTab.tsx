@@ -17,7 +17,7 @@ import { useRouter } from 'expo-router';
 import axios from 'axios';
 
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://vehicle-photo-app.preview.emergentagent.com';
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://photo-showroom-app.preview.emergentagent.com';
 
 interface Vehicle {
   id: string;
