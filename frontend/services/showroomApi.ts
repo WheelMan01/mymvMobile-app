@@ -158,7 +158,9 @@ export const addComment = async (vehicleId: string, text: string, source?: 'user
     console.log('📱 Posting USER comment:', endpoint, payload);
   }
   
-  await api.post(endpoint, payload);
+  const response = await api.post(endpoint, payload);
+  console.log('📱 Comment POST response:', JSON.stringify(response.data, null, 2));
+  return response;
 };
 
 // Fetch comments - checks vehicle source and uses correct endpoint
