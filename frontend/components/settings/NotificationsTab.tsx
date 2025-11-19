@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Switch, ScrollView, Alert } from 'react-native'
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://vehicle-photo-app.preview.emergentagent.com';
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://photo-showroom.preview.emergentagent.com';
 
 interface NotificationPreferences {
   service_reminders: boolean;

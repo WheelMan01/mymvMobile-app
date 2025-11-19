@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
 
-const API_BASE = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://vehicle-photo-app.preview.emergentagent.com';
+const API_BASE = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://photo-showroom.preview.emergentagent.com';
 
 interface LogoSearchResult {
   url: string;

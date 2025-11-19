@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView 
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 
-const API_URL = 'https://vehicle-photo-app.preview.emergentagent.com';
+const API_URL = 'https://photo-showroom.preview.emergentagent.com';
 
 export default function AccountTab() {
   const { user, token } = useAuth();

@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Backend URL for new forked database (from backend-config.json)
-BACKEND_URL = "https://photo-showroom-app.preview.emergentagent.com"
+BACKEND_URL = "https://photo-showroom.preview.emergentagent.com"
 
 # Test credentials from review request
 TEST_EMAIL = "anthony@wheelsfinance.com.au"
