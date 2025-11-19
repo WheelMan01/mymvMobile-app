@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, Image, RefreshControl, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useVehicles } from '../../hooks/useVehicles';
 import AppHeader from '../../components/AppHeader';
@@ -8,6 +8,13 @@ import AppHeader from '../../components/AppHeader';
 export default function Vehicles() {
   const router = useRouter();
   const { vehicles, loading, fetchVehicles, deleteVehicle } = useVehicles();
+
+  // Auto-refresh when screen comes into focus (e.g., after adding a vehicle)
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchVehicles();
+    }, [])
+  );
 
   const handleDelete = (vehicleId: string, vehicleName: string) => {
     Alert.alert(
