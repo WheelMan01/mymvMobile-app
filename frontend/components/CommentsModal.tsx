@@ -56,16 +56,24 @@ export default function CommentsModal({
       // Pass source and marketplace listing ID to use correct endpoint
       const data = await getComments(vehicleId, vehicleSource, marketplaceListingId);
       
+      let loadedComments = [];
       // Ensure data is always an array
       if (Array.isArray(data)) {
-        setComments(data);
+        loadedComments = data;
       } else if (data && Array.isArray(data.comments)) {
-        setComments(data.comments);
+        loadedComments = data.comments;
       } else if (data && Array.isArray(data.data)) {
-        setComments(data.data);
+        loadedComments = data.data;
       } else {
         console.warn('Unexpected comments format:', data);
-        setComments([]);
+        loadedComments = [];
+      }
+      
+      setComments(loadedComments);
+      
+      // Update parent with correct count if it differs
+      if (onCommentAdded && loadedComments.length > 0) {
+        onCommentAdded();
       }
     } catch (error) {
       console.error('Error loading comments:', error);
