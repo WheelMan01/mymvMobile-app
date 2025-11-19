@@ -143,6 +143,18 @@ export default function CommentsModal({
             </TouchableOpacity>
           </View>
 
+          {/* Vehicle Info Card */}
+          {vehicleInfo && (
+            <View style={styles.vehicleInfoCard}>
+              <Text style={styles.vehicleTitle}>
+                {vehicleInfo.year} {vehicleInfo.make} {vehicleInfo.model}
+              </Text>
+              {vehicleInfo.body_type && (
+                <Text style={styles.vehicleSubtitle}>{vehicleInfo.body_type}</Text>
+              )}
+            </View>
+          )}
+
           {/* Comments List */}
           <ScrollView style={styles.commentsList}>
             {loading ? (
