@@ -179,8 +179,24 @@ export const fetchComments = async (vehicleId: string, source?: 'user' | 'market
   }
   
   const response = await api.get(endpoint);
-  console.log('📱 Comments response:', response.data);
-  return response.data;
+  console.log('📱 Comments response RAW:', JSON.stringify(response.data, null, 2));
+  console.log('📱 Comments response type:', typeof response.data);
+  console.log('📱 Is array?', Array.isArray(response.data));
+  
+  // Handle different response structures
+  if (response.data && response.data.data && response.data.data.comments) {
+    console.log('📱 Returning nested comments:', response.data.data.comments);
+    return response.data.data.comments;
+  } else if (response.data && response.data.comments) {
+    console.log('📱 Returning data.comments:', response.data.comments);
+    return response.data.comments;
+  } else if (Array.isArray(response.data)) {
+    console.log('📱 Returning direct array:', response.data);
+    return response.data;
+  } else {
+    console.log('📱 Returning response.data as-is');
+    return response.data;
+  }
 };
 
 // Alias for compatibility
