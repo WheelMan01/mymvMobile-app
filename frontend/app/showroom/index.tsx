@@ -155,13 +155,8 @@ export default function ShowroomScreen() {
     }
   };
 
-  const handleShopTap = async () => {
-    if (vehicles.length === 0) return;
-    
-    const vehicle = vehicles[currentIndex];
-    
+  const handleShopTap = async (vehicle: ShowroomVehicle) => {
     console.log('🛒 SHOP TAP - Current vehicle:', {
-      index: currentIndex,
       id: vehicle.id,
       make: vehicle.make,
       model: vehicle.model,
