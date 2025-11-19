@@ -359,6 +359,7 @@ export default function ShowroomScreen() {
           <Text style={styles.actionIcon}>
             {currentVehicle.is_favorited ? '🔖' : '📑'}
           </Text>
+          <Text style={styles.actionCount}>Fav</Text>
         </TouchableOpacity>
 
         {/* Shop Button (only for marketplace) */}
