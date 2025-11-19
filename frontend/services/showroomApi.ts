@@ -351,30 +351,43 @@ export const getFavoriteVehicles = async (): Promise<ShowroomVehicle[]> => {
       favorites = response.data.data.vehicles;
     } else if (response.data.vehicles) {
       favorites = response.data.vehicles;
+    } else if (Array.isArray(response.data.data)) {
+      favorites = response.data.data;
     } else if (Array.isArray(response.data)) {
       favorites = response.data;
     }
     
     console.log('🔖 Parsed favorites count:', favorites.length);
+    console.log('🔖 First favorite raw:', favorites[0]);
     
     // Map to ShowroomVehicle format
-    return favorites.map((item: any) => ({
-      id: item.id || item.vehicle_id,
-      year: item.year || item.vehicle_details?.year || 0,
-      make: item.make || item.vehicle_details?.make || 'Unknown',
-      model: item.model || item.vehicle_details?.model || 'Unknown',
-      body_type: item.body_type || item.vehicle_details?.body_type,
-      state: item.state || item.vehicle_details?.state,
-      images: item.images || item.photos || [],
-      has_liked: item.has_liked || false,
-      is_favorited: true, // Always true for favorites
-      showroom_likes: item.showroom_likes || 0,
-      comments_count: item.comments_count || 0,
-      source: item.source || 'user',
-      marketplace_listing_id: item.vehicle_id
-    }));
+    return favorites.map((item: any) => {
+      console.log('🔖 Mapping favorite item:', item);
+      
+      // Get vehicle details - might be nested
+      const vehicleData = item.vehicle || item.vehicle_details || item;
+      
+      const mapped = {
+        id: vehicleData.id || item.vehicle_id || item.id,
+        year: vehicleData.year || 0,
+        make: vehicleData.make || 'Unknown',
+        model: vehicleData.model || 'Unknown',
+        body_type: vehicleData.body_type,
+        state: vehicleData.state,
+        images: vehicleData.photos || vehicleData.images || item.photos || item.images || [],
+        has_liked: item.has_liked || vehicleData.has_liked || false,
+        is_favorited: true, // Always true for favorites
+        showroom_likes: item.showroom_likes || vehicleData.showroom_likes || 0,
+        comments_count: item.comments_count || vehicleData.comments_count || 0,
+        source: item.source || 'user',
+        marketplace_listing_id: item.vehicle_id || vehicleData.id
+      };
+      
+      console.log('🔖 Mapped favorite:', mapped);
+      return mapped;
+    });
   } catch (error) {
-    console.error('Error fetching favorite vehicles:', error);
+    console.error('❌ Error fetching favorite vehicles:', error);
     return [];
   }
 };
