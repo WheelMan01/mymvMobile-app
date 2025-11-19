@@ -300,5 +300,23 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 14,
     fontWeight: 'bold'
+  },
+  infoContainer: {
+    backgroundColor: '#FFF9E6',
+    borderRadius: 8,
+    padding: 16,
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: '#FFD60A',
+  },
+  infoText: {
+    fontSize: 14,
+    color: '#1C1C1E',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  infoSubtext: {
+    fontSize: 12,
+    color: '#666',
   }
 });
