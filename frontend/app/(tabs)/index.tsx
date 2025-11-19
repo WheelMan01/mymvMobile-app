@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
   },
   initialsText: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontFamily: 'Poppins_700Bold',
     color: '#fff',
   },
   gridRow: {
