@@ -856,24 +856,35 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
+    fontSize: 18,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
     color: '#fff',
     paddingRight: 30,
+    fontWeight: '500',
   },
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    fontSize: 18,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
     color: '#fff',
     paddingRight: 30,
+    fontWeight: '500',
+  },
+  inputWeb: {
+    fontSize: 18,
+    paddingVertical: 14,
+    paddingHorizontal: 14,
+    color: '#fff',
+    paddingRight: 30,
+    fontWeight: '500',
   },
   placeholder: {
-    color: '#64748b',
+    color: '#94a3b8',
+    fontSize: 18,
   },
   iconContainer: {
-    top: 12,
-    right: 12,
+    top: 14,
+    right: 14,
   },
 });
