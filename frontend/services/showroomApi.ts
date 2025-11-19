@@ -409,6 +409,13 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
       });
       
       return result;
+    }).filter((vehicle: ShowroomVehicle) => {
+      // Only show vehicles with images in the showroom
+      const hasImages = vehicle.images && vehicle.images.length > 0;
+      if (!hasImages) {
+        console.log(`⚠️ Filtering out ${vehicle.make} ${vehicle.model} - no images`);
+      }
+      return hasImages;
     });
   } catch (error: any) {
     console.error('Error fetching showroom vehicles:', error);
