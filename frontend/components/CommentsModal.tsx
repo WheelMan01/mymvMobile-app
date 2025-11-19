@@ -51,9 +51,13 @@ export default function CommentsModal({ visible, onClose, vehicleId }: CommentsM
       await addComment(vehicleId, commentText.trim());
       setCommentText('');
       await loadComments(); // Reload comments
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error adding comment:', error);
-      alert('Failed to add comment. Please try again.');
+      if (error.response?.status === 404) {
+        alert('Comments are only available for user vehicles in the showroom. Marketplace listings do not support comments yet.');
+      } else {
+        alert('Failed to add comment. Please try again.');
+      }
     } finally {
       setSubmitting(false);
     }
