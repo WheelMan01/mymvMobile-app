@@ -33,6 +33,14 @@ export interface ShowroomVehicle {
   marketplace_listing_id?: string;
 }
 
+export interface Comment {
+  id: string;
+  user_id: string;
+  user_name?: string;
+  comment_text: string;
+  created_at: string;
+}
+
 // Fetch all showroom listings (includes both user vehicles and marketplace listings)
 export const fetchShowroomListings = async (): Promise<ShowroomListing[]> => {
   try {
