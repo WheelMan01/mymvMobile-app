@@ -163,12 +163,15 @@ export const fetchComments = async (vehicleId: string, source?: 'user' | 'market
   if (source === 'marketplace' && marketplaceListingId) {
     // Use marketplace endpoint for dealer/marketplace vehicles
     endpoint = `/marketplace/listings/${marketplaceListingId}/comments`;
+    console.log('📱 Fetching MARKETPLACE comments:', endpoint);
   } else {
     // Use showroom endpoint for regular customer vehicles
     endpoint = `/showroom/${vehicleId}/comments`;
+    console.log('📱 Fetching USER comments:', endpoint);
   }
   
   const response = await api.get(endpoint);
+  console.log('📱 Comments response:', response.data);
   return response.data;
 };
 
