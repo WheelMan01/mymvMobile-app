@@ -828,8 +828,8 @@ const styles = StyleSheet.create({
     borderColor: '#3b82f6',
   },
   toggleButtonText: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 18,
+    fontWeight: '600',
     color: '#94a3b8',
   },
   toggleButtonTextActive: {
