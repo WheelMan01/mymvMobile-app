@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Platform } from 'react-native';
-
-const API_BASE = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://mobile-backend-sync-1.preview.emergentagent.com';
+import { API_URL } from './api';
 
 interface LogoSearchResult {
   url: string;
@@ -12,7 +11,7 @@ export const searchCarLogo = async (make: string, model?: string): Promise<strin
   try {
     const query = model ? `${make} ${model}` : make;
     const response = await axios.get<LogoSearchResult>(
-      `${API_BASE}/api/logos/search?query=${encodeURIComponent(query)}`
+      `${API_URL}/api/logos/search?query=${encodeURIComponent(query)}`
     );
     return response.data.url;
   } catch (error) {

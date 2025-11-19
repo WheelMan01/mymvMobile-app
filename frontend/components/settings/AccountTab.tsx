@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
-import api from '../../services/api';
-
-const API_URL = 'https://mobile-backend-sync-1.preview.emergentagent.com';
+import api, { API_URL } from '../../services/api';
 
 export default function AccountTab() {
   const { user, token } = useAuth();
@@ -13,8 +11,8 @@ export default function AccountTab() {
   React.useEffect(() => {
     console.log('=== AccountTab URL CHECK ===');
     console.log('API_URL:', API_URL);
-    console.log('Expected:', 'https://mobile-backend-sync-1.preview.emergentagent.com');
-    console.log('Match:', API_URL === 'https://mobile-backend-sync-1.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
+    console.log('Expected:', 'https://app-bridge-api.preview.emergentagent.com');
+    console.log('Match:', API_URL === 'https://app-bridge-api.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
   }, []);
   
   const [isEditingName, setIsEditingName] = useState(false);

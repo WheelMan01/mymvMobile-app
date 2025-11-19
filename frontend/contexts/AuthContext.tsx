@@ -2,9 +2,8 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import { Platform } from 'react-native';
+import { API_URL } from '../services/api';
 
-// Use environment variable directly - more reliable across platforms
-const API_URL = 'https://mobile-backend-sync-1.preview.emergentagent.com';
 console.log('🔧 AuthContext API_URL:', API_URL);
 
 // Helper functions for storage (supports both native and web)
