@@ -52,15 +52,50 @@ export default function VehicleDetail() {
       setLoading(true);
       console.log('Fetching vehicle details for ID:', id);
       
-      const response = await api.get(`/vehicles/${id}/photos`);
-      console.log('Vehicle with photos response:', response.data);
+      // Try the photos endpoint first
+      try {
+        const response = await api.get(`/vehicles/${id}/photos`);
+        console.log('Vehicle with photos response:', response.data);
+        
+        // Handle new response format: { status, message, data }
+        if (response.data.status === 'success' && response.data.data) {
+          setVehicle(response.data.data);
+        } else {
+          // Fallback for old format
+          setVehicle(response.data);
+        }
+        return;
+      } catch (photoError: any) {
+        console.log('Photos endpoint not available, using vehicles list fallback');
+        console.log('Error:', photoError.response?.status, photoError.message);
+      }
       
-      // Handle new response format: { status, message, data }
-      if (response.data.status === 'success' && response.data.data) {
-        setVehicle(response.data.data);
+      // Fallback: Get from vehicles list
+      const vehiclesResponse = await api.get('/vehicles');
+      console.log('Vehicles list response:', vehiclesResponse.data);
+      
+      // Parse the response structure
+      const vehiclesList = vehiclesResponse.data?.data?.vehicles || 
+                          vehiclesResponse.data?.vehicles || 
+                          vehiclesResponse.data || [];
+      
+      const foundVehicle = vehiclesList.find((v: any) => v.id === id);
+      
+      if (foundVehicle) {
+        // Add default photo properties
+        setVehicle({
+          ...foundVehicle,
+          photos: foundVehicle.photos || foundVehicle.images?.map((url: string, idx: number) => ({
+            id: idx.toString(),
+            image_url: url,
+            admin_approved: true,
+            upload_date: new Date().toISOString(),
+          })) || [],
+          show_in_showroom: foundVehicle.show_in_showroom || false,
+          showroom_admin_approved: foundVehicle.showroom_admin_approved || false,
+        });
       } else {
-        // Fallback for old format
-        setVehicle(response.data);
+        throw new Error('Vehicle not found in list');
       }
     } catch (error: any) {
       console.error('Error fetching vehicle details:', error);
