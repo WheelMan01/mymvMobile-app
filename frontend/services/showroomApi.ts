@@ -310,8 +310,8 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
       return [];
     }
     
-    // Transform API response to ShowroomVehicle format
-    return listings.map((item: any) => {
+    // Transform combined data to ShowroomVehicle format
+    return allListings.map((item: any) => {
       // Determine source based on item properties
       let actualSource: 'user' | 'marketplace';
       let commentId: string;
