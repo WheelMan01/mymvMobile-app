@@ -206,6 +206,14 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
       // Determine if this is a marketplace listing or user vehicle
       const isMarketplace = item.source === 'dealer' || item.dealer_id || !item.vehicle_id;
       
+      console.log('🔍 Processing item:', {
+        id: item.id,
+        source: item.source,
+        dealer_id: item.dealer_id,
+        vehicle_id: item.vehicle_id,
+        isMarketplace
+      });
+      
       // Extract vehicle details from various possible structures
       let vehicleDetails = null;
       if (item.vehicle_details) {
@@ -217,7 +225,7 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         vehicleDetails = item;
       }
       
-      return {
+      const result = {
         id: item.id,
         year: vehicleDetails?.year || item.year || 0,
         make: vehicleDetails?.make || item.make || 'Unknown',
@@ -231,6 +239,15 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
         source: isMarketplace ? 'marketplace' : 'user',
         marketplace_listing_id: isMarketplace ? item.id : undefined
       };
+      
+      console.log('✅ Mapped vehicle:', {
+        make: result.make,
+        model: result.model,
+        source: result.source,
+        marketplace_listing_id: result.marketplace_listing_id
+      });
+      
+      return result;
     });
   } catch (error: any) {
     console.error('Error fetching showroom vehicles:', error);
