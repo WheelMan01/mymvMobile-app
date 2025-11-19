@@ -437,7 +437,7 @@ export default function ShowroomScreen() {
         {currentVehicle.marketplace_listing_id && (
           <TouchableOpacity
             style={[styles.actionButton, styles.shopButton]}
-            onPress={handleShopTap}
+            onPress={() => handleShopTap(currentVehicle)}
           >
             <Text style={styles.actionIcon}>🛒</Text>
           </TouchableOpacity>
