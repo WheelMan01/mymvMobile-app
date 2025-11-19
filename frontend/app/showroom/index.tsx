@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
   },
   vehicleContainer: {
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT - 120,
+    aspectRatio: 9/16,  // Match image aspect ratio
     position: 'relative'
   },
   vehicleImage: {
