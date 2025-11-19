@@ -158,8 +158,12 @@ export default function VehicleDetail() {
     if (!vehicle) return;
 
     try {
-      const response = await api.post(`/vehicles/${id}/toggle-showroom`);
-      Alert.alert('Success', response.data.message);
+      const response = await api.post(`/vehicles/${id}/toggle-showroom`, {});
+      console.log('Toggle showroom response:', response.data);
+      
+      // Handle new response format
+      const message = response.data.message || 'Showroom status updated';
+      Alert.alert('Success', message);
       await fetchVehicleDetails();
     } catch (error: any) {
       console.error('Error toggling showroom:', error);
