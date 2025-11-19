@@ -150,7 +150,7 @@ export const addComment = async (vehicleId: string, text: string, source?: 'user
   } else {
     // Use showroom endpoint for regular customer vehicles
     endpoint = `/showroom/${vehicleId}/comments`;
-    payload = { text };
+    payload = { comment_text: text };  // FIXED: Use comment_text for both!
     console.log('📱 Posting USER comment:', endpoint, payload);
   }
   
