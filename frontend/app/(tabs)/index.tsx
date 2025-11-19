@@ -43,6 +43,14 @@ export default function Dashboard() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [menuVisible, setMenuVisible] = useState(false);
 
+  // Load Poppins fonts
+  let [fontsLoaded] = useFonts({
+    Poppins_400Regular,
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+    Poppins_700Bold,
+  });
+
   const fetchStats = async () => {
     try {
       const [vehiclesResponse, insuranceResponse, roadsideResponse, financeResponse] = await Promise.allSettled([
