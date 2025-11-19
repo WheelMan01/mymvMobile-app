@@ -17,6 +17,7 @@ interface CommentsModalProps {
   visible: boolean;
   onClose: () => void;
   vehicleId: string;
+  isMarketplaceListing?: boolean;
 }
 
 export default function CommentsModal({ visible, onClose, vehicleId }: CommentsModalProps) {
