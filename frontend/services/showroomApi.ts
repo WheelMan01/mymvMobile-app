@@ -61,20 +61,27 @@ export const getShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
 export const getMarketplaceListings = async (): Promise<ShowroomVehicle[]> => {
   try {
     const response = await axios.get(`${API_URL}/api/marketplace/showroom-listings`);
-    return response.data.data.listings.map((listing: MarketplaceListing) => ({
-      id: listing.id,
-      images: listing.photos || [],
-      year: listing.vehicle_details.year,
-      make: listing.vehicle_details.make,
-      model: listing.vehicle_details.model,
-      body_type: listing.vehicle_details.body_type,
-      state: listing.vehicle_details.state,
-      showroom_likes: 0,
-      has_liked: false,
-      is_favorited: false,
-      source: 'marketplace' as const,
-      marketplace_listing_id: listing.id
-    }));
+    console.log('Marketplace listings response:', response.data);
+    
+    const listings = response.data?.data?.listings || response.data?.listings || [];
+    console.log('Parsed listings:', listings.length);
+    
+    return listings
+      .filter((listing: any) => listing && listing.vehicle_details) // Filter out invalid entries
+      .map((listing: MarketplaceListing) => ({
+        id: listing.id,
+        images: listing.photos || [],
+        year: listing.vehicle_details?.year || 0,
+        make: listing.vehicle_details?.make || 'Unknown',
+        model: listing.vehicle_details?.model || 'Unknown',
+        body_type: listing.vehicle_details?.body_type || '',
+        state: listing.vehicle_details?.state || '',
+        showroom_likes: 0,
+        has_liked: false,
+        is_favorited: false,
+        source: 'marketplace' as const,
+        marketplace_listing_id: listing.id
+      }));
   } catch (error) {
     console.error('Error fetching marketplace listings:', error);
     return [];
