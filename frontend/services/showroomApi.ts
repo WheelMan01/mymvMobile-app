@@ -133,8 +133,12 @@ export const toggleLike = async (listingId: string): Promise<void> => {
 };
 
 // Toggle favorite on a showroom listing
-export const toggleFavorite = async (listingId: string): Promise<void> => {
-  await api.post(`/showroom/${listingId}/favorite`);
+export const toggleFavorite = async (vehicleId: string): Promise<{ is_favorited: boolean }> => {
+  const response = await api.post(`/showroom/${vehicleId}/favorite`, {});
+  console.log('📑 Toggle favorite response:', response.data);
+  return {
+    is_favorited: response.data.data?.is_favorited || false
+  };
 };
 
 // Add a comment - checks vehicle source and uses correct endpoint
