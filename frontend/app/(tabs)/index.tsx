@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
   },
   featureTitle: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: 'Poppins_500Medium',
     color: '#FFFFFF',
     textAlign: 'center',
     marginTop: 4,
