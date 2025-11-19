@@ -472,7 +472,7 @@ const styles = StyleSheet.create({
   },
   placeholderContainer: {
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT - 120,
+    aspectRatio: 9/16,  // Match image aspect ratio
     backgroundColor: '#333',
     justifyContent: 'center',
     alignItems: 'center'
