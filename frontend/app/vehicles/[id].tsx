@@ -109,8 +109,11 @@ export default function VehicleDetail() {
           console.warn('Large image detected:', result.assets[0].base64.length, 'bytes');
         }
         
+        // Format: data:image/jpeg;base64,{base64_string}
+        const imageWithPrefix = `data:image/jpeg;base64,${result.assets[0].base64}`;
+        
         const payload = {
-          image_base64: result.assets[0].base64,
+          image_base64: imageWithPrefix,
         };
 
         // Set a longer timeout for large uploads
@@ -119,7 +122,9 @@ export default function VehicleDetail() {
         });
         console.log('Upload response:', response.data);
         
-        Alert.alert('Success', 'Photo uploaded successfully!');
+        // Handle new response format
+        const message = response.data.message || 'Photo uploaded successfully!';
+        Alert.alert('Success', message);
         await fetchVehicleDetails();
       }
     } catch (error: any) {
