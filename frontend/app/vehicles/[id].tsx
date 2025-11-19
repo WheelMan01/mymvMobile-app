@@ -362,29 +362,8 @@ export default function VehicleDetail() {
               <TouchableOpacity
                 style={styles.deletePhotoButton}
                 onPress={() => {
-                  Alert.alert(
-                    'Delete Photo',
-                    'Are you sure you want to delete this photo?',
-                    [
-                      { text: 'Cancel', style: 'cancel' },
-                      {
-                        text: 'Delete',
-                        style: 'destructive',
-                        onPress: async () => {
-                          try {
-                            await api.delete(`/vehicles/${id}/photos/${vehicle.photos[currentPhotoIndex].id}`);
-                            Alert.alert('Success', 'Photo deleted');
-                            if (currentPhotoIndex > 0) {
-                              setCurrentPhotoIndex(currentPhotoIndex - 1);
-                            }
-                            await fetchVehicleDetails();
-                          } catch (error: any) {
-                            Alert.alert('Error', error.response?.data?.detail || 'Failed to delete photo');
-                          }
-                        },
-                      },
-                    ]
-                  );
+                  setPhotoToDelete(currentPhotoIndex);
+                  setShowDeleteModal(true);
                 }}
               >
                 <Ionicons name="trash" size={20} color="#fff" />
