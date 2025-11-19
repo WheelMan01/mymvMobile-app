@@ -29,7 +29,7 @@ export interface ShowroomVehicle {
   has_liked: boolean;
   is_favorited: boolean;
   showroom_likes: number;
-  comment_count: number;
+  comments_count: number;
   source: 'user' | 'marketplace';
   marketplace_listing_id?: string;
 }
