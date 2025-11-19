@@ -13,7 +13,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
 
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://photo-showroom.preview.emergentagent.com';
+const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
 
 interface Transfer {
   id: string;
