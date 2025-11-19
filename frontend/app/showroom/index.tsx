@@ -381,6 +381,12 @@ export default function ShowroomScreen() {
         vehicleSource={currentVehicle.source}
         marketplaceListingId={currentVehicle.marketplace_listing_id}
         onCommentAdded={() => fetchVehicles()}
+        vehicleInfo={{
+          year: currentVehicle.year,
+          make: currentVehicle.make,
+          model: currentVehicle.model,
+          body_type: currentVehicle.body_type
+        }}
       />
     </View>
   );
