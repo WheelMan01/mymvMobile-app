@@ -398,8 +398,8 @@ export default function ShowroomScreen() {
           <Text style={styles.actionCount}>Fav</Text>
         </TouchableOpacity>
 
-        {/* Shop Button (only for marketplace) */}
-        {currentVehicle.source === 'marketplace' && (
+        {/* Shop Button (for vehicles listed in marketplace) */}
+        {currentVehicle.marketplace_listing_id && (
           <TouchableOpacity
             style={[styles.actionButton, styles.shopButton]}
             onPress={handleShopTap}
