@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 
 // Use environment variable directly - more reliable across platforms
-const API_URL = 'https://photo-showroom.preview.emergentagent.com';
+const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
 console.log('🔧 AuthContext API_URL:', API_URL);
 
 // Helper functions for storage (supports both native and web)
