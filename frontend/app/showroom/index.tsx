@@ -154,16 +154,34 @@ export default function ShowroomScreen() {
     }
   };
 
-  const handleShopTap = () => {
+  const handleShopTap = async () => {
     if (vehicles.length === 0) return;
     
     const vehicle = vehicles[currentIndex];
-    if (vehicle.marketplace_listing_id) {
-      // Navigate to marketplace detail page
-      console.log('🛒 Navigating to marketplace listing:', vehicle.marketplace_listing_id);
-      router.push(`/marketplace/${vehicle.marketplace_listing_id}`);
-    } else {
+    if (!vehicle.marketplace_listing_id) {
       console.log('⚠️ No marketplace_listing_id for this vehicle');
+      return;
+    }
+    
+    try {
+      console.log('🛒 Verifying marketplace listing exists:', vehicle.marketplace_listing_id);
+      
+      // Verify the listing exists before navigating
+      const response = await api.get(`/marketplace/listings/${vehicle.marketplace_listing_id}`);
+      
+      if (response.status === 200) {
+        // Listing exists, navigate to it
+        console.log('✅ Listing verified, navigating...');
+        router.push(`/marketplace/${vehicle.marketplace_listing_id}`);
+      }
+    } catch (error: any) {
+      console.error('❌ Error loading marketplace listing:', error);
+      
+      if (error.response?.status === 404) {
+        alert('Listing Not Found\n\nThis vehicle listing is no longer available or has been removed.');
+      } else {
+        alert('Unable to Load Listing\n\nPlease check your connection and try again.');
+      }
     }
   };
 
