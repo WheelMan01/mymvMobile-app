@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
   },
   vehicleImage: {
     width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT - 120
+    aspectRatio: 9/16,  // Portrait like TikTok/Instagram Stories
   },
   placeholderContainer: {
     width: SCREEN_WIDTH,
