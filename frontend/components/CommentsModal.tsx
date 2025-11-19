@@ -124,36 +124,47 @@ export default function CommentsModal({ visible, onClose, vehicleId, isMarketpla
             )}
           </ScrollView>
 
-          {/* Add Comment Input */}
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Add a comment..."
-              placeholderTextColor="#999"
-              value={commentText}
-              onChangeText={setCommentText}
-              multiline
-              maxLength={500}
-              autoFocus={Platform.OS === 'web'}
-              editable={!submitting}
-              onFocus={() => console.log('Comment input focused')}
-              onBlur={() => console.log('Comment input blurred')}
-            />
-            <TouchableOpacity
-              onPress={handleAddComment}
-              disabled={!commentText.trim() || submitting}
-              style={[
-                styles.postButton,
-                (!commentText.trim() || submitting) && styles.postButtonDisabled
-              ]}
-            >
-              {submitting ? (
-                <ActivityIndicator size="small" color="#FFF" />
-              ) : (
-                <Text style={styles.postButtonText}>Post</Text>
-              )}
-            </TouchableOpacity>
-          </View>
+          {/* Add Comment Input or Info Message */}
+          {isMarketplaceListing ? (
+            <View style={styles.infoContainer}>
+              <Text style={styles.infoText}>
+                💬 Comments are only available for your own vehicles in the showroom.
+              </Text>
+              <Text style={styles.infoSubtext}>
+                Marketplace listings don't support comments yet.
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.inputContainer}>
+              <TextInput
+                style={styles.input}
+                placeholder="Add a comment..."
+                placeholderTextColor="#999"
+                value={commentText}
+                onChangeText={setCommentText}
+                multiline
+                maxLength={500}
+                autoFocus={Platform.OS === 'web'}
+                editable={!submitting}
+                onFocus={() => console.log('Comment input focused')}
+                onBlur={() => console.log('Comment input blurred')}
+              />
+              <TouchableOpacity
+                onPress={handleAddComment}
+                disabled={!commentText.trim() || submitting}
+                style={[
+                  styles.postButton,
+                  (!commentText.trim() || submitting) && styles.postButtonDisabled
+                ]}
+              >
+                {submitting ? (
+                  <ActivityIndicator size="small" color="#FFF" />
+                ) : (
+                  <Text style={styles.postButtonText}>Post</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </KeyboardAvoidingView>
     </Modal>
