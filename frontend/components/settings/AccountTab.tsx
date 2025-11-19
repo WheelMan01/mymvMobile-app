@@ -1,117 +1,188 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ActivityIndicator, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import api from '../../services/api';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
+import { useAuth } from '../../contexts/AuthContext';
+import axios from 'axios';
 
-const API_URL = 'https://photo-showroom-app.preview.emergentagent.com';
+const API_URL = 'https://vehicle-photo-app.preview.emergentagent.com';
 
 export default function AccountTab() {
-  const [loading, setLoading] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const { user, token } = useAuth();
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [isEditingPhone, setIsEditingPhone] = useState(false);
+  
+  const [name, setName] = useState(user?.full_name || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [phone, setPhone] = useState(user?.phone || user?.mobile || '');
 
-  useEffect(() => {
-    loadAccountData();
-  }, []);
-
-  const loadAccountData = async () => {
+  const handleSaveName = async () => {
     try {
-      setLoading(true);
-      const response = await api.get('/auth/me');
-      const user = response.data.user || response.data;
-      setFirstName(user.first_name || '');
-      setLastName(user.last_name || '');
-      setEmail(user.email || '');
-      setPhone(user.phone || '');
+      await axios.patch(
+        `${API_URL}/api/users/me`,
+        { full_name: name },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      Alert.alert('Success', 'Name updated successfully');
+      setIsEditingName(false);
     } catch (error) {
-      console.error('Error loading account data:', error);
-    } finally {
-      setLoading(false);
+      Alert.alert('Error', 'Failed to update name');
     }
   };
 
-  const handleSave = async () => {
+  const handleSaveEmail = async () => {
     try {
-      setLoading(true);
-      await api.put('/auth/profile', {
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        phone
-      });
-      Alert.alert('Success', 'Profile updated successfully');
-    } catch (error: any) {
-      Alert.alert('Error', error.response?.data?.detail || 'Failed to update profile');
-    } finally {
-      setLoading(false);
+      await axios.patch(
+        `${API_URL}/api/users/me`,
+        { email },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      Alert.alert('Success', 'Email updated successfully');
+      setIsEditingEmail(false);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update email');
     }
   };
 
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#00BFFF" />
-      </View>
-    );
-  }
+  const handleSavePhone = async () => {
+    try {
+      await axios.patch(
+        `${API_URL}/api/users/me`,
+        { phone },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      Alert.alert('Success', 'Phone updated successfully');
+      setIsEditingPhone(false);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to update phone');
+    }
+  };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.container}>
+      {/* Name Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Personal Information</Text>
-        
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>First Name</Text>
-          <TextInput
-            style={styles.input}
-            value={firstName}
-            onChangeText={setFirstName}
-            placeholder="Enter first name"
-            placeholderTextColor="#8E8E93"
-          />
-        </View>
+        <Text style={styles.label}>Full Name</Text>
+        {isEditingName ? (
+          <View style={styles.editContainer}>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              placeholder="Enter your name"
+            />
+            <View style={styles.buttonRow}>
+              <TouchableOpacity 
+                style={[styles.button, styles.saveButton]} 
+                onPress={handleSaveName}
+              >
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.button, styles.cancelButton]} 
+                onPress={() => {
+                  setName(user?.full_name || '');
+                  setIsEditingName(false);
+                }}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.valueRow}>
+            <Text style={styles.value}>{user?.full_name || 'Not set'}</Text>
+            <TouchableOpacity onPress={() => setIsEditingName(true)}>
+              <Text style={styles.editLink}>Edit</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Last Name</Text>
-          <TextInput
-            style={styles.input}
-            value={lastName}
-            onChangeText={setLastName}
-            placeholder="Enter last name"
-            placeholderTextColor="#8E8E93"
-          />
-        </View>
+      {/* Email Section */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Email</Text>
+        {isEditingEmail ? (
+          <View style={styles.editContainer}>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Enter your email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <View style={styles.buttonRow}>
+              <TouchableOpacity 
+                style={[styles.button, styles.saveButton]} 
+                onPress={handleSaveEmail}
+              >
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.button, styles.cancelButton]} 
+                onPress={() => {
+                  setEmail(user?.email || '');
+                  setIsEditingEmail(false);
+                }}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.valueRow}>
+            <Text style={styles.value}>{user?.email || 'Not set'}</Text>
+            <TouchableOpacity onPress={() => setIsEditingEmail(true)}>
+              <Text style={styles.editLink}>Edit</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Enter email"
-            placeholderTextColor="#8E8E93"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-        </View>
+      {/* Phone Section */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Phone</Text>
+        {isEditingPhone ? (
+          <View style={styles.editContainer}>
+            <TextInput
+              style={styles.input}
+              value={phone}
+              onChangeText={setPhone}
+              placeholder="Enter your phone"
+              keyboardType="phone-pad"
+            />
+            <View style={styles.buttonRow}>
+              <TouchableOpacity 
+                style={[styles.button, styles.saveButton]} 
+                onPress={handleSavePhone}
+              >
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.button, styles.cancelButton]} 
+                onPress={() => {
+                  setPhone(user?.phone || user?.mobile || '');
+                  setIsEditingPhone(false);
+                }}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.valueRow}>
+            <Text style={styles.value}>{user?.phone || user?.mobile || 'Not set'}</Text>
+            <TouchableOpacity onPress={() => setIsEditingPhone(true)}>
+              <Text style={styles.editLink}>Edit</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Phone</Text>
-          <TextInput
-            style={styles.input}
-            value={phone}
-            onChangeText={setPhone}
-            placeholder="Enter phone number"
-            placeholderTextColor="#8E8E93"
-            keyboardType="phone-pad"
-          />
-        </View>
-
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave} disabled={loading}>
-          <Text style={styles.saveButtonText}>Save Changes</Text>
-        </TouchableOpacity>
+      {/* Member ID (Read-only) */}
+      <View style={styles.section}>
+        <Text style={styles.label}>Member ID</Text>
+        <Text style={styles.value}>{user?.member_id || user?.member_number || 'Not set'}</Text>
       </View>
     </ScrollView>
   );
@@ -120,48 +191,56 @@ export default function AccountTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F7',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   section: {
-    padding: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1C1C1E',
-    marginBottom: 16,
-  },
-  inputGroup: {
-    marginBottom: 16,
+    marginBottom: 24,
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1C1C1E',
+    color: '#666',
     marginBottom: 8,
   },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 16,
+  value: {
     fontSize: 16,
-    color: '#1C1C1E',
+    color: '#000',
+  },
+  valueRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  editLink: {
+    color: '#007AFF',
+    fontSize: 16,
+  },
+  editContainer: {
+    gap: 12,
+  },
+  input: {
     borderWidth: 1,
-    borderColor: '#E5E5EA',
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  button: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
   },
   saveButton: {
-    backgroundColor: '#00BFFF',
-    borderRadius: 12,
-    padding: 16,
-    alignItems: 'center',
-    marginTop: 8,
+    backgroundColor: '#007AFF',
   },
-  saveButtonText: {
+  cancelButton: {
+    backgroundColor: '#666',
+  },
+  buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',

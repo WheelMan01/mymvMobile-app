@@ -1,8 +1,4 @@
 {
-  "backendUrl": "https://photo-showroom-app.preview.emergentagent.com",
-  "description": "PERMANENT: ONLY use auto-specs-hub-1 database",
-  "database": "mongodb://localhost:27017/mymv_db",
-  "dataContents": "CORRECT DATABASE - auto-specs-hub-1",
-  "lastUpdated": "2025-01-XX",
-  "WARNING": "DO NOT CHANGE THIS URL - auto-specs-hub-1 is the ONLY working database"
+  "backendUrl": "https://vehicle-photo-app.preview.emergentagent.com",
+  "apiPrefix": "/api"
 }

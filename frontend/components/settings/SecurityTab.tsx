@@ -1,199 +1,191 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 
-
-const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://photo-showroom-app.preview.emergentagent.com';
+const API_URL = process.env.EXPO_PUBLIC_BACKEND_URL || 'https://vehicle-photo-app.preview.emergentagent.com';
 
 export default function SecurityTab() {
   const { token } = useAuth();
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const [passwords, setPasswords] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [isChangingPin, setIsChangingPin] = useState(false);
+  
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
+  const [currentPin, setCurrentPin] = useState('');
+  const [newPin, setNewPin] = useState('');
+  const [confirmPin, setConfirmPin] = useState('');
 
   const handleChangePassword = async () => {
-    // Client-side validation
-    if (!passwords.currentPassword || !passwords.newPassword || !passwords.confirmPassword) {
-      setErrorMessage('All fields are required');
+    if (newPassword !== confirmPassword) {
+      Alert.alert('Error', 'New passwords do not match');
       return;
     }
-
-    if (passwords.newPassword.length < 6) {
-      setErrorMessage('Password must be at least 6 characters');
-      return;
-    }
-
-    if (passwords.newPassword !== passwords.confirmPassword) {
-      setErrorMessage('New passwords do not match');
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMessage('');
-
+    
     try {
       await axios.post(
-        `${API_URL}/api/user/change-password`,
-        {
-          current_password: passwords.currentPassword,
-          new_password: passwords.newPassword,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        `${API_URL}/api/auth/change-password`,
+        { current_password: currentPassword, new_password: newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      setShowSuccess(true);
-      setIsExpanded(false);
-      setPasswords({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-      });
-      setTimeout(() => setShowSuccess(false), 3000);
+      Alert.alert('Success', 'Password changed successfully');
+      setIsChangingPassword(false);
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
     } catch (error: any) {
-      const message = error.response?.data?.detail || 'Failed to change password';
-      setErrorMessage(message);
-    } finally {
-      setIsLoading(false);
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to change password');
     }
   };
 
-  const handleCancel = () => {
-    setIsExpanded(false);
-    setPasswords({
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    });
-    setErrorMessage('');
+  const handleChangePin = async () => {
+    if (newPin !== confirmPin) {
+      Alert.alert('Error', 'New PINs do not match');
+      return;
+    }
+    
+    if (newPin.length !== 4 || !/^\d+$/.test(newPin)) {
+      Alert.alert('Error', 'PIN must be 4 digits');
+      return;
+    }
+    
+    try {
+      await axios.post(
+        `${API_URL}/api/auth/change-pin`,
+        { current_pin: currentPin, new_pin: newPin },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      Alert.alert('Success', 'PIN changed successfully');
+      setIsChangingPin(false);
+      setCurrentPin('');
+      setNewPin('');
+      setConfirmPin('');
+    } catch (error: any) {
+      Alert.alert('Error', error.response?.data?.detail || 'Failed to change PIN');
+    }
   };
 
   return (
     <ScrollView style={styles.container}>
-      {showSuccess && (
-        <View style={styles.successBanner}>
-          <Ionicons name="checkmark-circle" size={20} color="#166534" />
-          <Text style={styles.successText}>Password changed successfully!</Text>
-        </View>
-      )}
-
-      {errorMessage !== '' && (
-        <View style={styles.errorBanner}>
-          <Ionicons name="alert-circle" size={20} color="#991b1b" />
-          <Text style={styles.errorText}>{errorMessage}</Text>
-          <TouchableOpacity onPress={() => setErrorMessage('')}>
-            <Ionicons name="close" size={20} color="#991b1b" />
-          </TouchableOpacity>
-        </View>
-      )}
-
+      {/* Password Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Password & Authentication</Text>
-
-        {!isExpanded ? (
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => setIsExpanded(true)}
-          >
-            <Ionicons name="key-outline" size={24} color="#00BFFF" />
-            <Text style={styles.actionButtonText}>Change Password</Text>
-            <Ionicons name="chevron-forward" size={24} color="#666" />
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.form}>
-            <View style={styles.formHeader}>
-              <Text style={styles.formTitle}>Change Password</Text>
-              <TouchableOpacity onPress={handleCancel}>
-                <Text style={styles.cancelLink}>Cancel</Text>
+        <Text style={styles.sectionTitle}>Password</Text>
+        {isChangingPassword ? (
+          <View style={styles.formContainer}>
+            <TextInput
+              style={styles.input}
+              value={currentPassword}
+              onChangeText={setCurrentPassword}
+              placeholder="Current Password"
+              secureTextEntry
+            />
+            <TextInput
+              style={styles.input}
+              value={newPassword}
+              onChangeText={setNewPassword}
+              placeholder="New Password"
+              secureTextEntry
+            />
+            <TextInput
+              style={styles.input}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              placeholder="Confirm New Password"
+              secureTextEntry
+            />
+            <View style={styles.buttonRow}>
+              <TouchableOpacity 
+                style={[styles.button, styles.saveButton]} 
+                onPress={handleChangePassword}
+              >
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.button, styles.cancelButton]} 
+                onPress={() => {
+                  setIsChangingPassword(false);
+                  setCurrentPassword('');
+                  setNewPassword('');
+                  setConfirmPassword('');
+                }}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Current Password</Text>
-              <TextInput
-                style={styles.input}
-                value={passwords.currentPassword}
-                onChangeText={(text) =>
-                  setPasswords({ ...passwords, currentPassword: text })
-                }
-                secureTextEntry
-                placeholder="Enter current password"
-                placeholderTextColor="#666"
-                autoCapitalize="none"
-              />
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>New Password</Text>
-              <TextInput
-                style={styles.input}
-                value={passwords.newPassword}
-                onChangeText={(text) =>
-                  setPasswords({ ...passwords, newPassword: text })
-                }
-                secureTextEntry
-                placeholder="Enter new password (min 6 characters)"
-                placeholderTextColor="#666"
-                autoCapitalize="none"
-              />
-            </View>
-
-            <View style={styles.inputGroup}>
-              <Text style={styles.label}>Confirm New Password</Text>
-              <TextInput
-                style={styles.input}
-                value={passwords.confirmPassword}
-                onChangeText={(text) =>
-                  setPasswords({ ...passwords, confirmPassword: text })
-                }
-                secureTextEntry
-                placeholder="Confirm new password"
-                placeholderTextColor="#666"
-                autoCapitalize="none"
-              />
-            </View>
-
-            <TouchableOpacity
-              style={[styles.submitButton, isLoading && styles.buttonDisabled]}
-              onPress={handleChangePassword}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <ActivityIndicator color="#000" />
-              ) : (
-                <Text style={styles.submitButtonText}>Change Password</Text>
-              )}
-            </TouchableOpacity>
           </View>
+        ) : (
+          <TouchableOpacity 
+            style={styles.actionButton}
+            onPress={() => setIsChangingPassword(true)}
+          >
+            <Text style={styles.actionButtonText}>Change Password</Text>
+          </TouchableOpacity>
         )}
       </View>
 
+      {/* PIN Section */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Additional Security</Text>
-        <TouchableOpacity style={[styles.actionButton, styles.buttonDisabled]} disabled>
-          <Ionicons name="shield-checkmark-outline" size={24} color="#666" />
-          <Text style={[styles.actionButtonText, { color: '#666' }]}>
-            Two-Factor Authentication (Coming Soon)
-          </Text>
-        </TouchableOpacity>
+        <Text style={styles.sectionTitle}>PIN</Text>
+        <Text style={styles.description}>Set a 4-digit PIN for quick login</Text>
+        {isChangingPin ? (
+          <View style={styles.formContainer}>
+            <TextInput
+              style={styles.input}
+              value={currentPin}
+              onChangeText={setCurrentPin}
+              placeholder="Current PIN"
+              keyboardType="number-pad"
+              maxLength={4}
+              secureTextEntry
+            />
+            <TextInput
+              style={styles.input}
+              value={newPin}
+              onChangeText={setNewPin}
+              placeholder="New PIN (4 digits)"
+              keyboardType="number-pad"
+              maxLength={4}
+              secureTextEntry
+            />
+            <TextInput
+              style={styles.input}
+              value={confirmPin}
+              onChangeText={setConfirmPin}
+              placeholder="Confirm New PIN"
+              keyboardType="number-pad"
+              maxLength={4}
+              secureTextEntry
+            />
+            <View style={styles.buttonRow}>
+              <TouchableOpacity 
+                style={[styles.button, styles.saveButton]} 
+                onPress={handleChangePin}
+              >
+                <Text style={styles.buttonText}>Save</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.button, styles.cancelButton]} 
+                onPress={() => {
+                  setIsChangingPin(false);
+                  setCurrentPin('');
+                  setNewPin('');
+                  setConfirmPin('');
+                }}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : (
+          <TouchableOpacity 
+            style={styles.actionButton}
+            onPress={() => setIsChangingPin(true)}
+          >
+            <Text style={styles.actionButtonText}>Change PIN</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
@@ -202,121 +194,60 @@ export default function SecurityTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
-  },
-  successBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f0fdf4',
-    borderWidth: 1,
-    borderColor: '#bbf7d0',
-    padding: 12,
-    margin: 16,
-    borderRadius: 8,
-    gap: 8,
-  },
-  successText: {
-    color: '#166534',
-    fontSize: 14,
-    fontWeight: '500',
-    flex: 1,
-  },
-  errorBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fef2f2',
-    borderWidth: 1,
-    borderColor: '#fecaca',
-    padding: 12,
-    margin: 16,
-    borderRadius: 8,
-    gap: 8,
-  },
-  errorText: {
-    color: '#991b1b',
-    fontSize: 14,
-    fontWeight: '500',
-    flex: 1,
   },
   section: {
-    padding: 16,
-    paddingTop: 24,
+    marginBottom: 32,
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 16,
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#1a1a1a',
-    borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: 8,
-    padding: 16,
-    gap: 12,
-  },
-  actionButtonText: {
-    flex: 1,
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  buttonDisabled: {
-    opacity: 0.5,
-  },
-  form: {
-    backgroundColor: '#1a1a1a',
-    borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: 8,
-    padding: 16,
-  },
-  formHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  formTitle: {
-    color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
-  },
-  cancelLink: {
-    color: '#00BFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  inputGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    color: '#fff',
-    fontSize: 14,
     fontWeight: '600',
     marginBottom: 8,
   },
-  input: {
-    backgroundColor: '#000',
-    borderWidth: 1,
-    borderColor: '#333',
+  description: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 16,
+  },
+  actionButton: {
+    backgroundColor: '#007AFF',
+    padding: 16,
     borderRadius: 8,
-    padding: 12,
+    alignItems: 'center',
+  },
+  actionButtonText: {
     color: '#fff',
     fontSize: 16,
+    fontWeight: '600',
   },
-  submitButton: {
-    backgroundColor: '#00BFFF',
+  formContainer: {
+    gap: 12,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
     borderRadius: 8,
-    padding: 14,
-    alignItems: 'center',
+    padding: 12,
+    fontSize: 16,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    gap: 12,
     marginTop: 8,
   },
-  submitButtonText: {
-    color: '#000',
+  button: {
+    flex: 1,
+    padding: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  saveButton: {
+    backgroundColor: '#007AFF',
+  },
+  cancelButton: {
+    backgroundColor: '#666',
+  },
+  buttonText: {
+    color: '#fff',
     fontSize: 16,
     fontWeight: '600',
   },
