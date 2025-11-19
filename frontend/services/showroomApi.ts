@@ -164,14 +164,17 @@ export const addComment = async (vehicleId: string, text: string, source?: 'user
 export const fetchComments = async (vehicleId: string, source?: 'user' | 'marketplace', marketplaceListingId?: string): Promise<Comment[]> => {
   // Determine the correct endpoint based on source
   let endpoint;
+  let actualId;
   
-  if (source === 'marketplace' && marketplaceListingId) {
-    // Use marketplace endpoint for dealer/marketplace vehicles
-    endpoint = `/marketplace/listings/${marketplaceListingId}/comments`;
+  if (source === 'marketplace') {
+    // Dealer listings - use vehicleId (listing ID)
+    actualId = vehicleId;
+    endpoint = `/marketplace/listings/${actualId}/comments`;
     console.log('📱 Fetching MARKETPLACE comments:', endpoint);
   } else {
-    // Use showroom endpoint for regular customer vehicles
-    endpoint = `/showroom/${vehicleId}/comments`;
+    // Customer vehicles - use marketplaceListingId (which is actually vehicle_id)
+    actualId = marketplaceListingId || vehicleId;
+    endpoint = `/showroom/${actualId}/comments`;
     console.log('📱 Fetching USER comments:', endpoint);
   }
   
