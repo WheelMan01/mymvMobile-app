@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Switch, ScrollView, Alert } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
-
-const API_URL = 'https://mobile-backend-sync-1.preview.emergentagent.com';
+import { API_URL } from '../../services/api';
 
 interface NotificationPreferences {
   service_reminders: boolean;

@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView } from 'react-native';
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
-
-const API_URL = 'https://mobile-backend-sync-1.preview.emergentagent.com';
+import { API_URL } from '../../services/api';
 
 export default function SecurityTab() {
   const { token } = useAuth();

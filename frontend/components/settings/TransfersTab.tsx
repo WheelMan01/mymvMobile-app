@@ -12,8 +12,7 @@ import {
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 import { Ionicons } from '@expo/vector-icons';
-
-const API_URL = 'https://mobile-backend-sync-1.preview.emergentagent.com';
+import { API_URL } from '../../services/api';
 
 interface Transfer {
   id: string;
