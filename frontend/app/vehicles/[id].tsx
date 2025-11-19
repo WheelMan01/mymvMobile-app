@@ -148,9 +148,7 @@ export default function VehicleDetail() {
           
           // Step 2: Convert compressed image to base64
           console.log('Converting to base64...');
-          const base64 = await FileSystem.readAsStringAsync(manipulatedImage.uri, {
-            encoding: 'base64',
-          });
+          const base64 = await convertToBase64(manipulatedImage.uri);
           
           console.log('Base64 length:', base64.length, 'characters');
           
