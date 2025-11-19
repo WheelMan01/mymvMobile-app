@@ -314,8 +314,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 100,
-    height: 36,
+    width: 120,
+    height: 40,
   },
   brandText: {
     fontSize: 20,
