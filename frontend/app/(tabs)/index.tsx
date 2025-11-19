@@ -301,9 +301,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingTop: 50,
-    paddingBottom: 12,
+    paddingBottom: 16,
     backgroundColor: '#000000',
-    marginBottom: 16,
+    marginBottom: 240,
   },
   menuButton: {
     padding: 12,
