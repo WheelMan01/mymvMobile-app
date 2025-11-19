@@ -305,23 +305,35 @@ export default function VehicleDetail() {
         <View style={styles.photoCarouselContainer}>
           {vehicle.photos && vehicle.photos.length > 0 ? (
             <>
-              <ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onScroll={handlePhotoScroll}
-                scrollEventThrottle={16}
-                style={styles.carousel}
-              >
-                {vehicle.photos.map((photo, index) => (
-                  <Image
-                    key={photo.id}
-                    source={{ uri: photo.image_url }}
-                    style={styles.carouselImage}
-                    resizeMode="cover"
-                  />
-                ))}
-              </ScrollView>
+              {/* Current Photo Display */}
+              <Image
+                source={{ uri: vehicle.photos[currentPhotoIndex].image_url }}
+                style={styles.carouselImage}
+                resizeMode="cover"
+              />
+              
+              {/* Navigation Arrows */}
+              {vehicle.photos.length > 1 && (
+                <>
+                  {currentPhotoIndex > 0 && (
+                    <TouchableOpacity
+                      style={[styles.navArrow, styles.navArrowLeft]}
+                      onPress={() => setCurrentPhotoIndex(currentPhotoIndex - 1)}
+                    >
+                      <Ionicons name="chevron-back" size={32} color="#fff" />
+                    </TouchableOpacity>
+                  )}
+                  
+                  {currentPhotoIndex < vehicle.photos.length - 1 && (
+                    <TouchableOpacity
+                      style={[styles.navArrow, styles.navArrowRight]}
+                      onPress={() => setCurrentPhotoIndex(currentPhotoIndex + 1)}
+                    >
+                      <Ionicons name="chevron-forward" size={32} color="#fff" />
+                    </TouchableOpacity>
+                  )}
+                </>
+              )}
               
               {/* Photo Counter */}
               <View style={styles.photoCounter}>
@@ -333,8 +345,9 @@ export default function VehicleDetail() {
               {/* Photo Indicators */}
               <View style={styles.photoIndicators}>
                 {vehicle.photos.map((_, index) => (
-                  <View
+                  <TouchableOpacity
                     key={index}
+                    onPress={() => setCurrentPhotoIndex(index)}
                     style={[
                       styles.indicator,
                       index === currentPhotoIndex && styles.activeIndicator,
@@ -342,6 +355,38 @@ export default function VehicleDetail() {
                   />
                 ))}
               </View>
+
+              {/* Delete Current Photo Button */}
+              <TouchableOpacity
+                style={styles.deletePhotoButton}
+                onPress={() => {
+                  Alert.alert(
+                    'Delete Photo',
+                    'Are you sure you want to delete this photo?',
+                    [
+                      { text: 'Cancel', style: 'cancel' },
+                      {
+                        text: 'Delete',
+                        style: 'destructive',
+                        onPress: async () => {
+                          try {
+                            await api.delete(`/vehicles/${id}/photos/${vehicle.photos[currentPhotoIndex].id}`);
+                            Alert.alert('Success', 'Photo deleted');
+                            if (currentPhotoIndex > 0) {
+                              setCurrentPhotoIndex(currentPhotoIndex - 1);
+                            }
+                            await fetchVehicleDetails();
+                          } catch (error: any) {
+                            Alert.alert('Error', error.response?.data?.detail || 'Failed to delete photo');
+                          }
+                        },
+                      },
+                    ]
+                  );
+                }}
+              >
+                <Ionicons name="trash" size={20} color="#fff" />
+              </TouchableOpacity>
             </>
           ) : (
             <View style={styles.imagePlaceholder}>
