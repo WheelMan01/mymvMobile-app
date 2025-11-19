@@ -242,23 +242,71 @@ export const getComments = fetchComments;
 // Get all showroom vehicles (used by showroom screen)
 export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
   try {
-    const response = await api.get(`/marketplace/showroom-listings`);
-    console.log('🔴 RAW Showroom API response:', JSON.stringify(response.data, null, 2));
+    console.log('🔴 Fetching showroom vehicles from BOTH endpoints...');
     
-    // Handle nested response structure
-    let listings = response.data;
-    if (listings.data && listings.data.listings) {
-      listings = listings.data.listings;
-    } else if (listings.data) {
-      listings = listings.data;
-    } else if (listings.listings) {
-      listings = listings.listings;
+    // Fetch from BOTH endpoints like web app does
+    const [vehiclesResponse, marketplaceResponse] = await Promise.all([
+      api.get(`/vehicles`).catch(err => {
+        console.log('⚠️ Error fetching regular vehicles:', err);
+        return { data: [] };
+      }),
+      api.get(`/marketplace/showroom-listings`).catch(err => {
+        console.log('⚠️ Error fetching marketplace listings:', err);
+        return { data: [] };
+      })
+    ]);
+    
+    console.log('🔴 RAW Vehicles response:', JSON.stringify(vehiclesResponse.data, null, 2));
+    console.log('🔴 RAW Marketplace response:', JSON.stringify(marketplaceResponse.data, null, 2));
+    
+    // Process regular vehicles (filter for showroom-enabled ones)
+    let regularVehicles = [];
+    let vehiclesData = vehiclesResponse.data;
+    if (vehiclesData.data && vehiclesData.data.vehicles) {
+      vehiclesData = vehiclesData.data.vehicles;
+    } else if (vehiclesData.data) {
+      vehiclesData = vehiclesData.data;
+    } else if (vehiclesData.vehicles) {
+      vehiclesData = vehiclesData.vehicles;
     }
     
-    console.log('🔴 Extracted listings array length:', listings?.length);
+    if (Array.isArray(vehiclesData)) {
+      regularVehicles = vehiclesData.filter((v: any) => v.show_in_showroom === true);
+      console.log('🔴 Regular showroom vehicles count:', regularVehicles.length);
+    }
     
-    if (!Array.isArray(listings)) {
-      console.warn('Unexpected showroom response format:', listings);
+    // Process marketplace listings
+    let marketplaceListings = [];
+    let marketplaceData = marketplaceResponse.data;
+    if (marketplaceData.data && marketplaceData.data.listings) {
+      marketplaceListings = marketplaceData.data.listings;
+    } else if (marketplaceData.data) {
+      marketplaceListings = marketplaceData.data;
+    } else if (marketplaceData.listings) {
+      marketplaceListings = marketplaceData.listings;
+    }
+    
+    if (!Array.isArray(marketplaceListings)) {
+      marketplaceListings = [];
+    }
+    
+    console.log('🔴 Marketplace listings count:', marketplaceListings.length);
+    
+    // Combine both arrays
+    const allListings = [
+      ...regularVehicles.map((v: any) => ({
+        ...v,
+        source: 'customer',
+        vehicle_id: v.id,
+        photos: v.photos || []
+      })),
+      ...marketplaceListings
+    ];
+    
+    console.log('🔴 Combined total listings:', allListings.length);
+    
+    if (allListings.length === 0) {
+      console.warn('No showroom vehicles found');
       return [];
     }
     
