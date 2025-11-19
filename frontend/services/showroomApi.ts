@@ -81,13 +81,11 @@ export const getMarketplaceListings = async (): Promise<ShowroomVehicle[]> => {
   }
 };
 
-// Get all showroom vehicles (combined)
+// Get all showroom vehicles (using marketplace listings like web version)
 export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
-  const [userVehicles, marketplaceVehicles] = await Promise.all([
-    getShowroomVehicles(),
-    getMarketplaceListings()
-  ]);
-  return [...userVehicles, ...marketplaceVehicles];
+  // Use only marketplace listings for now (like web version)
+  // User vehicles require admin approval which isn't ready yet
+  return await getMarketplaceListings();
 };
 
 // Get favorite vehicles only
