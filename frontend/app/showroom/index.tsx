@@ -158,11 +158,12 @@ export default function ShowroomScreen() {
     if (vehicles.length === 0) return;
     
     const vehicle = vehicles[currentIndex];
-    if (vehicle.source === 'marketplace' && vehicle.marketplace_listing_id) {
-      // Navigate to marketplace detail
-      // router.push(`/marketplace/${vehicle.marketplace_listing_id}`);
-      console.log('Navigate to marketplace:', vehicle.marketplace_listing_id);
-      alert('Marketplace navigation coming soon!');
+    if (vehicle.marketplace_listing_id) {
+      // Navigate to marketplace detail page
+      console.log('🛒 Navigating to marketplace listing:', vehicle.marketplace_listing_id);
+      router.push(`/marketplace/${vehicle.marketplace_listing_id}`);
+    } else {
+      console.log('⚠️ No marketplace_listing_id for this vehicle');
     }
   };
 
