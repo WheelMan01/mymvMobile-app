@@ -63,6 +63,7 @@ export default function AddVehicleEnhanced() {
   const [showPurchaseDatePicker, setShowPurchaseDatePicker] = useState(false);
   
   // Dynamic dropdown data
+  const [makes, setMakes] = useState<any[]>([]);
   const [ctpProviders, setCtpProviders] = useState<any[]>([]);
   const [warrantyProviders, setWarrantyProviders] = useState<any[]>([]);
   const [dealers, setDealers] = useState<any[]>([]);
