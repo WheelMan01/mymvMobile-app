@@ -43,6 +43,8 @@ export default function VehicleDetail() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [photoToDelete, setPhotoToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     fetchVehicleDetails();
