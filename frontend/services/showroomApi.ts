@@ -132,29 +132,28 @@ export const toggleLike = async (listingId: string): Promise<void> => {
   await api.post(`/showroom/${listingId}/like`);
 };
 
-// Toggle favorite on a showroom listing
-// NOTE: ALWAYS uses /api/showroom/{vehicle_id}/favorite endpoint
-// Just uses different IDs based on source
+// Toggle favorite - uses different endpoints based on vehicle source
+// Customer vehicles: /api/showroom/{vehicle_id}/favorite
+// Marketplace listings: /api/marketplace/listings/{listing_id}/favorite
 export const toggleFavorite = async (
   vehicleId: string, 
   source?: 'user' | 'marketplace', 
   marketplaceListingId?: string
 ): Promise<{ is_favorited: boolean }> => {
-  // Determine which ID to use based on source
-  // ALL favorites use the showroom endpoint - no marketplace endpoint exists!
+  let endpoint;
   let actualId;
   
-  if (source === 'marketplace' || source === 'user') {
-    // For marketplace/dealer vehicles, use the listing id
-    // For customer vehicles, use the vehicle_id (stored in marketplaceListingId)
-    actualId = source === 'marketplace' ? vehicleId : (marketplaceListingId || vehicleId);
+  if (source === 'marketplace') {
+    // Dealer/marketplace listings - use listing ID with marketplace endpoint
+    actualId = vehicleId;
+    endpoint = `/marketplace/listings/${actualId}/favorite`;
+    console.log('📑 Toggling MARKETPLACE favorite:', endpoint);
   } else {
-    // Fallback
+    // Customer vehicles - use vehicle_id with showroom endpoint
     actualId = marketplaceListingId || vehicleId;
+    endpoint = `/showroom/${actualId}/favorite`;
+    console.log('📑 Toggling USER favorite:', endpoint);
   }
-  
-  const endpoint = `/showroom/${actualId}/favorite`;
-  console.log('📑 Toggling favorite (source:', source, '):', endpoint);
   
   const response = await api.post(endpoint, {});
   console.log('📑 Toggle favorite response:', response.data);
