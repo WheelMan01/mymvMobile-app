@@ -1,7 +1,7 @@
 import axios from 'axios';
 import api from './api';
 
-const API_URL = 'https://photo-showroom.preview.emergentagent.com';
+const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
 
 export interface ShowroomListing {
   id: string;
