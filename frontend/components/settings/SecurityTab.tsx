@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, ScrollView 
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 
-const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+const API_URL = 'https://mobile-backend-sync-1.preview.emergentagent.com';
 
 export default function SecurityTab() {
   const { token } = useAuth();

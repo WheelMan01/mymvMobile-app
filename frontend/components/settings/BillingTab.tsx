@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 
-const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+const API_URL = 'https://mobile-backend-sync-1.preview.emergentagent.com';
 
 interface BillingInfo {
   subscription_status: string;

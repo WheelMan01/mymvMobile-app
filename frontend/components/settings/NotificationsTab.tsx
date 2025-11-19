@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Switch, ScrollView, Alert } from 'react-native'
 import { useAuth } from '../../contexts/AuthContext';
 import axios from 'axios';
 
-const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+const API_URL = 'https://mobile-backend-sync-1.preview.emergentagent.com';
 
 interface NotificationPreferences {
   service_reminders: boolean;

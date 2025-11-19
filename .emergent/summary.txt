@@ -1,83 +1,78 @@
 <analysis>
-The trajectory details a complex and often difficult development cycle. The initial task was to fix the success feedback on the Add Insurance form. This simple task was derailed by a series of major application-breaking issues, primarily stemming from a failed attempt to upgrade the Expo SDK and its dependencies (like React 19 and expo-router v6). This led to a prolonged debugging phase characterized by login failures, blank/black screens, and dependency conflicts.
+The trajectory documents a complex and iterative development and debugging process, beginning with the critical task of unifying the mobile app's backend with the web app's. The initial engineer, an AI, faced persistent issues with incorrect API URLs () caused by project forking and aggressive caching within the Expo environment. A significant portion of the work involved a meticulous, multi-step process of searching for and replacing all hardcoded instances of the old URL with the correct one (), which required multiple cache-clearing attempts and service restarts to take effect.
 
-A recurring and critical problem was the inconsistent and incorrectly cached backend URL, which caused persistent login and data-fetching failures. The AI engineer spent significant effort diagnosing and fixing this, often by clearing Metro bundler caches and restarting services. After numerous failed attempts to fix the upgraded app, the engineer correctly decided to downgrade the dependencies back to a previously stable state, which resolved the core application crashes.
-
-With the app stabilized, the engineer successfully implemented the original requests: fixing the save-and-navigate behavior for the Insurance, Finance, and Roadside forms, adding dynamic provider lists, and implementing auto-refresh on list screens using . The latest request from the user is to build a detailed insurance summary page, for which they provided a comprehensive guide. The last action taken was creating the file for this new screen.
+Once the connection was stabilized, the work shifted to feature implementation and bug fixing based on user feedback. The Add Vehicle form was significantly enhanced to match the web app, including adding numerous fields, dynamic dropdowns, and date pickers. Subsequent debugging addressed UI styling (dropdown text color), data refresh issues (implementing  on the vehicle and showroom lists), and complex data-sourcing logic for the showroom feed. A major bug was fixed where the showroom only fetched marketplace vehicles, which was resolved by updating the API service to fetch and combine both customer-owned vehicles and marketplace listings. The final phase involved implementing and debugging a View Listing feature (shopping cart icon), which required fixing navigation logic, data mapping for IDs, and adding robust error handling for non-existent listings. The last major action was a final, exhaustive sweep to remove lingering hardcoded URLs from settings components to ensure the backend unification was permanent.
 
 The user's primary language is English. The next agent must respond in English.
 </analysis>
 
 <product_requirements>
-The myMV Customer Mobile App is a vehicle management tool built with Expo and a FastAPI backend. The core goal is to provide users with a central place to manage their vehicle-related products like insurance, finance, and roadside assistance.
+The primary objective is to build and refine a Photo Upload and Showroom feature for a mobile app, ensuring it is fully synchronized with an existing web application.
 
-**Initial Request & Resolution:**
-The primary task was to fix the user experience in the Add Product forms (Insurance, Finance, Roadside). After saving, the app would stay on the form screen with no feedback. The implemented solution ensures that upon a successful save, the app navigates back to the respective list screen, which then auto-refreshes to show the new entry.
-
-**Major Detour (App Instability):**
-A significant portion of the work involved recovering the app from a broken state caused by a problematic SDK upgrade. This led to a series of critical bugs including login failures, CORS errors, and app crashes (black/white screens), which have since been resolved by downgrading dependencies.
-
-**Current Feature Development:**
-The current task is to build a detailed view for insurance policies. When a user clicks on an insurance policy from the list, they should be taken to a new screen that displays comprehensive details and provides action buttons for: Calling the provider, visiting their website, renewing the policy, editing, and deleting the policy.
+**Core Features:**
+1.  **Vehicle Management:** Users must be able to add and edit their vehicles. The Add Vehicle form on mobile must mirror the web app's functionality, including all fields, dropdowns (for State, Body Type, Make, etc.), and sections (Basic Info, Registration & Insurance, Purchase Details).
+2.  **Unified Showroom Feed:** A central Showroom displays a combined feed of user-owned vehicles (marked for showroom) and vehicles listed on the marketplace.
+3.  **Marketplace Integration:** Vehicles in the showroom that are for sale on the marketplace must have a View Listing button (shopping cart icon) that navigates to the correct marketplace detail page.
+4.  **Data Synchronization:** The mobile app MUST connect to the same backend API () and database () as the web app. This ensures all data—vehicles, photos, comments, favorites, and user profiles—is consistent across both platforms. All API URLs must be centralized and not hardcoded to prevent reversion during project forks.
 </product_requirements>
 
 <key_technical_concepts>
-- **Dependency Management**: The project underwent a failed major version upgrade (Expo SDK 54, React 19) and a subsequent downgrade to restore stability. Careful management of , , and  versions is critical.
-- **State-driven Navigation**: Using  hook from React Navigation to trigger data refetches when a screen comes into focus, ensuring lists are always up-to-date.
-- **Dynamic Routing**: Using 's file-based routing to create dynamic detail pages, such as .
-- **API-Driven Forms**: Form pickers (e.g., Insurance Providers, Finance Lenders) are populated by fetching data from dedicated backend API endpoints.
+- **API URL Unification:** Centralizing the backend API URL to  across the entire application and removing all hardcoded legacy URLs to ensure data consistency with the web app.
+- **Composite Data Fetching:** Combining data from multiple API endpoints ( and ) to create a single, unified list for the showroom feed.
+- ** Hook:** Using this  hook to automatically re-fetch data and refresh screens (like the vehicle list and showroom) when they come into focus, ensuring the UI displays the latest data after actions like adding a new vehicle.
 </key_technical_concepts>
 
 <code_architecture>
-The application is a full-stack project with a React Native (Expo) frontend and a Python (FastAPI) backend.
+The application is a full-stack system with a React Native (Expo) frontend and a FastAPI backend. All development efforts focused on unifying the frontend to use a single, consistent backend API.
 
 **Directory Structure:**
 
 
 - ****
-  - **Importance**: The form for adding a new insurance policy. It was the epicenter of the initial bug fixes.
-  - **Changes**: The  function was modified to remove the web-problematic  and now directly calls  upon successful API submission. The date picker was replaced with a formatted text input.
-
-- ** & **
-  - **Importance**: Forms for adding Finance and Roadside assistance products.
-  - **Changes**: They were updated to mirror the functionality of the insurance form, including fetching providers from an API (, ) and implementing the save and navigate back behavior.
-
-- ** &  & **
-  - **Importance**: These files display the lists of the user's respective products.
-  - **Changes**: The  hook was added to each file. This hook refetches the product list from the API every time the user navigates to the screen, ensuring newly added items are immediately visible.
+  - **Importance:** This file is the single source of truth for the backend API URL.
+  - **Summary of changes:** It was updated to export a constant  with the value . All other parts of the application now import from this file instead of using hardcoded URLs.
 
 - ****
-  - **Importance**: The main dashboard/home screen of the application.
-  - **Changes**: The code for rendering the count badges on the navigation tiles was removed, as requested by the user, to simplify the UI.
+  - **Importance:** Contains all business logic for fetching and mapping data for the showroom feed.
+  - **Summary of changes:** This file was heavily refactored. The  function now fetches from two sources:  (for customer cars) and . It includes logic to filter vehicles, correctly map disparate data structures (especially for photos, using ), and ensure  is assigned correctly only to actual marketplace vehicles.
 
 - ****
-  - **Importance**: This is the new, dynamically routed screen for displaying the details of a single insurance policy.
-  - **Changes**: This file was just created and is currently a placeholder. It is the focus of the current task.
+  - **Importance:** The main UI for the showroom feed.
+  - **Summary of changes:** Added a  to auto-refresh data. The Shop Button logic was updated to use the 's  for navigation. The  function now includes error handling to check for 404s before navigating, preventing crashes on deleted listings.
 
 - ****
-  - **Importance**: Defines all frontend dependencies.
-  - **Changes**: This file was heavily modified during the SDK upgrade/downgrade cycle. It now contains the stable, downgraded versions of , , , etc., that are known to work.
+  - **Importance:** The form for adding a new vehicle.
+  - **Summary of changes:** The form was completely overhauled to match the web app. This included adding multiple new sections, converting text inputs to  dropdowns for State, Body Type, and Make (with data loaded from APIs), and implementing date pickers. UI styling was also fixed to improve text size and dropdown readability.
+
+- ****
+  - **Importance:** Displays the list of the user's vehicles.
+  - **Summary of changes:** A  hook was added to automatically refresh the vehicle list when the user navigates back to it after adding a new vehicle, solving a major UX issue.
+
+- ** (5 files)**
+  - **Importance:** These files were the final source of hardcoded legacy URLs.
+  - **Summary of changes:** All five files (, , , , ) were modified to remove hardcoded  constants and instead import the centralized  from . This completed the backend unification.
 </code_architecture>
 
 <pending_tasks>
-- **Implement Typography System**: Apply the new system fonts ( for iOS,  for Android) and font weights across all ~30 files in the app, as per the phase-in plan.
-- **Propagate Detail Pages**: After completing the insurance detail page, create similar detail, edit, and delete functionality for the Finance and Roadside assistance sections.
+- The user has requested to fork the project to verify that the backend URL fixes are permanent and survive the forking process.
 </pending_tasks>
 
 <current_work>
-The current task is the implementation of the **Insurance Policy Detail Screen**, based on a comprehensive guide provided by the user. The goal is to create a new page that a user navigates to when they tap on an insurance policy in the list.
+The most recently completed task was a comprehensive, codebase-wide audit and fix to ensure the mobile application is permanently unified with the web application's backend. This was prompted by the user's request for database details, which revealed that while core features were fixed, several settings-related components still contained hardcoded, legacy API URLs ().
 
-This new screen, located at , will display:
-- Vehicle information.
-- Policy details (number, premium, expiry).
-- An Expiring Soon status tag based on the expiry date.
-- Five action buttons: Call Provider, Visit Website, Renew Now, Edit Details, and Delete.
+The process involved meticulously following a detailed plan:
+1.  **Editing 5 Files:** The hardcoded URLs in  (, , , , ) were all replaced with an import of the centralized  from .
+2.  **Verification:** A global search was performed to confirm that no other instances of the old URLs existed in the codebase.
+3.  **Cache Clearing:** The Expo server was restarted with the  flag to ensure all cached bundles were purged.
+4.  **Final Report:** A completion confirmation was prepared, summarizing the fixes and confirming that all parts of the application now point to the single, correct backend: .
 
-The implementation will involve fetching detailed policy data (including provider contact info which the backend auto-joins), vehicle data, and using React Native's  API for the call and website buttons. The Edit and Delete buttons will trigger navigation to an edit form or an API call to delete the policy, respectively.
-
-The previous engineer's last action was to create the placeholder file for this new screen: . The immediate next step is to make the items in the insurance list () tappable so they navigate to this new detail screen.
+The immediate work before this summary was concluding this critical refactoring and preparing for the user's final validation test.
 </current_work>
 
 <optional_next_step>
-Update  to wrap each list item in a  that navigates to the new detail screen , passing the  as a parameter.
+Initiate the forking process as requested by the user to perform the final validation test on the backend URL configuration's stability.
 </optional_next_step>
+
+<direct_quotes>
+**User:** lets fork and see if same issues occure ok?
+</direct_quotes>
