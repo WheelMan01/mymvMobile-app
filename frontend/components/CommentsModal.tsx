@@ -21,6 +21,12 @@ interface CommentsModalProps {
   vehicleSource?: 'user' | 'marketplace';
   marketplaceListingId?: string;
   onCommentAdded?: () => void;
+  vehicleInfo?: {
+    year: number;
+    make: string;
+    model: string;
+    body_type?: string;
+  };
 }
 
 export default function CommentsModal({ 
