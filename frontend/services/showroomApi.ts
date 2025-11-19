@@ -156,10 +156,19 @@ export const toggleFavorite = async (
   }
   
   const response = await api.post(endpoint, {});
-  console.log('📑 Toggle favorite response:', response.data);
-  return {
-    is_favorited: response.data.data?.is_favorited || false
-  };
+  console.log('📑 Toggle favorite response FULL:', JSON.stringify(response.data, null, 2));
+  console.log('📑 is_favorited value:', response.data.data?.is_favorited);
+  
+  // Handle different response structures
+  let isFavorited = false;
+  if (response.data.data && typeof response.data.data.is_favorited === 'boolean') {
+    isFavorited = response.data.data.is_favorited;
+  } else if (typeof response.data.is_favorited === 'boolean') {
+    isFavorited = response.data.is_favorited;
+  }
+  
+  console.log('📑 Returning is_favorited:', isFavorited);
+  return { is_favorited: isFavorited };
 };
 
 // Add a comment - checks vehicle source and uses correct endpoint
