@@ -806,8 +806,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dateButtonText: {
-    fontSize: 16,
-    color: '#94a3b8',
+    fontSize: 18,
+    color: '#e2e8f0',
+    fontWeight: '500',
   },
   toggleContainer: {
     flexDirection: 'row',
