@@ -203,29 +203,33 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
     
     // Transform API response to ShowroomVehicle format
     return listings.map((item: any) => {
+      // Determine if this is a marketplace listing or user vehicle
+      const isMarketplace = item.source === 'dealer' || item.dealer_id || !item.vehicle_id;
+      
       // Extract vehicle details from various possible structures
       let vehicleDetails = null;
       if (item.vehicle_details) {
         vehicleDetails = item.vehicle_details;
       } else if (item.vehicle) {
         vehicleDetails = item.vehicle;
-      } else if (item.marketplace_listing) {
-        vehicleDetails = item.marketplace_listing.vehicle_details || item.marketplace_listing;
+      } else if (isMarketplace) {
+        // For marketplace listings, use the item itself as vehicle details
+        vehicleDetails = item;
       }
       
       return {
-        id: item.id || item.vehicle_id,
-        year: vehicleDetails?.year || 0,
-        make: vehicleDetails?.make || 'Unknown',
-        model: vehicleDetails?.model || 'Unknown',
-        body_type: vehicleDetails?.body_type,
-        state: vehicleDetails?.state,
+        id: item.id,
+        year: vehicleDetails?.year || item.year || 0,
+        make: vehicleDetails?.make || item.make || 'Unknown',
+        model: vehicleDetails?.model || item.model || 'Unknown',
+        body_type: vehicleDetails?.body_type || item.body_type,
+        state: vehicleDetails?.state || item.state,
         images: item.photos || vehicleDetails?.photos || [],
         has_liked: item.liked_by_current_user || false,
         is_favorited: item.favorited_by_current_user || false,
         showroom_likes: item.likes || 0,
-        source: item.type === 'marketplace' ? 'marketplace' : 'user',
-        marketplace_listing_id: item.type === 'marketplace' ? item.vehicle_id : undefined
+        source: isMarketplace ? 'marketplace' : 'user',
+        marketplace_listing_id: isMarketplace ? item.id : undefined
       };
     });
   } catch (error: any) {
