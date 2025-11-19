@@ -52,9 +52,12 @@ export default function ShowroomScreen() {
   const loadVehicles = async () => {
     setLoading(true);
     try {
+      console.log('📋 Loading vehicles, viewMode:', viewMode);
       const data = viewMode === 'favorites' 
         ? await getFavoriteVehicles()
         : await getAllShowroomVehicles();
+      console.log('📋 Loaded vehicles count:', data.length);
+      console.log('📋 First vehicle:', data[0]);
       setVehicles(data);
       setCurrentIndex(0);
     } catch (error) {
