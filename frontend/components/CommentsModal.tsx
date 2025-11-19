@@ -403,5 +403,30 @@ const styles = StyleSheet.create({
   vehicleSubtitle: {
     fontSize: 14,
     color: '#666',
+  },
+  vehicleInfoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  vehicleInfoText: {
+    flex: 1,
+  },
+  commentCountBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+  },
+  commentCountIcon: {
+    fontSize: 12,
+    marginRight: 4,
+  },
+  commentCountText: {
+    fontSize: 12,
+    color: '#FFF',
+    fontWeight: 'bold',
   }
 });
