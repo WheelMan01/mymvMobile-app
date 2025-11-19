@@ -206,14 +206,22 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
     // Transform API response to ShowroomVehicle format
     return listings.map((item: any) => {
       // Determine if this is a marketplace listing or user vehicle
-      const isMarketplace = item.source === 'dealer' || item.dealer_id || !item.vehicle_id;
+      // Marketplace listings have either source='dealer', dealer_id present, or vehicle_id is null
+      const isMarketplace = (item.source === 'dealer') || 
+                            (item.dealer_id !== null && item.dealer_id !== undefined) || 
+                            (item.vehicle_id === null || item.vehicle_id === undefined);
       
       console.log('🔍 Processing item:', {
         id: item.id,
         source: item.source,
         dealer_id: item.dealer_id,
         vehicle_id: item.vehicle_id,
-        isMarketplace
+        isMarketplace,
+        calculation: {
+          hasSourceDealer: item.source === 'dealer',
+          hasDealerId: item.dealer_id !== null && item.dealer_id !== undefined,
+          noVehicleId: item.vehicle_id === null || item.vehicle_id === undefined
+        }
       });
       
       // Extract vehicle details from various possible structures
