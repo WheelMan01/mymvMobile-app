@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
-const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+export const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
 
 // Storage helpers that work on both web and native
 const getStorageItem = async (key: string) => {
