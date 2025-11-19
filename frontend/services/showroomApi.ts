@@ -205,23 +205,31 @@ export const getAllShowroomVehicles = async (): Promise<ShowroomVehicle[]> => {
     
     // Transform API response to ShowroomVehicle format
     return listings.map((item: any) => {
-      // Determine if this is a marketplace listing or user vehicle
-      // Marketplace listings have either source='dealer', dealer_id present, or vehicle_id is null
-      const isMarketplace = (item.source === 'dealer') || 
-                            (item.dealer_id !== null && item.dealer_id !== undefined) || 
-                            (item.vehicle_id === null || item.vehicle_id === undefined);
+      // Determine source based on item properties
+      let actualSource: 'user' | 'marketplace';
+      let commentId: string;
+      
+      if (item.source === 'customer' && item.vehicle_id) {
+        // Customer vehicles use vehicle_id with /api/showroom endpoint
+        actualSource = 'user';
+        commentId = item.vehicle_id;
+      } else if (item.source === 'dealer' || item.dealer_id) {
+        // Dealer/marketplace listings use listing id with /api/marketplace endpoint
+        actualSource = 'marketplace';
+        commentId = item.id;
+      } else {
+        // Fallback: if vehicle_id exists, treat as customer vehicle
+        actualSource = item.vehicle_id ? 'user' : 'marketplace';
+        commentId = item.vehicle_id || item.id;
+      }
       
       console.log('🔍 Processing item:', {
         id: item.id,
         source: item.source,
-        dealer_id: item.dealer_id,
         vehicle_id: item.vehicle_id,
-        isMarketplace,
-        calculation: {
-          hasSourceDealer: item.source === 'dealer',
-          hasDealerId: item.dealer_id !== null && item.dealer_id !== undefined,
-          noVehicleId: item.vehicle_id === null || item.vehicle_id === undefined
-        }
+        dealer_id: item.dealer_id,
+        actualSource,
+        commentId
       });
       
       // Extract vehicle details from various possible structures
