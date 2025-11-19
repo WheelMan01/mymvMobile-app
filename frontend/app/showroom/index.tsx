@@ -103,9 +103,11 @@ export default function ShowroomScreen() {
     if (vehicles.length === 0) return;
     
     const vehicle = vehicles[currentIndex];
+    console.log('🔖 Toggling favorite for vehicle:', vehicle.id, 'Current state:', vehicle.is_favorited);
 
     try {
       const result = await toggleFavorite(vehicle.id);
+      console.log('🔖 Toggle result:', result);
       
       // Update local state
       const updatedVehicles = [...vehicles];
@@ -114,8 +116,11 @@ export default function ShowroomScreen() {
         is_favorited: result.is_favorited
       };
       setVehicles(updatedVehicles);
-    } catch (error) {
-      console.error('Error toggling favorite:', error);
+      console.log('🔖 Updated local state, new is_favorited:', result.is_favorited);
+    } catch (error: any) {
+      console.error('❌ Error toggling favorite:', error);
+      console.error('❌ Error details:', error.response?.data);
+      alert('Failed to toggle favorite. Please try again.');
     }
   };
 
