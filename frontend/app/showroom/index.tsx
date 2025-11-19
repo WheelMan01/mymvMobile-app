@@ -118,7 +118,7 @@ export default function ShowroomScreen() {
       );
       console.log('🔖 Toggle result:', result);
       
-      // Update local state
+      // Update local state immediately for instant feedback
       const updatedVehicles = [...vehicles];
       updatedVehicles[currentIndex] = {
         ...vehicle,
@@ -126,9 +126,17 @@ export default function ShowroomScreen() {
       };
       setVehicles(updatedVehicles);
       console.log('🔖 Updated local state, new is_favorited:', result.is_favorited);
+      
+      // Reload vehicles in background to ensure sync with backend
+      setTimeout(() => {
+        console.log('🔖 Refreshing vehicle list to sync with backend...');
+        loadVehicles();
+      }, 500);
+      
     } catch (error: any) {
       console.error('❌ Error toggling favorite:', error);
       console.error('❌ Error details:', error.response?.data);
+      console.error('❌ Error status:', error.response?.status);
       alert('Failed to toggle favorite. Please try again.');
     }
   };
