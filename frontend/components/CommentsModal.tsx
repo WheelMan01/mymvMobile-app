@@ -124,10 +124,15 @@ export default function CommentsModal({ visible, onClose, vehicleId }: CommentsM
             <TextInput
               style={styles.input}
               placeholder="Add a comment..."
+              placeholderTextColor="#999"
               value={commentText}
               onChangeText={setCommentText}
               multiline
               maxLength={500}
+              autoFocus={Platform.OS === 'web'}
+              editable={!submitting}
+              onFocus={() => console.log('Comment input focused')}
+              onBlur={() => console.log('Comment input blurred')}
             />
             <TouchableOpacity
               onPress={handleAddComment}
