@@ -29,7 +29,8 @@ export default function CommentsModal({
   vehicleId, 
   isMarketplaceListing = false,
   vehicleSource = 'user',
-  marketplaceListingId 
+  marketplaceListingId,
+  onCommentAdded 
 }: CommentsModalProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState('');
