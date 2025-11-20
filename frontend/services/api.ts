@@ -58,6 +58,19 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   async (config) => {
+    // DEV ONLY: Try dev token first
+    try {
+      const devToken = await AsyncStorage.getItem('DEV_TOKEN');
+      if (devToken) {
+        config.headers.Authorization = `Bearer ${devToken}`;
+        console.log('🔧 DEV: Using configured auth token');
+        return config;
+      }
+    } catch (error) {
+      console.log('No dev token');
+    }
+    
+    // Fall back to normal auth token
     const token = await getStorageItem('auth_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
