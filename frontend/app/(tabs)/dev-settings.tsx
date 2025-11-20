@@ -91,6 +91,8 @@ export default function DevSettingsScreen() {
 
   const testConnection = async () => {
     setLoading(true);
+    setStatusMessage('🔄 Testing connection...');
+    setStatusType('info');
 
     try {
       console.log('🔧 Testing connection to:', apiUrl);
@@ -102,13 +104,16 @@ export default function DevSettingsScreen() {
       });
 
       if (response.ok) {
-        Alert.alert('Success', '✅ Connected to backend successfully!');
+        setStatusMessage('✅ Connected to backend successfully!');
+        setStatusType('success');
         console.log('✅ Connection test passed');
       } else {
-        Alert.alert('Error', `Backend returned: ${response.status}`);
+        setStatusMessage(`❌ Backend returned error: ${response.status}`);
+        setStatusType('error');
       }
     } catch (error: any) {
-      Alert.alert('Error', 'Connection failed: ' + error.message);
+      setStatusMessage(`❌ Connection failed: ${error.message}`);
+      setStatusType('error');
       console.error('Connection test failed:', error);
     } finally {
       setLoading(false);
@@ -120,7 +125,8 @@ export default function DevSettingsScreen() {
     await AsyncStorage.removeItem('DEV_TOKEN');
     setApiUrl('https://app-bridge-api.preview.emergentagent.com');
     setToken('');
-    Alert.alert('Cleared', 'Configuration cleared');
+    setStatusMessage('✅ Configuration cleared');
+    setStatusType('success');
   };
 
   return (
