@@ -9,12 +9,32 @@ import { Platform } from 'react-native';
 const DEFAULT_API_URL = 'https://apicache-fix.preview.emergentagent.com';
 let API_URL = DEFAULT_API_URL;
 
+// Validate and sanitize API URL
+const validateApiUrl = (url: string): string => {
+  // Fix common issues from fork/copy errors
+  if (url.includes('.cc')) {
+    console.warn('⚠️ Fixing malformed URL: .cc → .com');
+    url = url.replace('.cc', '.com');
+  }
+  if (url.includes('apicache.fix')) {
+    console.warn('⚠️ Fixing malformed URL: apicache.fix → apicache-fix');
+    url = url.replace('apicache.fix', 'apicache-fix');
+  }
+  return url;
+};
+
 // DEV ONLY: Load dev configuration
 export const loadDevConfig = async () => {
   try {
     const devUrl = await AsyncStorage.getItem('DEV_API_URL');
     if (devUrl) {
-      API_URL = devUrl;
+      // Validate and fix if needed
+      const validUrl = validateApiUrl(devUrl);
+      if (validUrl !== devUrl) {
+        console.log('🔧 DEV: Auto-fixing malformed URL in AsyncStorage');
+        await AsyncStorage.setItem('DEV_API_URL', validUrl);
+      }
+      API_URL = validUrl;
       console.log('🔧 DEV: Using configured API URL:', API_URL);
     } else {
       console.log('🔧 DEV: Using default API URL:', API_URL);
