@@ -287,6 +287,19 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#f5f5f5',
   },
+  redLabelContainer: {
+    backgroundColor: '#ff0000',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+  redLabel: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    fontFamily: 'monospace',
+  },
   warning: {
     backgroundColor: '#fef3c7',
     padding: 15,
