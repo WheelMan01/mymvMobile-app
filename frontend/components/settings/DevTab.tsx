@@ -18,11 +18,15 @@ export default function DevTab() {
 
   const loadSavedConfig = async () => {
     try {
-      const savedUrl = await AsyncStorage.getItem('DEV_API_URL');
-      const savedToken = await AsyncStorage.getItem('DEV_TOKEN');
+      // Clear old URL from storage and force the correct one
+      await AsyncStorage.removeItem('DEV_API_URL');
       
-      if (savedUrl) setApiUrl(savedUrl);
+      // Only load saved token
+      const savedToken = await AsyncStorage.getItem('DEV_TOKEN');
       if (savedToken) setToken(savedToken);
+      
+      // Always use the correct URL
+      setApiUrl('https://app-bridge-api.preview.emergentagent.com');
     } catch (error) {
       console.log('No saved config');
     }
