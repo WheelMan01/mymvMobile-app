@@ -1,7 +1,7 @@
 import axios from 'axios';
 import api from './api';
 
-const API_URL = 'https://api-connector-24.preview.emergentagent.com';
+const API_URL = 'https://api-bridge-dev.preview.emergentagent.com';
 
 export interface ShowroomListing {
   id: string;

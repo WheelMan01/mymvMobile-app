@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DevSettingsScreen() {
-  const [apiUrl, setApiUrl] = useState('https://api-connector-24.preview.emergentagent.com');
+  const [apiUrl, setApiUrl] = useState('https://api-bridge-dev.preview.emergentagent.com');
   const [token, setToken] = useState('');
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
@@ -126,7 +126,7 @@ export default function DevSettingsScreen() {
   const clearConfig = async () => {
     await AsyncStorage.removeItem('DEV_API_URL');
     await AsyncStorage.removeItem('DEV_TOKEN');
-    setApiUrl('https://api-connector-24.preview.emergentagent.com');
+    setApiUrl('https://api-bridge-dev.preview.emergentagent.com');
     setToken('');
     setStatusMessage('✅ Configuration cleared');
     setStatusType('success');

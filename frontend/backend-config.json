@@ -1,4 +1,4 @@
 {
-  "backendUrl": "https://api-connector-24.preview.emergentagent.com",
+  "backendUrl": "https://api-bridge-dev.preview.emergentagent.com",
   "apiPrefix": "/api"
 }

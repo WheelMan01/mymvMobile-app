@@ -5,13 +5,13 @@
 **The ONLY correct working database URL is:**
 
 ```
-https://api-connector-24.preview.emergentagent.com
+https://api-bridge-dev.preview.emergentagent.com
 ```
 
 **DELETE AND NEVER USE:**
-- ❌ https://api-connector-24.preview.emergentagent.com
-- ❌ https://api-connector-24.preview.emergentagent.com
-- ❌ https://api-connector-24.preview.emergentagent.com
+- ❌ https://api-bridge-dev.preview.emergentagent.com
+- ❌ https://api-bridge-dev.preview.emergentagent.com
+- ❌ https://api-bridge-dev.preview.emergentagent.com
 
 ## Testing Proof:
 
@@ -21,13 +21,13 @@ https://api-connector-24.preview.emergentagent.com
 ## Files that must have this URL:
 
 1. `/app/frontend/.env`
-   - `EXPO_PUBLIC_BACKEND_URL=https://api-connector-24.preview.emergentagent.com`
+   - `EXPO_PUBLIC_BACKEND_URL=https://api-bridge-dev.preview.emergentagent.com`
 
 2. `/app/frontend/backend-config.json`
    - `"backendUrl": null` (uses .env)
 
 3. `/app/frontend/services/logoService.ts`
-   - Fallback: `https://api-connector-24.preview.emergentagent.com`
+   - Fallback: `https://api-bridge-dev.preview.emergentagent.com`
 
 ## If login doesn't work:
 
