@@ -29,7 +29,7 @@ export default function DevTab() {
   };
 
   const setCorrectBackendUrl = async () => {
-    const correctUrl = 'https://api-bridge-dev.preview.emergentagent.com';
+    const correctUrl = 'https://app-bridge-api.preview.emergentagent.com';
     setApiUrl(correctUrl);
     setStatusMessage('✅ URL pasted into text box. Now click "Get Token" and then "Save".');
     setStatusType('info');
