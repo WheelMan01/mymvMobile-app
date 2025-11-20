@@ -1,11 +1,30 @@
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // DEV ONLY
 import { Platform } from 'react-native';
 
 // CRITICAL: This is the SHARED backend API used by both web and mobile apps
 // This URL points to the web workspace's backend (Job: 961c0d08...)
 // DO NOT CHANGE THIS URL unless instructed by the web developer
-export const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+let API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+
+// DEV ONLY: Load dev configuration
+export const loadDevConfig = async () => {
+  try {
+    const devUrl = await AsyncStorage.getItem('DEV_API_URL');
+    if (devUrl) {
+      API_URL = devUrl;
+      console.log('🔧 DEV: Using configured API URL:', API_URL);
+    } else {
+      console.log('🔧 DEV: Using default API URL:', API_URL);
+    }
+  } catch (error) {
+    console.log('Using default API URL');
+  }
+};
+
+// Call this on app startup
+loadDevConfig();
 
 // Log to verify correct URL is being used
 console.log('🔗 [POST-FORK-FIX-v2] Mobile App Backend URL:', API_URL);
