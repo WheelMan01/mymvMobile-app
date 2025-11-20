@@ -11,8 +11,8 @@ export default function AccountTab() {
   React.useEffect(() => {
     console.log('=== AccountTab URL CHECK ===');
     console.log('API_URL:', API_URL);
-    console.log('Expected:', 'https://tokenfix-2.preview.emergentagent.com');
-    console.log('Match:', API_URL === 'https://tokenfix-2.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
+    console.log('Expected:', 'https://app-bridge-api.preview.emergentagent.com');
+    console.log('Match:', API_URL === 'https://app-bridge-api.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
   }, []);
   
   const [isEditingName, setIsEditingName] = useState(false);
