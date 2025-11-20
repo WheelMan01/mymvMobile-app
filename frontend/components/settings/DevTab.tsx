@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DevTab() {
-  const [apiUrl, setApiUrl] = useState('https://apicache-fix.preview.emergentagent.com');
+  const [apiUrl, setApiUrl] = useState('https://app-bridge-api.preview.emergentagent.com');
   const [token, setToken] = useState('');
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
@@ -28,9 +28,12 @@ export default function DevTab() {
     }
   };
 
-  const setCorrectBackendUrl = () => {
-    setApiUrl('https://apicache-fix.preview.emergentagent.com');
-    setStatusMessage('✅ Backend URL set to correct shared backend');
+  const setCorrectBackendUrl = async () => {
+    const correctUrl = 'https://app-bridge-api.preview.emergentagent.com';
+    setApiUrl(correctUrl);
+    // Auto-save the correct URL immediately
+    await AsyncStorage.setItem('DEV_API_URL', correctUrl);
+    setStatusMessage('✅ Backend URL set to app-bridge-api and saved!');
     setStatusType('success');
   };
 
