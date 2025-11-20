@@ -154,12 +154,12 @@ export default function DevSettingsScreen() {
     }
   };
 
-  const clearConfig = async () => {
-    await AsyncStorage.removeItem('DEV_API_URL');
+  const clearCachedData = async () => {
     await AsyncStorage.removeItem('DEV_TOKEN');
-    setApiUrl('https://fork-safe-auth.preview.emergentagent.com');
+    await AsyncStorage.removeItem('auth_token');
+    await AsyncStorage.removeItem('user_data');
     setToken('');
-    setStatusMessage('✅ Configuration cleared');
+    setStatusMessage('✅ All cached data cleared');
     setStatusType('success');
   };
 
