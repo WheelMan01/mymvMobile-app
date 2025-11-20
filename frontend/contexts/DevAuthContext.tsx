@@ -24,13 +24,17 @@ export function DevAuthProvider({ children }: { children: React.ReactNode }) {
 
   const checkDevAuth = async () => {
     try {
+      console.log('🔧 DEV: Checking for saved dev user...');
       const savedUser = await AsyncStorage.getItem('DEV_USER');
       if (savedUser) {
+        console.log('🔧 DEV: Found saved user, auto-logging in');
         setDevUser(JSON.parse(savedUser));
         setIsAuthenticated(true);
+      } else {
+        console.log('🔧 DEV: No saved user found');
       }
     } catch (error) {
-      console.log('No saved dev user');
+      console.log('🔧 DEV: Error checking saved user:', error);
     }
   };
 
