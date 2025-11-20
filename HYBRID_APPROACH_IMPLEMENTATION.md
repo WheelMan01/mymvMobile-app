@@ -13,13 +13,13 @@ The mobile app has been successfully configured to use the Hybrid Approach, wher
 
 - Added clear documentation comments explaining this is the shared backend
 - Added verification logging on module load
-- Backend URL: `https://apicache-fix.preview.emergentagent.com`
+- Backend URL: `https://api-connector-24.preview.emergentagent.com`
 
 ```typescript
 // CRITICAL: This is the SHARED backend API used by both web and mobile apps
 // This URL points to the web workspace's backend (Job: 961c0d08...)
 // DO NOT CHANGE THIS URL unless instructed by the web developer
-export const API_URL = 'https://apicache-fix.preview.emergentagent.com';
+export const API_URL = 'https://api-connector-24.preview.emergentagent.com';
 
 console.log('🔗 Mobile App Backend URL:', API_URL);
 console.log('✅ Connected to shared backend (web workspace)');
@@ -54,8 +54,8 @@ useEffect(() => {
   console.log('Mobile App Configuration Check');
   console.log('=================================');
   console.log('Backend URL:', API_URL);
-  console.log('Expected:', 'https://apicache-fix.preview.emergentagent.com');
-  console.log('Match:', API_URL === 'https://apicache-fix.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
+  console.log('Expected:', 'https://api-connector-24.preview.emergentagent.com');
+  console.log('Match:', API_URL === 'https://api-connector-24.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
   console.log('=================================');
 }, []);
 ```
@@ -87,7 +87,7 @@ All changes have been committed to version control:
 
 **Console Output:**
 ```
-🔧 AuthContext API_URL: https://apicache-fix.preview.emergentagent.com
+🔧 AuthContext API_URL: https://api-connector-24.preview.emergentagent.com
 ✅ Connected to shared backend (web workspace)
 ```
 
@@ -118,7 +118,7 @@ All changes have been committed to version control:
 │                  └─────▲──────┘            │
 └────────────────────────┼───────────────────┘
                          │
-          https://apicache-fix.preview.emergentagent.com
+          https://api-connector-24.preview.emergentagent.com
                          │
 ┌────────────────────────┼───────────────────┐
 │  Mobile Workspace (Job: 32454883...)       │
@@ -142,7 +142,7 @@ All changes have been committed to version control:
 
 ### Backend Location
 - **Web Workspace:** Job 961c0d08...
-- **Backend URL:** `https://apicache-fix.preview.emergentagent.com`
+- **Backend URL:** `https://api-connector-24.preview.emergentagent.com`
 - **Database:** MongoDB `mymv_db`
 
 ### Data Sync
@@ -161,7 +161,7 @@ All changes have been committed to version control:
 
 ## Success Criteria - All Met ✅
 
-- [x] Mobile app uses correct backend URL: `https://apicache-fix.preview.emergentagent.com`
+- [x] Mobile app uses correct backend URL: `https://api-connector-24.preview.emergentagent.com`
 - [x] No hardcoded old URLs in codebase
 - [x] All files use centralized API_URL configuration
 - [x] Configuration is committed to git for persistence
@@ -198,7 +198,7 @@ To verify configuration is working correctly:
 tail -50 /var/log/supervisor/expo.out.log | grep "Mobile App Backend URL"
 
 # Should show:
-# 🔗 Mobile App Backend URL: https://apicache-fix.preview.emergentagent.com
+# 🔗 Mobile App Backend URL: https://api-connector-24.preview.emergentagent.com
 # ✅ Connected to shared backend (web workspace)
 ```
 
@@ -216,7 +216,7 @@ tail -50 /var/log/supervisor/expo.out.log | grep "Mobile App Backend URL"
 
 **Implementation Date:** 2025-06-19  
 **Status:** ✅ Complete and Verified  
-**Backend URL:** `https://apicache-fix.preview.emergentagent.com`  
+**Backend URL:** `https://api-connector-24.preview.emergentagent.com`  
 **Persistence:** ✅ Committed to git
 
 ---

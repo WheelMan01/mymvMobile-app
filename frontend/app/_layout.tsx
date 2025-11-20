@@ -11,8 +11,8 @@ export default function RootLayout() {
     console.log('Mobile App Configuration Check');
     console.log('=================================');
     console.log('Backend URL:', API_URL);
-    console.log('Expected:', 'https://apicache-fix.preview.emergentagent.com');
-    console.log('Match:', API_URL === 'https://apicache-fix.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
+    console.log('Expected:', 'https://api-connector-24.preview.emergentagent.com');
+    console.log('Match:', API_URL === 'https://api-connector-24.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
     console.log('=================================');
   }, []);
 

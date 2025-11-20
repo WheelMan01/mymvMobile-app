@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DevTab() {
-  const [apiUrl, setApiUrl] = useState('https://app-bridge-api.preview.emergentagent.com');
+  const [apiUrl, setApiUrl] = useState('https://api-connector-24.preview.emergentagent.com');
   const [token, setToken] = useState('');
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
@@ -29,7 +29,7 @@ export default function DevTab() {
   };
 
   const setCorrectBackendUrl = async () => {
-    const correctUrl = 'https://app-bridge-api.preview.emergentagent.com';
+    const correctUrl = 'https://api-connector-24.preview.emergentagent.com';
     setApiUrl(correctUrl);
     // Auto-save the correct URL immediately
     await AsyncStorage.setItem('DEV_API_URL', correctUrl);
@@ -135,7 +135,7 @@ export default function DevTab() {
   const clearConfig = async () => {
     await AsyncStorage.removeItem('DEV_API_URL');
     await AsyncStorage.removeItem('DEV_TOKEN');
-    setApiUrl('https://app-bridge-api.preview.emergentagent.com');
+    setApiUrl('https://api-connector-24.preview.emergentagent.com');
     setToken('');
     setStatusMessage('✅ Configuration cleared');
     setStatusType('success');
@@ -170,7 +170,7 @@ export default function DevTab() {
           autoCapitalize="none"
         />
         <Text style={styles.copyableUrl} selectable={true}>
-          https://app-bridge-api.preview.emergentagent.com
+          https://api-connector-24.preview.emergentagent.com
         </Text>
         <TouchableOpacity 
           onPress={setCorrectBackendUrl} 

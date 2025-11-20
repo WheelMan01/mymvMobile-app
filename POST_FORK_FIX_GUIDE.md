@@ -27,14 +27,14 @@ If you still see 404 errors:
 1. Open the app and navigate to **Settings**
 2. Click on the **Dev** tab
 3. Click the **"📋 Use Shared Backend: app-bridge-api"** button
-4. This will set the correct URL: `https://apicache-fix.preview.emergentagent.com`
+4. This will set the correct URL: `https://api-connector-24.preview.emergentagent.com`
 5. Refresh the page
 
 ### Option 3: Get Real Token (For full functionality)
 To connect to the actual shared backend and access real data:
 
 1. Go to **Settings → Dev Tab**
-2. Ensure the Backend URL is: `https://apicache-fix.preview.emergentagent.com`
+2. Ensure the Backend URL is: `https://api-connector-24.preview.emergentagent.com`
 3. Enter valid credentials:
    - Email: `anthony@wheelsfinance.com.au` (or your test user)
    - PIN: `1234` (or your test PIN)
@@ -73,7 +73,7 @@ validateApiUrl(url) {
 
 ### Default Configuration
 
-- **Correct Shared Backend URL**: `https://app-bridge-api.preview.emergentagent.com`
+- **Correct Shared Backend URL**: `https://api-connector-24.preview.emergentagent.com`
 - This is the URL that the "Use Shared Backend" button will now set
 - This is the backend shared between web and mobile apps
 
