@@ -129,9 +129,9 @@ export default function DevSettingsScreen() {
     setStatusType('info');
 
     try {
-      console.log('🔧 Testing connection to:', apiUrl);
+      console.log('🔧 Testing connection to:', CURRENT_BACKEND_URL);
       
-      const response = await fetch(`${apiUrl}/api/settings`, {
+      const response = await fetch(`${CURRENT_BACKEND_URL}/api/settings`, {
         headers: token ? {
           'Authorization': `Bearer ${token}`
         } : {}
