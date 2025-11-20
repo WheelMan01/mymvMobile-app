@@ -84,9 +84,9 @@ export default function DevSettingsScreen() {
     setStatusType('info');
 
     try {
-      console.log('🔧 Getting real auth token from API...');
+      console.log('🔧 Getting real auth token from:', CURRENT_BACKEND_URL);
       
-      const response = await fetch(`${apiUrl}/api/auth/pin-login`, {
+      const response = await fetch(`${CURRENT_BACKEND_URL}/api/auth/pin-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
