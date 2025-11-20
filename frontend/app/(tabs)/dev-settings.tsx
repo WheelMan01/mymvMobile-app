@@ -357,4 +357,8 @@ const styles = StyleSheet.create({
     color: '#1e40af',
     lineHeight: 20,
   },
+  bold: {
+    fontWeight: 'bold',
+    color: '#1e40af',
+  },
 });
