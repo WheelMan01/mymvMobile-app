@@ -2,7 +2,7 @@
 ║                                                                ║
 ║         🔴 CRITICAL: YOUR PRODUCTION BACKEND URL 🔴           ║
 ║                                                                ║
-║   Backend: https://tokenfix-2.preview.emergentagent.com  ║
+║   Backend: https://fork-safe-auth.preview.emergentagent.com  ║
 ║   Database: mongodb://localhost:27017/mymv_db                  ║
 ║                                                                ║
 ║   ⚠️  DO NOT CHANGE OR YOU WILL LOSE ALL YOUR DATA! ⚠️       ║
@@ -32,7 +32,7 @@
 
    Expected to see:
    {
-     "backendUrl": "https://tokenfix-2.preview.emergentagent.com",
+     "backendUrl": "https://fork-safe-auth.preview.emergentagent.com",
      ...
    }
 

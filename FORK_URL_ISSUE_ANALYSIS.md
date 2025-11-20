@@ -13,8 +13,8 @@
 ### 1. **ENVIRONMENT VARIABLES** (.env file) ⚠️ **MOST CRITICAL**
 **File**: `/app/frontend/.env`
 ```
-EXPO_PACKAGER_HOSTNAME=https://tokenfix-2.preview.emergentagent.com
-EXPO_PUBLIC_BACKEND_URL=https://tokenfix-2.preview.emergentagent.com
+EXPO_PACKAGER_HOSTNAME=https://fork-safe-auth.preview.emergentagent.com
+EXPO_PUBLIC_BACKEND_URL=https://fork-safe-auth.preview.emergentagent.com
 ```
 
 **Why this matters**:
@@ -25,8 +25,8 @@ EXPO_PUBLIC_BACKEND_URL=https://tokenfix-2.preview.emergentagent.com
 
 ### 2. **SERVICE FILES** (API Configuration)
 **Files**:
-- `/app/frontend/services/api.ts` - Line 9: `const DEFAULT_API_URL = 'https://app-bridge-api.preview.emergentagent.com'`
-- `/app/frontend/services/showroomApi.ts` - Line 4: `const API_URL = 'https://app-bridge-api.preview.emergentagent.com'`
+- `/app/frontend/services/api.ts` - Line 9: `const DEFAULT_API_URL = 'https://fork-safe-auth.preview.emergentagent.com'`
+- `/app/frontend/services/showroomApi.ts` - Line 4: `const API_URL = 'https://fork-safe-auth.preview.emergentagent.com'`
 
 **Impact**: Every API call uses this hardcoded URL
 
@@ -43,7 +43,7 @@ EXPO_PUBLIC_BACKEND_URL=https://tokenfix-2.preview.emergentagent.com
 **File**: `/app/frontend/backend-config.json`
 ```json
 {
-  "backendUrl": "https://app-bridge-api.preview.emergentagent.com"
+  "backendUrl": "https://fork-safe-auth.preview.emergentagent.com"
 }
 ```
 
@@ -57,11 +57,11 @@ EXPO_PUBLIC_BACKEND_URL=https://tokenfix-2.preview.emergentagent.com
 
 ```
 BEFORE FORK (Original Environment):
-.env → https://original-app.preview.emergentagent.com
-Code → https://app-bridge-api.preview.emergentagent.com (hardcoded)
+.env → https://fork-safe-auth.preview.emergentagent.com
+Code → https://fork-safe-auth.preview.emergentagent.com (hardcoded)
 
 FORK ACTION:
-✅ .env gets updated → https://tokenfix-2.preview.emergentagent.com
+✅ .env gets updated → https://fork-safe-auth.preview.emergentagent.com
 ❌ All hardcoded URLs in code → STAY THE SAME (app-bridge-api)
 ❌ AsyncStorage → STAYS THE SAME (tokenfix-2 from previous state)
 
@@ -85,7 +85,7 @@ if (savedUrl) setApiUrl(savedUrl); // ← This loads OLD URL!
 
 // AFTER (CORRECT):
 await AsyncStorage.removeItem('DEV_API_URL'); // Clear old URL
-setApiUrl('https://app-bridge-api.preview.emergentagent.com'); // Force correct URL
+setApiUrl('https://fork-safe-auth.preview.emergentagent.com'); // Force correct URL
 ```
 
 ### Fix #2: Updated All Hardcoded URLs ✅
@@ -138,8 +138,8 @@ Hardcoded app-bridge-api → What the app ACTUALLY uses for API calls
 
 ### Checklist:
 1. ✅ Open Settings → Dev tab
-2. ✅ Verify purple button shows: `https://app-bridge-api.preview.emergentagent.com`
-3. ✅ Verify text input shows: `https://app-bridge-api.preview.emergentagent.com`
+2. ✅ Verify purple button shows: `https://fork-safe-auth.preview.emergentagent.com`
+3. ✅ Verify text input shows: `https://fork-safe-auth.preview.emergentagent.com`
 4. ✅ Click "Get Token" and verify it calls the correct API
 5. ✅ Check browser/Expo console logs for URL confirmation
 

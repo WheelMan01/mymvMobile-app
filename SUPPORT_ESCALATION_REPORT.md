@@ -129,7 +129,7 @@ Import stack:
 ```
 
 ### Backend Configuration
-- Backend URL: `https://tokenfix-2.preview.emergentagent.com`
+- Backend URL: `https://fork-safe-auth.preview.emergentagent.com`
 - API calls work correctly (tested with curl)
 - Backend is functional and responsive
 

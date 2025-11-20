@@ -10,7 +10,7 @@ from PIL import Image, ImageDraw, ImageFont
 import io
 
 # Backend URL
-BASE_URL = "https://tokenfix-2.preview.emergentagent.com/api"
+BASE_URL = "https://fork-safe-auth.preview.emergentagent.com/api"
 
 def create_sample_rego_image():
     """Create a sample registration document image"""

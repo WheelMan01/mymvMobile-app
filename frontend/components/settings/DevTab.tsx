@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DevTab() {
-  const [apiUrl, setApiUrl] = useState('https://app-bridge-api.preview.emergentagent.com');
+  const [apiUrl, setApiUrl] = useState('https://fork-safe-auth.preview.emergentagent.com');
   const [token, setToken] = useState('');
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
@@ -27,10 +27,10 @@ export default function DevTab() {
       await AsyncStorage.removeItem('user_data');
       
       console.log('✅ All cached data cleared');
-      console.log('✅ Forcing correct URL: https://app-bridge-api.preview.emergentagent.com');
+      console.log('✅ Forcing correct URL: https://fork-safe-auth.preview.emergentagent.com');
       
       // Always start fresh with correct URL
-      setApiUrl('https://app-bridge-api.preview.emergentagent.com');
+      setApiUrl('https://fork-safe-auth.preview.emergentagent.com');
       setToken('');
       
       setStatusMessage('✅ Cleared all cached data. Ready for fresh setup.');
@@ -41,7 +41,7 @@ export default function DevTab() {
   };
 
   const setCorrectBackendUrl = async () => {
-    const correctUrl = 'https://app-bridge-api.preview.emergentagent.com';
+    const correctUrl = 'https://fork-safe-auth.preview.emergentagent.com';
     setApiUrl(correctUrl);
     setStatusMessage('✅ URL pasted into text box. Now click "Get Token" and then "Save".');
     setStatusType('info');
@@ -145,7 +145,7 @@ export default function DevTab() {
   const clearConfig = async () => {
     await AsyncStorage.removeItem('DEV_API_URL');
     await AsyncStorage.removeItem('DEV_TOKEN');
-    setApiUrl('https://app-bridge-api.preview.emergentagent.com');
+    setApiUrl('https://fork-safe-auth.preview.emergentagent.com');
     setToken('');
     setStatusMessage('✅ Configuration cleared');
     setStatusType('success');
@@ -156,7 +156,7 @@ export default function DevTab() {
       {/* RED LABEL - Correct Backend URL */}
       <View style={styles.redLabelContainer}>
         <Text style={styles.redLabel}>
-          https://app-bridge-api.preview.emergentagent.com
+          https://fork-safe-auth.preview.emergentagent.com
         </Text>
       </View>
 
@@ -187,14 +187,14 @@ export default function DevTab() {
           autoCapitalize="none"
         />
         <Text style={styles.copyableUrl} selectable={true}>
-          https://app-bridge-api.preview.emergentagent.com
+          https://fork-safe-auth.preview.emergentagent.com
         </Text>
         <TouchableOpacity 
           onPress={setCorrectBackendUrl} 
           style={[styles.button, styles.quickButton]}
         >
           <Text style={styles.buttonText}>
-            https://app-bridge-api.preview.emergentagent.com
+            https://fork-safe-auth.preview.emergentagent.com
           </Text>
         </TouchableOpacity>
       </View>

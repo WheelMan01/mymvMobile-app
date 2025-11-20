@@ -5,13 +5,13 @@
 **The ONLY correct working database URL is:**
 
 ```
-https://tokenfix-2.preview.emergentagent.com
+https://fork-safe-auth.preview.emergentagent.com
 ```
 
 **DELETE AND NEVER USE:**
-- ❌ https://tokenfix-2.preview.emergentagent.com
-- ❌ https://tokenfix-2.preview.emergentagent.com
-- ❌ https://tokenfix-2.preview.emergentagent.com
+- ❌ https://fork-safe-auth.preview.emergentagent.com
+- ❌ https://fork-safe-auth.preview.emergentagent.com
+- ❌ https://fork-safe-auth.preview.emergentagent.com
 
 ## Testing Proof:
 
@@ -21,13 +21,13 @@ https://tokenfix-2.preview.emergentagent.com
 ## Files that must have this URL:
 
 1. `/app/frontend/.env`
-   - `EXPO_PUBLIC_BACKEND_URL=https://tokenfix-2.preview.emergentagent.com`
+   - `EXPO_PUBLIC_BACKEND_URL=https://fork-safe-auth.preview.emergentagent.com`
 
 2. `/app/frontend/backend-config.json`
    - `"backendUrl": null` (uses .env)
 
 3. `/app/frontend/services/logoService.ts`
-   - Fallback: `https://tokenfix-2.preview.emergentagent.com`
+   - Fallback: `https://fork-safe-auth.preview.emergentagent.com`
 
 ## If login doesn't work:
 
