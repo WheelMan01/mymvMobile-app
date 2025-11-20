@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../contexts/AuthContext';
+import { useDevAuth } from '../../contexts/DevAuthContext'; // DEV ONLY
 import { Ionicons } from '@expo/vector-icons';
 import { typography } from '../../styles/typography';
 
@@ -12,6 +13,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { login } = useAuth();
+  const { devLogin, isDevMode } = useDevAuth(); // DEV ONLY
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -21,8 +23,18 @@ export default function Login() {
 
     setLoading(true);
     try {
-      await login(email, password);
-      router.replace('/(tabs)');
+      // DEV ONLY - Use fake login in dev mode
+      if (isDevMode) {
+        console.log('🔧 DEV MODE: Using fake authentication');
+        const result = await devLogin(email, password);
+        if (result.success) {
+          router.replace('/(tabs)');
+        }
+      } else {
+        // Production: Real authentication
+        await login(email, password);
+        router.replace('/(tabs)');
+      }
     } catch (error: any) {
       Alert.alert('Login Failed', error.message);
     } finally {
