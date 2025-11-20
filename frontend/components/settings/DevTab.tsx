@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DevTab() {
-  const [apiUrl, setApiUrl] = useState('https://token-backend-fix.preview.emergentagent.com');
+  const [apiUrl, setApiUrl] = useState('https://app-bridge-api.preview.emergentagent.com');
   const [token, setToken] = useState('');
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
