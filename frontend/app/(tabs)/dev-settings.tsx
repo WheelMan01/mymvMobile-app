@@ -43,11 +43,14 @@ export default function DevSettingsScreen() {
 
   const getRealToken = async () => {
     if (!testEmail || !testPin) {
-      Alert.alert('Error', 'Enter email and PIN');
+      setStatusMessage('❌ Please enter email and PIN');
+      setStatusType('error');
       return;
     }
 
     setLoading(true);
+    setStatusMessage('🔄 Getting token from backend...');
+    setStatusType('info');
 
     try {
       console.log('🔧 Getting real auth token from API...');
@@ -69,14 +72,17 @@ export default function DevSettingsScreen() {
         setToken(data.access_token);
         await AsyncStorage.setItem('DEV_TOKEN', data.access_token);
         
-        Alert.alert('Success', '✅ Got real auth token from backend!');
+        setStatusMessage('✅ Got real auth token from backend! Token saved automatically.');
+        setStatusType('success');
         console.log('✅ Token received:', data.access_token.substring(0, 20) + '...');
       } else {
-        Alert.alert('Error', data.detail || 'Failed to get token');
+        setStatusMessage(`❌ Failed to get token: ${data.detail || 'Unknown error'}`);
+        setStatusType('error');
         console.error('Failed:', data);
       }
     } catch (error: any) {
-      Alert.alert('Error', 'Network error: ' + error.message);
+      setStatusMessage(`❌ Network error: ${error.message}`);
+      setStatusType('error');
       console.error('Token fetch error:', error);
     } finally {
       setLoading(false);
