@@ -233,15 +233,19 @@ export default function DevSettingsScreen() {
 
       {/* Info */}
       <View style={styles.infoBox}>
-        <Text style={styles.infoTitle}>How to Use:</Text>
+        <Text style={styles.infoTitle}>💡 Getting Token Failed?</Text>
         <Text style={styles.infoText}>
-          1. Confirm Backend URL is correct{'\n'}
-          2. Either:{'\n'}
-             • Enter email/PIN and tap "Get Real Token"{'\n'}
-             • OR paste token from web app{'\n'}
-          3. Tap "Save Configuration"{'\n'}
-          4. Tap "Test Connection" to verify{'\n'}
-          5. Return to app - all API calls now use real backend!
+          The mobile app database is separate from web after fork.{'\n\n'}
+          <Text style={styles.bold}>SOLUTION: Get token from WEB APP:</Text>{'\n'}
+          1. Open web app in browser{'\n'}
+          2. Login with your credentials{'\n'}
+          3. Open browser DevTools (F12){'\n'}
+          4. Go to Console tab{'\n'}
+          5. Type: localStorage.getItem('access_token'){'\n'}
+          6. Copy the token (without quotes){'\n'}
+          7. Paste it in "Manual Token Entry" below{'\n'}
+          8. Tap "Save Configuration"{'\n\n'}
+          Then go to Vehicles and you'll see real data!
         </Text>
       </View>
     </ScrollView>
