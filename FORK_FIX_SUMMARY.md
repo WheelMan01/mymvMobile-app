@@ -36,8 +36,8 @@ This broke **everything**: login, showroom, all API calls.
 ### Step 1: Find Correct URL
 ```bash
 # Test both URLs to see which works
-curl https://api-bridge-dev.preview.emergentagent.com/api/marketplace/showroom-listings
-curl https://api-bridge-dev.preview.emergentagent.com/api/marketplace/showroom-listings
+curl https://token-backend-fix.preview.emergentagent.com/api/marketplace/showroom-listings
+curl https://token-backend-fix.preview.emergentagent.com/api/marketplace/showroom-listings
 ```
 
 ### Step 2: Global Replace

@@ -11,8 +11,8 @@ export default function RootLayout() {
     console.log('Mobile App Configuration Check');
     console.log('=================================');
     console.log('Backend URL:', API_URL);
-    console.log('Expected:', 'https://api-bridge-dev.preview.emergentagent.com');
-    console.log('Match:', API_URL === 'https://api-bridge-dev.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
+    console.log('Expected:', 'https://token-backend-fix.preview.emergentagent.com');
+    console.log('Match:', API_URL === 'https://token-backend-fix.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
     console.log('=================================');
   }, []);
 

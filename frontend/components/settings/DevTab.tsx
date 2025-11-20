@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function DevTab() {
-  const [apiUrl, setApiUrl] = useState('https://api-bridge-dev.preview.emergentagent.com');
+  const [apiUrl, setApiUrl] = useState('https://token-backend-fix.preview.emergentagent.com');
   const [token, setToken] = useState('');
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
@@ -29,7 +29,7 @@ export default function DevTab() {
   };
 
   const setCorrectBackendUrl = async () => {
-    const correctUrl = 'https://app-bridge-api.preview.emergentagent.com';
+    const correctUrl = 'https://token-backend-fix.preview.emergentagent.com';
     setApiUrl(correctUrl);
     setStatusMessage('✅ URL pasted into text box. Now click "Get Token" and then "Save".');
     setStatusType('info');
@@ -133,7 +133,7 @@ export default function DevTab() {
   const clearConfig = async () => {
     await AsyncStorage.removeItem('DEV_API_URL');
     await AsyncStorage.removeItem('DEV_TOKEN');
-    setApiUrl('https://api-bridge-dev.preview.emergentagent.com');
+    setApiUrl('https://token-backend-fix.preview.emergentagent.com');
     setToken('');
     setStatusMessage('✅ Configuration cleared');
     setStatusType('success');
@@ -168,14 +168,14 @@ export default function DevTab() {
           autoCapitalize="none"
         />
         <Text style={styles.copyableUrl} selectable={true}>
-          https://app-bridge-api.preview.emergentagent.com
+          https://token-backend-fix.preview.emergentagent.com
         </Text>
         <TouchableOpacity 
           onPress={setCorrectBackendUrl} 
           style={[styles.button, styles.quickButton]}
         >
           <Text style={styles.buttonText}>
-            https://app-bridge-api.preview.emergentagent.com
+            https://token-backend-fix.preview.emergentagent.com
           </Text>
         </TouchableOpacity>
       </View>

@@ -4,7 +4,7 @@
 
 This mobile app connects to a SHARED backend managed in a separate workspace.
 
-**Backend API URL:** `https://api-bridge-dev.preview.emergentagent.com`
+**Backend API URL:** `https://token-backend-fix.preview.emergentagent.com`
 
 **Database:** MongoDB `mymv_db` (shared with web app)
 
@@ -33,7 +33,7 @@ This mobile app connects to a SHARED backend managed in a separate workspace.
 │                  └─────▲──────┘            │
 └────────────────────────┼───────────────────┘
                          │
-          https://api-bridge-dev.preview.emergentagent.com
+          https://token-backend-fix.preview.emergentagent.com
                          │
 ┌────────────────────────┼───────────────────┐
 │  Mobile Workspace (Job: 32454883...)       │
@@ -64,7 +64,7 @@ To verify correct backend URL is being used:
 1. Check console logs on app startup
 2. Should see: 
    ```
-   🔗 Mobile App Backend URL: https://api-bridge-dev.preview.emergentagent.com
+   🔗 Mobile App Backend URL: https://token-backend-fix.preview.emergentagent.com
    ✅ Connected to shared backend (web workspace)
    ```
 3. Test cross-platform sync: Add vehicle on mobile → should appear on web
@@ -74,7 +74,7 @@ To verify correct backend URL is being used:
 ### Mobile app can't connect to backend
 
 **Check:**
-- Verify URL is exactly: `https://api-bridge-dev.preview.emergentagent.com`
+- Verify URL is exactly: `https://token-backend-fix.preview.emergentagent.com`
 - Check internet connection
 - Verify backend is running (ask web workspace developer)
 - Clear cache: `rm -rf .expo .metro-cache && sudo supervisorctl restart expo`
@@ -96,7 +96,7 @@ This is expected! The fork creates new backend URLs. Follow these steps:
    # Should return NOTHING
    
    grep "API_URL" /app/frontend/services/api.ts
-   # Should show: https://api-bridge-dev.preview.emergentagent.com
+   # Should show: https://token-backend-fix.preview.emergentagent.com
    ```
 
 2. **If wrong URL is found, update it:**
@@ -147,7 +147,7 @@ The `.env` file may contain:
 ```env
 # SHARED BACKEND API
 # DO NOT MODIFY - This connects to web workspace backend
-EXPO_PUBLIC_API_URL=https://api-bridge-dev.preview.emergentagent.com
+EXPO_PUBLIC_API_URL=https://token-backend-fix.preview.emergentagent.com
 ```
 
 However, the code uses the value from `services/api.ts`, not `.env`, to avoid fork-related URL changes.
@@ -173,5 +173,5 @@ Changing the backend URL breaks the connection between mobile and web apps!
 ---
 
 **Last Updated:** 2025-06-19 (after fork configuration fix)
-**Backend URL:** `https://api-bridge-dev.preview.emergentagent.com`
+**Backend URL:** `https://token-backend-fix.preview.emergentagent.com`
 **Status:** ✅ Working and configured for persistence
