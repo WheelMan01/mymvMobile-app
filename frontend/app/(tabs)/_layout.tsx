@@ -90,17 +90,6 @@ export default function TabsLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="dev-settings"
-        options={{
-          title: '🔧 Dev',
-          headerShown: true,
-          headerTitle: 'Dev Settings',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="code-slash" size={size} color={color} />
-          ),
-        }}
-      />
     </Tabs>
   );
 }
