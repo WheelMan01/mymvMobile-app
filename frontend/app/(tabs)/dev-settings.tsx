@@ -1,10 +1,29 @@
 // DEV ONLY - REMOVE IN PRODUCTION
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+
+// GET CURRENT ENVIRONMENT URL - This will ALWAYS match where the app is running
+const getCurrentEnvironmentUrl = (): string => {
+  if (Platform.OS === 'web' && typeof window !== 'undefined') {
+    // On web, use the current browser URL
+    return window.location.origin;
+  }
+  // On native, use the Expo hostname from environment
+  const hostname = Constants.expoConfig?.hostUri || 
+                   process.env.EXPO_PACKAGER_HOSTNAME || 
+                   process.env.EXPO_PUBLIC_BACKEND_URL ||
+                   'https://fork-safe-auth.preview.emergentagent.com';
+  return hostname.startsWith('http') ? hostname : `https://${hostname}`;
+};
+
+const CURRENT_BACKEND_URL = getCurrentEnvironmentUrl();
+console.log('🔧 DEV SETTINGS - DETECTED CURRENT BACKEND URL:', CURRENT_BACKEND_URL);
 
 export default function DevSettingsScreen() {
-  const [apiUrl, setApiUrl] = useState('https://fork-safe-auth.preview.emergentagent.com');
+  // ALWAYS start with the CURRENT environment URL, not a hardcoded one
+  const [apiUrl, setApiUrl] = useState(CURRENT_BACKEND_URL);
   const [token, setToken] = useState('');
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
@@ -18,13 +37,25 @@ export default function DevSettingsScreen() {
 
   const loadSavedConfig = async () => {
     try {
-      const savedUrl = await AsyncStorage.getItem('DEV_API_URL');
-      const savedToken = await AsyncStorage.getItem('DEV_TOKEN');
+      console.log('🧹 CLEARING ALL CACHED DATA FROM PREVIOUS FORK...');
       
-      if (savedUrl) setApiUrl(savedUrl);
-      if (savedToken) setToken(savedToken);
+      // AGGRESSIVE CLEAR: Remove ALL dev-related cached data
+      await AsyncStorage.removeItem('DEV_API_URL');
+      await AsyncStorage.removeItem('DEV_TOKEN');
+      await AsyncStorage.removeItem('auth_token');
+      await AsyncStorage.removeItem('user_data');
+      
+      console.log('✅ All cached data cleared');
+      console.log('✅ Using CURRENT environment URL:', CURRENT_BACKEND_URL);
+      
+      // FORCE the text input to show the CURRENT environment URL
+      setApiUrl(CURRENT_BACKEND_URL);
+      setToken('');
+      
+      setStatusMessage(`✅ Cleared all cached data. Using: ${CURRENT_BACKEND_URL}`);
+      setStatusType('success');
     } catch (error) {
-      console.log('No saved config');
+      console.log('Error clearing cache:', error);
     }
   };
 
