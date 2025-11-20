@@ -114,7 +114,7 @@ export default function DevSettingsScreen() {
     setStatusMessage('🔄 Testing connection...');
     setStatusType('info');
 
-    try:
+    try {
       console.log('🔧 Testing connection to:', apiUrl);
       
       const response = await fetch(`${apiUrl}/api/settings`, {
