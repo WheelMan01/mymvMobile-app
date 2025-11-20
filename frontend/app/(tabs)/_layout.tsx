@@ -9,12 +9,7 @@ export default function TabsLayout() {
         tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: '#8E8E93',
         tabBarStyle: {
-          backgroundColor: '#fff',
-          borderTopWidth: 1,
-          borderTopColor: '#e0e0e0',
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
+          display: 'none',
         },
         tabBarLabelStyle: {
           fontSize: 12,
