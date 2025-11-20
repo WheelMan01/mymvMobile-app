@@ -184,14 +184,14 @@ export default function DevSettingsScreen() {
 
       {/* Backend URL */}
       <View style={styles.section}>
-        <Text style={styles.label}>Backend API URL:</Text>
-        <TextInput
-          value={apiUrl}
-          onChangeText={setApiUrl}
-          style={styles.input}
-          placeholder="https://..."
-          autoCapitalize="none"
-        />
+        <Text style={styles.label}>Backend API URL (READ ONLY - AUTO-DETECTED):</Text>
+        <View style={styles.readOnlyUrlBox}>
+          <Text style={styles.readOnlyUrlText}>{CURRENT_BACKEND_URL}</Text>
+        </View>
+        <Text style={styles.helperText}>
+          ℹ️ This URL is automatically detected from your current environment.
+          It cannot be changed to prevent fork issues.
+        </Text>
       </View>
 
       {/* Get Real Token */}
