@@ -33,9 +33,11 @@ export default function DevSettingsScreen() {
       await AsyncStorage.setItem('DEV_API_URL', apiUrl);
       await AsyncStorage.setItem('DEV_TOKEN', token);
       
-      Alert.alert('Success', '✅ Development config saved!');
+      setStatusMessage('✅ Development config saved!');
+      setStatusType('success');
     } catch (error) {
-      Alert.alert('Error', 'Failed to save config');
+      setStatusMessage('❌ Failed to save config');
+      setStatusType('error');
     }
   };
 
