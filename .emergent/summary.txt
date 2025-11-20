@@ -1,78 +1,184 @@
 <analysis>
-The trajectory documents a complex and iterative development and debugging process, beginning with the critical task of unifying the mobile app's backend with the web app's. The initial engineer, an AI, faced persistent issues with incorrect API URLs () caused by project forking and aggressive caching within the Expo environment. A significant portion of the work involved a meticulous, multi-step process of searching for and replacing all hardcoded instances of the old URL with the correct one (), which required multiple cache-clearing attempts and service restarts to take effect.
+The trajectory documents a debugging and hardening process focused on solving a critical backend connection issue for a mobile app. The problem originated from the platform's forking mechanism, which automatically generated a new backend URL (), breaking the required connection to the original, shared web app backend ().
 
-Once the connection was stabilized, the work shifted to feature implementation and bug fixing based on user feedback. The Add Vehicle form was significantly enhanced to match the web app, including adding numerous fields, dynamic dropdowns, and date pickers. Subsequent debugging addressed UI styling (dropdown text color), data refresh issues (implementing  on the vehicle and showroom lists), and complex data-sourcing logic for the showroom feed. A major bug was fixed where the showroom only fetched marketplace vehicles, which was resolved by updating the API service to fetch and combine both customer-owned vehicles and marketplace listings. The final phase involved implementing and debugging a View Listing feature (shopping cart icon), which required fixing navigation logic, data mapping for IDs, and adding robust error handling for non-existent listings. The last major action was a final, exhaustive sweep to remove lingering hardcoded URLs from settings components to ensure the backend unification was permanent.
+The initial AI engineer undertook a meticulous, multi-step process to fix this. It began with a codebase-wide search and replacement of hardcoded URLs. A significant challenge arose from Expo's aggressive Metro bundler caching, which required multiple, increasingly forceful cache-clearing commands and service restarts to apply the fixes. The breakthrough came with the discovery and correction of a  file, which was overriding the intended API URL.
+
+Following the immediate fix, the focus shifted to creating a permanent, fork-proof solution. Following detailed user instructions for a Hybrid Approach, the engineer enhanced  with explicit comments and logging, created extensive markdown documentation (, ), and added a startup verification script in . The final actions involved a thorough pre-fork verification, confirming all configuration changes and documentation were correctly tracked in Git, ensuring the setup would persist.
 
 The user's primary language is English. The next agent must respond in English.
 </analysis>
 
 <product_requirements>
-The primary objective is to build and refine a Photo Upload and Showroom feature for a mobile app, ensuring it is fully synchronized with an existing web application.
+The primary objective is to ensure the mobile application reliably and persistently connects to a single, shared backend API, which is also used by its web application counterpart. This is critical for maintaining data consistency across both platforms.
 
-**Core Features:**
-1.  **Vehicle Management:** Users must be able to add and edit their vehicles. The Add Vehicle form on mobile must mirror the web app's functionality, including all fields, dropdowns (for State, Body Type, Make, etc.), and sections (Basic Info, Registration & Insurance, Purchase Details).
-2.  **Unified Showroom Feed:** A central Showroom displays a combined feed of user-owned vehicles (marked for showroom) and vehicles listed on the marketplace.
-3.  **Marketplace Integration:** Vehicles in the showroom that are for sale on the marketplace must have a View Listing button (shopping cart icon) that navigates to the correct marketplace detail page.
-4.  **Data Synchronization:** The mobile app MUST connect to the same backend API () and database () as the web app. This ensures all data—vehicles, photos, comments, favorites, and user profiles—is consistent across both platforms. All API URLs must be centralized and not hardcoded to prevent reversion during project forks.
+**Core Requirements:**
+1.  **Unified Backend:** The mobile app MUST exclusively use the backend URL  for all API calls.
+2.  **Fork Persistence:** The backend configuration must be robust enough to survive the platform's forking process without requiring manual reconfiguration. The correct API URL should be preserved in the new workspace automatically.
+3.  **Data Synchronization:** Users, vehicles, and showroom data must be consistent between the mobile and web applications, which is achieved by sharing the same backend and database ().
+4.  **Documentation:** The project must include clear documentation explaining the shared backend architecture and providing a checklist for verifying the connection, especially after a fork.
+
+The implementation involved centralizing the API URL in , removing all hardcoded URLs, updating override files like , and committing these configurations and new documentation files to Git.
 </product_requirements>
 
 <key_technical_concepts>
-- **API URL Unification:** Centralizing the backend API URL to  across the entire application and removing all hardcoded legacy URLs to ensure data consistency with the web app.
-- **Composite Data Fetching:** Combining data from multiple API endpoints ( and ) to create a single, unified list for the showroom feed.
-- ** Hook:** Using this  hook to automatically re-fetch data and refresh screens (like the vehicle list and showroom) when they come into focus, ensuring the UI displays the latest data after actions like adding a new vehicle.
+- **API URL Unification & Persistence:** Centralizing the backend URL to  and ensuring this configuration survives project forking by committing it to version control.
+- **Git-based Configuration Management:** Using Git as the source of truth for critical configurations (, ) to maintain state across new environments.
+- **Expo/Metro Cache Management:** Overcoming aggressive caching in the Expo environment by using commands like [07:30:12] Starting project at /app/frontend and manually deleting cache directories to force changes to apply.
 </key_technical_concepts>
 
 <code_architecture>
-The application is a full-stack system with a React Native (Expo) frontend and a FastAPI backend. All development efforts focused on unifying the frontend to use a single, consistent backend API.
+The application is a React Native (Expo) frontend designed to communicate with a shared FastAPI backend. The work focused exclusively on the frontend codebase to ensure it correctly points to the persistent backend URL.
 
-**Directory Structure:**
+**Directory Structure (Relevant Files):**
 
-
-- ****
-  - **Importance:** This file is the single source of truth for the backend API URL.
-  - **Summary of changes:** It was updated to export a constant  with the value . All other parts of the application now import from this file instead of using hardcoded URLs.
 
 - ****
-  - **Importance:** Contains all business logic for fetching and mapping data for the showroom feed.
-  - **Summary of changes:** This file was heavily refactored. The  function now fetches from two sources:  (for customer cars) and . It includes logic to filter vehicles, correctly map disparate data structures (especially for photos, using ), and ensure  is assigned correctly only to actual marketplace vehicles.
+  - **Importance:** This file is the designated single source of truth for the backend API URL.
+  - **Changes:** Updated to hardcode and export the correct URL (). Added extensive comments and  statements to make the configuration explicit and verifiable on startup.
 
 - ****
-  - **Importance:** The main UI for the showroom feed.
-  - **Summary of changes:** Added a  to auto-refresh data. The Shop Button logic was updated to use the 's  for navigation. The  function now includes error handling to check for 404s before navigating, preventing crashes on deleted listings.
+  - **Importance:** A critical configuration override file. This was the hidden cause of the persistent URL issue, as it was overriding the settings in .
+  - **Changes:** The  value was updated from the incorrect forked URL to the correct, permanent URL.
 
 - ****
-  - **Importance:** The form for adding a new vehicle.
-  - **Summary of changes:** The form was completely overhauled to match the web app. This included adding multiple new sections, converting text inputs to  dropdowns for State, Body Type, and Make (with data loaded from APIs), and implementing date pickers. UI styling was also fixed to improve text size and dropdown readability.
-
-- ****
-  - **Importance:** Displays the list of the user's vehicles.
-  - **Summary of changes:** A  hook was added to automatically refresh the vehicle list when the user navigates back to it after adding a new vehicle, solving a major UX issue.
+  - **Importance:** The root layout component for the app, making it an ideal entry point for running checks.
+  - **Changes:** A verification script was added to log the  from  on app startup and compare it against the expected value, providing an immediate pass/fail signal in the console.
 
 - ** (5 files)**
-  - **Importance:** These files were the final source of hardcoded legacy URLs.
-  - **Summary of changes:** All five files (, , , , ) were modified to remove hardcoded  constants and instead import the centralized  from . This completed the backend unification.
+  - **Importance:** These files initially contained hardcoded instances of the incorrect API URL.
+  - **Changes:** All five files were refactored to remove the hardcoded URL and instead import the centralized  from .
+
+- **, , **
+  - **Importance:** These new documentation files were created to explain the hybrid backend architecture and provide clear instructions for future developers to verify and maintain the connection, especially after forking.
+  - **Changes:** Created and populated with detailed instructions, rationale, and troubleshooting steps. They were then added and committed to Git.
 </code_architecture>
 
 <pending_tasks>
-- The user has requested to fork the project to verify that the backend URL fixes are permanent and survive the forking process.
+- The user needs to fork the mobile app project. This action will serve as the ultimate test to validate that the Hybrid Approach configuration (committing the backend URL to Git) has successfully made the backend connection persistent and immune to the forking process.
 </pending_tasks>
 
 <current_work>
-The most recently completed task was a comprehensive, codebase-wide audit and fix to ensure the mobile application is permanently unified with the web application's backend. This was prompted by the user's request for database details, which revealed that while core features were fixed, several settings-related components still contained hardcoded, legacy API URLs ().
+The most recent work was the completion of a Pre-Fork Verification process. This was a direct response to the user's request to ensure all configuration changes for the Hybrid Approach were properly saved before attempting the final test (forking the project).
 
-The process involved meticulously following a detailed plan:
-1.  **Editing 5 Files:** The hardcoded URLs in  (, , , , ) were all replaced with an import of the centralized  from .
-2.  **Verification:** A global search was performed to confirm that no other instances of the old URLs existed in the codebase.
-3.  **Cache Clearing:** The Expo server was restarted with the  flag to ensure all cached bundles were purged.
-4.  **Final Report:** A completion confirmation was prepared, summarizing the fixes and confirming that all parts of the application now point to the single, correct backend: .
+This verification involved a series of usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           [--super-prefix=<path>] [--config-env=<name>=<envvar>]
+           <command> [<args>]
 
-The immediate work before this summary was concluding this critical refactoring and preparing for the user's final validation test.
+These are common Git commands used in various situations:
+
+start a working area (see also: git help tutorial)
+   clone     Clone a repository into a new directory
+   init      Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add       Add file contents to the index
+   mv        Move or rename a file, a directory, or a symlink
+   restore   Restore working tree files
+   rm        Remove files from the working tree and from the index
+
+examine the history and state (see also: git help revisions)
+   bisect    Use binary search to find the commit that introduced a bug
+   diff      Show changes between commits, commit and working tree, etc
+   grep      Print lines matching a pattern
+   log       Show commit logs
+   show      Show various types of objects
+   status    Show the working tree status
+
+grow, mark and tweak your common history
+   branch    List, create, or delete branches
+   commit    Record changes to the repository
+   merge     Join two or more development histories together
+   rebase    Reapply commits on top of another base tip
+   reset     Reset current HEAD to the specified state
+   switch    Switch branches
+   tag       Create, list, delete or verify a tag object signed with GPG
+
+collaborate (see also: git help workflows)
+   fetch     Download objects and refs from another repository
+   pull      Fetch from and integrate with another repository or a local branch
+   push      Update remote refs along with associated objects
+
+'git help -a' and 'git help -g' list available subcommands and some
+concept guides. See 'git help <command>' or 'git help <concept>'
+to read about a specific subcommand or concept.
+See 'git help git' for an overview of the system. and =0.5.0
+BACKEND_CONFIG.md
+README.md
+app
+app.json
+assets
+backend-config.json
+components
+contexts
+eslint.config.js
+expo-env.d.ts
+hooks
+metro.config.js
+node_modules
+package-lock.json
+package.json
+package.json.backup
+scripts
+services
+styles
+tsconfig.json
+utils
+yarn.lock commands to confirm:
+1.  **Clean Git Status:** The working tree was clean, with no uncommitted critical changes.
+2.  **File Existence:** All new documentation (, etc.) and modified configuration files (, ) were present.
+3.  **File Content:** The content of key files was checked to ensure the correct URL () and verification logic were in place.
+4.  **Git Tracking:** All critical files were confirmed to be tracked by usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
+           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
+           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+           [--super-prefix=<path>] [--config-env=<name>=<envvar>]
+           <command> [<args>]
+
+These are common Git commands used in various situations:
+
+start a working area (see also: git help tutorial)
+   clone     Clone a repository into a new directory
+   init      Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add       Add file contents to the index
+   mv        Move or rename a file, a directory, or a symlink
+   restore   Restore working tree files
+   rm        Remove files from the working tree and from the index
+
+examine the history and state (see also: git help revisions)
+   bisect    Use binary search to find the commit that introduced a bug
+   diff      Show changes between commits, commit and working tree, etc
+   grep      Print lines matching a pattern
+   log       Show commit logs
+   show      Show various types of objects
+   status    Show the working tree status
+
+grow, mark and tweak your common history
+   branch    List, create, or delete branches
+   commit    Record changes to the repository
+   merge     Join two or more development histories together
+   rebase    Reapply commits on top of another base tip
+   reset     Reset current HEAD to the specified state
+   switch    Switch branches
+   tag       Create, list, delete or verify a tag object signed with GPG
+
+collaborate (see also: git help workflows)
+   fetch     Download objects and refs from another repository
+   pull      Fetch from and integrate with another repository or a local branch
+   push      Update remote refs along with associated objects
+
+'git help -a' and 'git help -g' list available subcommands and some
+concept guides. See 'git help <command>' or 'git help <concept>'
+to read about a specific subcommand or concept.
+See 'git help git' for an overview of the system. and present in the commit history.
+
+The final action was reporting the successful verification to the user, giving them the green light to proceed with forking the project for the final validation test. The application is now in a state of readiness, awaiting the fork.
 </current_work>
 
 <optional_next_step>
-Initiate the forking process as requested by the user to perform the final validation test on the backend URL configuration's stability.
+After the user forks the project, I will perform the Post-Fork Verification checks in the new workspace to confirm that the backend configuration has persisted correctly and the application's login and data features are functional.
 </optional_next_step>
-
-<direct_quotes>
-**User:** lets fork and see if same issues occure ok?
-</direct_quotes>

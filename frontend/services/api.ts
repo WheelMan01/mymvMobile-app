@@ -5,7 +5,7 @@ import { Platform } from 'react-native';
 // CRITICAL: This is the SHARED backend API used by both web and mobile apps
 // This URL points to the web workspace's backend (Job: 961c0d08...)
 // DO NOT CHANGE THIS URL unless instructed by the web developer
-export const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+export const API_URL = 'https://app-bridge-fix.preview.emergentagent.com';
 
 // Log to verify correct URL is being used
 console.log('🔗 Mobile App Backend URL:', API_URL);

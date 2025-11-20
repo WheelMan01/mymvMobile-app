@@ -5,7 +5,7 @@
 ```
 🔴 NEVER CHANGE THIS URL - ALL YOUR DATA LIVES HERE 🔴
 
-Backend URL: https://mobile-backend-sync-1.preview.emergentagent.com
+Backend URL: https://app-bridge-fix.preview.emergentagent.com
 Database: mongodb://localhost:27017/mymv_db
 
 This backend contains:
@@ -44,7 +44,7 @@ const API_URL = backendConfig.backendUrl || process.env.EXPO_PUBLIC_BACKEND_URL;
 
 **Your Data Backend URL (PERMANENT):**
 ```
-https://mobile-backend-sync-1.preview.emergentagent.com
+https://app-bridge-fix.preview.emergentagent.com
 ```
 
 This URL is now stored in `/app/frontend/backend-config.json` and will ALWAYS be used, regardless of what's in `.env`.

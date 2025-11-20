@@ -2,7 +2,7 @@
 
 # First login to get the token
 echo "=== Testing PIN Login at /api/auth/pin ==="
-LOGIN_RESPONSE=$(curl -s -X POST "https://mobile-backend-sync-1.preview.emergentagent.com/api/auth/pin" \
+LOGIN_RESPONSE=$(curl -s -X POST "https://app-bridge-fix.preview.emergentagent.com/api/auth/pin" \
   -H "Content-Type: application/json" \
   -d '{"email": "testuser2@example.com", "pin": "1234"}')
 
@@ -21,20 +21,20 @@ fi
 
 echo ""
 echo "=== Testing Insurance Policies Endpoint ==="
-curl -s -X GET "https://mobile-backend-sync-1.preview.emergentagent.com/api/insurance-policies" \
+curl -s -X GET "https://app-bridge-fix.preview.emergentagent.com/api/insurance-policies" \
   -H "Authorization: Bearer $TOKEN" | jq '.'
 
 echo ""
 echo "=== Testing Roadside Assistance Endpoint ==="
-curl -s -X GET "https://mobile-backend-sync-1.preview.emergentagent.com/api/roadside-assistance" \
+curl -s -X GET "https://app-bridge-fix.preview.emergentagent.com/api/roadside-assistance" \
   -H "Authorization: Bearer $TOKEN" | jq '.'
 
 echo ""
 echo "=== Testing Finance Products Endpoint ==="
-curl -s -X GET "https://mobile-backend-sync-1.preview.emergentagent.com/api/finance-products" \
+curl -s -X GET "https://app-bridge-fix.preview.emergentagent.com/api/finance-products" \
   -H "Authorization: Bearer $TOKEN" | jq '.'
 
 echo ""
 echo "=== Testing Service Bookings Endpoint ==="
-curl -s -X GET "https://mobile-backend-sync-1.preview.emergentagent.com/api/service-bookings" \
+curl -s -X GET "https://app-bridge-fix.preview.emergentagent.com/api/service-bookings" \
   -H "Authorization: Bearer $TOKEN" | jq '.'

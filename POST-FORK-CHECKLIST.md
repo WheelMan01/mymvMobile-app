@@ -12,24 +12,24 @@ After forking, the mobile app may fail to connect to the backend because:
 ## Solution
 
 ### Step 1: Verify Backend URL Configuration
-The mobile app should connect to: **`https://app-bridge-api.preview.emergentagent.com`**
+The mobile app should connect to: **`https://app-bridge-fix.preview.emergentagent.com`**
 
 Check and update these files if needed:
 
 1. **`/app/frontend/services/api.ts`** (MASTER SOURCE OF TRUTH)
    ```typescript
-   export const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+   export const API_URL = 'https://app-bridge-fix.preview.emergentagent.com';
    ```
 
 2. **`/app/frontend/services/showroomApi.ts`**
    ```typescript
-   const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+   const API_URL = 'https://app-bridge-fix.preview.emergentagent.com';
    ```
 
 3. **`/app/frontend/backend-config.json`**
    ```json
    {
-     "backendUrl": "https://app-bridge-api.preview.emergentagent.com",
+     "backendUrl": "https://app-bridge-fix.preview.emergentagent.com",
      "apiPrefix": "/api"
    }
    ```
@@ -76,7 +76,7 @@ tail -150 /var/log/supervisor/expo.out.log | grep "AuthContext API_URL"
 
 Should show:
 ```
-🔧 AuthContext API_URL: https://app-bridge-api.preview.emergentagent.com
+🔧 AuthContext API_URL: https://app-bridge-fix.preview.emergentagent.com
 ```
 
 ### Step 6: Test Login
@@ -85,7 +85,7 @@ Should show:
 3. Verify the app connects to the correct backend
 
 ## Database Information
-- **Backend API**: `https://app-bridge-api.preview.emergentagent.com`
+- **Backend API**: `https://app-bridge-fix.preview.emergentagent.com`
 - **Database**: `mymv_db` (MongoDB)
 - **Connection**: The backend connects to MongoDB at `mongodb://localhost:27017`
 
@@ -111,7 +111,7 @@ All these files should import the centralized `API_URL` from `/app/frontend/serv
 
 ### Login Still Fails After Fix
 1. Check browser console for network errors
-2. Verify the API endpoint is reachable: `curl https://app-bridge-api.preview.emergentagent.com/api/health`
+2. Verify the API endpoint is reachable: `curl https://app-bridge-fix.preview.emergentagent.com/api/health`
 3. Check backend logs: `tail -50 /var/log/supervisor/backend.out.log`
 
 ### Old URL Still Shows in Logs

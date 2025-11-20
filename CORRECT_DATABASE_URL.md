@@ -5,13 +5,13 @@
 **The ONLY correct working database URL is:**
 
 ```
-https://mobile-backend-sync-1.preview.emergentagent.com
+https://app-bridge-fix.preview.emergentagent.com
 ```
 
 **DELETE AND NEVER USE:**
-- ❌ https://mobile-backend-sync-1.preview.emergentagent.com
-- ❌ https://mobile-backend-sync-1.preview.emergentagent.com
-- ❌ https://mobile-backend-sync-1.preview.emergentagent.com
+- ❌ https://app-bridge-fix.preview.emergentagent.com
+- ❌ https://app-bridge-fix.preview.emergentagent.com
+- ❌ https://app-bridge-fix.preview.emergentagent.com
 
 ## Testing Proof:
 
@@ -21,13 +21,13 @@ https://mobile-backend-sync-1.preview.emergentagent.com
 ## Files that must have this URL:
 
 1. `/app/frontend/.env`
-   - `EXPO_PUBLIC_BACKEND_URL=https://mobile-backend-sync-1.preview.emergentagent.com`
+   - `EXPO_PUBLIC_BACKEND_URL=https://app-bridge-fix.preview.emergentagent.com`
 
 2. `/app/frontend/backend-config.json`
    - `"backendUrl": null` (uses .env)
 
 3. `/app/frontend/services/logoService.ts`
-   - Fallback: `https://mobile-backend-sync-1.preview.emergentagent.com`
+   - Fallback: `https://app-bridge-fix.preview.emergentagent.com`
 
 ## If login doesn't work:
 

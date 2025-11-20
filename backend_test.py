@@ -10,7 +10,7 @@ import sys
 from datetime import datetime
 
 # Backend URL for new forked database (from backend-config.json)
-BACKEND_URL = "https://mobile-backend-sync-1.preview.emergentagent.com"
+BACKEND_URL = "https://app-bridge-fix.preview.emergentagent.com"
 
 # Test credentials from review request
 TEST_EMAIL = "anthony@wheelsfinance.com.au"
