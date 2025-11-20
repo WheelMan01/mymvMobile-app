@@ -29,12 +29,10 @@ export default function DevTab() {
   };
 
   const setCorrectBackendUrl = async () => {
-    const correctUrl = 'https://api-connector-24.preview.emergentagent.com';
+    const correctUrl = 'https://app-bridge-api.preview.emergentagent.com';
     setApiUrl(correctUrl);
-    // Auto-save the correct URL immediately
-    await AsyncStorage.setItem('DEV_API_URL', correctUrl);
-    setStatusMessage('✅ Backend URL set to app-bridge-api and saved!');
-    setStatusType('success');
+    setStatusMessage('✅ URL pasted into text box. Now click "Get Token" and then "Save".');
+    setStatusType('info');
   };
 
   const saveConfig = async () => {
