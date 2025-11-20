@@ -6,7 +6,8 @@ import { Platform } from 'react-native';
 // CRITICAL: This is the SHARED backend API used by both web and mobile apps
 // This URL points to the web workspace's backend (Job: 961c0d08...)
 // DO NOT CHANGE THIS URL unless instructed by the web developer
-let API_URL = 'https://apicache-fix.preview.emergentagent.com';
+const DEFAULT_API_URL = 'https://apicache-fix.preview.emergentagent.com';
+let API_URL = DEFAULT_API_URL;
 
 // DEV ONLY: Load dev configuration
 export const loadDevConfig = async () => {
@@ -27,7 +28,7 @@ export const loadDevConfig = async () => {
 loadDevConfig();
 
 // Log to verify correct URL is being used
-console.log('🔗 [POST-FORK-FIX-v2] Mobile App Backend URL:', API_URL);
+console.log('🔗 [POST-FORK-FIX-v3] Mobile App Backend URL:', DEFAULT_API_URL);
 console.log('✅ Connected to shared backend (web workspace)');
 
 // Storage helpers that work on both web and native
@@ -47,17 +48,31 @@ const deleteStorageItem = async (key: string) => {
   }
 };
 
+// Get current API URL dynamically
+const getCurrentApiUrl = async () => {
+  try {
+    const devUrl = await AsyncStorage.getItem('DEV_API_URL');
+    return devUrl || DEFAULT_API_URL;
+  } catch (error) {
+    return DEFAULT_API_URL;
+  }
+};
+
 const api = axios.create({
-  baseURL: `${API_URL}/api`,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor to add auth token
+// Request interceptor to add auth token AND dynamic baseURL
 api.interceptors.request.use(
   async (config) => {
+    // CRITICAL: Set baseURL dynamically from AsyncStorage
+    const currentApiUrl = await getCurrentApiUrl();
+    config.baseURL = `${currentApiUrl}/api`;
+    console.log('🔗 Request to:', config.baseURL + config.url);
+    
     // DEV ONLY: Try dev token first
     try {
       const devToken = await AsyncStorage.getItem('DEV_TOKEN');
