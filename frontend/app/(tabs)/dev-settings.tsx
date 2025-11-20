@@ -308,6 +308,27 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#92400e',
   },
+  blueReferenceBox: {
+    backgroundColor: '#1e40af',
+    padding: 15,
+    marginBottom: 20,
+    borderRadius: 8,
+  },
+  blueReferenceLabel: {
+    color: 'white',
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  blueReferenceUrl: {
+    color: 'white',
+    fontSize: 14,
+    fontFamily: 'monospace',
+  },
+  useBridgeButton: {
+    backgroundColor: '#10b981',
+    marginBottom: 20,
+  },
   statusBox: {
     padding: 15,
     borderRadius: 8,
