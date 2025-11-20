@@ -340,6 +340,26 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'white',
   },
+  readOnlyUrlBox: {
+    backgroundColor: '#fee2e2',
+    borderWidth: 2,
+    borderColor: '#ef4444',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  readOnlyUrlText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#991b1b',
+    fontFamily: 'monospace',
+  },
+  helperText: {
+    fontSize: 12,
+    color: '#6b7280',
+    fontStyle: 'italic',
+    marginTop: 5,
+  },
   tokenInput: {
     height: 100,
     textAlignVertical: 'top',
