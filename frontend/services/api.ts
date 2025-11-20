@@ -6,7 +6,7 @@ import { Platform } from 'react-native';
 // CRITICAL: This is the SHARED backend API used by both web and mobile apps
 // This URL points to the web workspace's backend (Job: 961c0d08...)
 // DO NOT CHANGE THIS URL unless instructed by the web developer
-const DEFAULT_API_URL = 'https://token-backend-fix.preview.emergentagent.com';
+const DEFAULT_API_URL = 'https://tokenfix-2.preview.emergentagent.com';
 let API_URL = DEFAULT_API_URL;
 
 // Validate and sanitize API URL

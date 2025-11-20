@@ -21,12 +21,12 @@ When a project is forked in the Emergent platform, the system automatically chan
 
 **Before Fork (Working):**
 ```
-API URL: https://token-backend-fix.preview.emergentagent.com
+API URL: https://tokenfix-2.preview.emergentagent.com
 ```
 
 **After Fork (Broken):**
 ```
-API URL: https://token-backend-fix.preview.emergentagent.com
+API URL: https://tokenfix-2.preview.emergentagent.com
 ```
 
 The new URL (`photo-showroom-app`) **does not exist** and returns 404 errors for all API calls.
@@ -78,10 +78,10 @@ The following **11 files** were incorrectly modified during fork:
 ### 1. Authentication Completely Broken
 ```javascript
 // Frontend tries to call:
-POST https://token-backend-fix.preview.emergentagent.com/api/auth/login
+POST https://tokenfix-2.preview.emergentagent.com/api/auth/login
 
 // But the actual working endpoint is:
-POST https://token-backend-fix.preview.emergentagent.com/api/auth/login
+POST https://tokenfix-2.preview.emergentagent.com/api/auth/login
 
 // Result: 404 Not Found - Users cannot log in
 ```
@@ -122,8 +122,8 @@ Until this is fixed at the platform level, developers must:
 ### Step 1: Identify the Correct URL
 ```bash
 # Test which URL actually works
-curl https://token-backend-fix.preview.emergentagent.com/api/marketplace/showroom-listings
-curl https://token-backend-fix.preview.emergentagent.com/api/marketplace/showroom-listings
+curl https://tokenfix-2.preview.emergentagent.com/api/marketplace/showroom-listings
+curl https://tokenfix-2.preview.emergentagent.com/api/marketplace/showroom-listings
 
 # One will return data (200), one will fail (404)
 ```
@@ -145,14 +145,14 @@ grep -r "photo-showroom-app" /app/frontend --include="*.ts" --include="*.tsx" --
 ```bash
 # /app/frontend/.env
 EXPO_TUNNEL_SUBDOMAIN=vehicle-photo-app
-EXPO_PACKAGER_HOSTNAME=https://token-backend-fix.preview.emergentagent.com
-EXPO_PUBLIC_BACKEND_URL=https://token-backend-fix.preview.emergentagent.com
+EXPO_PACKAGER_HOSTNAME=https://tokenfix-2.preview.emergentagent.com
+EXPO_PUBLIC_BACKEND_URL=https://tokenfix-2.preview.emergentagent.com
 ```
 
 **API Services:**
 ```typescript
 // /app/frontend/services/api.ts
-const API_URL = 'https://token-backend-fix.preview.emergentagent.com';
+const API_URL = 'https://tokenfix-2.preview.emergentagent.com';
 ```
 
 **All other files** - repeat for each affected file
@@ -176,7 +176,7 @@ sudo supervisorctl restart expo
 # Check new build is using correct URL
 tail -100 /var/log/supervisor/expo.out.log | grep "API_URL"
 
-# Should show: https://token-backend-fix.preview.emergentagent.com
+# Should show: https://tokenfix-2.preview.emergentagent.com
 ```
 
 ### Step 6: Hard Refresh Browser
@@ -337,7 +337,7 @@ grep -r "vehicle-photo-app" /app/frontend --include="*.ts" --include="*.tsx" --i
 # Should show: vehicle-photo-app.preview.emergentagent.com
 
 # 3. Test API endpoint
-curl https://token-backend-fix.preview.emergentagent.com/api/marketplace/showroom-listings
+curl https://tokenfix-2.preview.emergentagent.com/api/marketplace/showroom-listings
 # Should return: 200 OK with JSON data
 
 # 4. Check build logs
@@ -369,10 +369,10 @@ This is a **critical platform bug** that makes forking unreliable and wastes sig
 
 ```
 Frontend attempting call:
-POST https://token-backend-fix.preview.emergentagent.com/api/auth/login
+POST https://tokenfix-2.preview.emergentagent.com/api/auth/login
 
 Backend running at:
-https://token-backend-fix.preview.emergentagent.com
+https://tokenfix-2.preview.emergentagent.com
 
 Result:
 - Status: 404 Not Found

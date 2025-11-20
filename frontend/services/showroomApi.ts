@@ -1,7 +1,7 @@
 import axios from 'axios';
 import api from './api';
 
-const API_URL = 'https://token-backend-fix.preview.emergentagent.com';
+const API_URL = 'https://tokenfix-2.preview.emergentagent.com';
 
 export interface ShowroomListing {
   id: string;

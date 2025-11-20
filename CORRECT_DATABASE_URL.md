@@ -5,13 +5,13 @@
 **The ONLY correct working database URL is:**
 
 ```
-https://token-backend-fix.preview.emergentagent.com
+https://tokenfix-2.preview.emergentagent.com
 ```
 
 **DELETE AND NEVER USE:**
-- ❌ https://token-backend-fix.preview.emergentagent.com
-- ❌ https://token-backend-fix.preview.emergentagent.com
-- ❌ https://token-backend-fix.preview.emergentagent.com
+- ❌ https://tokenfix-2.preview.emergentagent.com
+- ❌ https://tokenfix-2.preview.emergentagent.com
+- ❌ https://tokenfix-2.preview.emergentagent.com
 
 ## Testing Proof:
 
@@ -21,13 +21,13 @@ https://token-backend-fix.preview.emergentagent.com
 ## Files that must have this URL:
 
 1. `/app/frontend/.env`
-   - `EXPO_PUBLIC_BACKEND_URL=https://token-backend-fix.preview.emergentagent.com`
+   - `EXPO_PUBLIC_BACKEND_URL=https://tokenfix-2.preview.emergentagent.com`
 
 2. `/app/frontend/backend-config.json`
    - `"backendUrl": null` (uses .env)
 
 3. `/app/frontend/services/logoService.ts`
-   - Fallback: `https://token-backend-fix.preview.emergentagent.com`
+   - Fallback: `https://tokenfix-2.preview.emergentagent.com`
 
 ## If login doesn't work:
 
