@@ -315,6 +315,17 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: 'white',
   },
+  copyableUrl: {
+    fontSize: 12,
+    color: '#6b7280',
+    backgroundColor: '#f9fafb',
+    padding: 8,
+    borderRadius: 4,
+    marginBottom: 10,
+    fontFamily: 'monospace',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
   tokenInput: {
     height: 100,
     textAlignVertical: 'top',
