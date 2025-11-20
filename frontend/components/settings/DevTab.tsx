@@ -1,10 +1,29 @@
 // DEV ONLY - REMOVE IN PRODUCTION
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+
+// GET CURRENT ENVIRONMENT URL - This will ALWAYS match where the app is running
+const getCurrentEnvironmentUrl = (): string => {
+  if (Platform.OS === 'web' && typeof window !== 'undefined') {
+    // On web, use the current browser URL
+    return window.location.origin;
+  }
+  // On native, use the Expo hostname from environment
+  const hostname = Constants.expoConfig?.hostUri || 
+                   process.env.EXPO_PACKAGER_HOSTNAME || 
+                   process.env.EXPO_PUBLIC_BACKEND_URL ||
+                   'https://fork-safe-auth.preview.emergentagent.com';
+  return hostname.startsWith('http') ? hostname : `https://${hostname}`;
+};
+
+const CURRENT_BACKEND_URL = getCurrentEnvironmentUrl();
+console.log('🔧 DETECTED CURRENT BACKEND URL:', CURRENT_BACKEND_URL);
 
 export default function DevTab() {
-  const [apiUrl, setApiUrl] = useState('https://fork-safe-auth.preview.emergentagent.com');
+  // ALWAYS start with the CURRENT environment URL, not a hardcoded one
+  const [apiUrl, setApiUrl] = useState(CURRENT_BACKEND_URL);
   const [token, setToken] = useState('');
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
