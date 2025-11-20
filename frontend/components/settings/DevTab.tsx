@@ -175,7 +175,7 @@ export default function DevTab() {
           style={[styles.button, styles.quickButton]}
         >
           <Text style={styles.buttonText}>
-            📋 Use Shared Backend: app-bridge-api
+            https://app-bridge-api.preview.emergentagent.com
           </Text>
         </TouchableOpacity>
       </View>
