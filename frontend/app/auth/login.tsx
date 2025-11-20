@@ -54,6 +54,11 @@ export default function Login() {
         <View style={styles.header}>
           <Text style={styles.title}>myMV</Text>
           <Text style={styles.subtitle}>Your Vehicle Management Portal</Text>
+          {isDevMode && (
+            <View style={styles.devBanner}>
+              <Text style={styles.devBannerText}>🔧 DEV MODE - Any credentials work</Text>
+            </View>
+          )}
         </View>
 
         <View style={styles.form}>
