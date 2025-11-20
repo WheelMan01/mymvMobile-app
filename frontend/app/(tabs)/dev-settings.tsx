@@ -61,7 +61,7 @@ export default function DevSettingsScreen() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          membership_number: testEmail,
+          email: testEmail,
           pin: testPin
         })
       });
