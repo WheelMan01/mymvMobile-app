@@ -46,13 +46,13 @@ export default function DevTab() {
       await AsyncStorage.removeItem('user_data');
       
       console.log('✅ All cached data cleared');
-      console.log('✅ Forcing correct URL: https://fork-safe-auth.preview.emergentagent.com');
+      console.log('✅ Using CURRENT environment URL:', CURRENT_BACKEND_URL);
       
-      // Always start fresh with correct URL
-      setApiUrl('https://fork-safe-auth.preview.emergentagent.com');
+      // FORCE the text input to show the CURRENT environment URL
+      setApiUrl(CURRENT_BACKEND_URL);
       setToken('');
       
-      setStatusMessage('✅ Cleared all cached data. Ready for fresh setup.');
+      setStatusMessage(`✅ Cleared all cached data. Using: ${CURRENT_BACKEND_URL}`);
       setStatusType('success');
     } catch (error) {
       console.log('Error clearing cache:', error);
@@ -60,9 +60,8 @@ export default function DevTab() {
   };
 
   const setCorrectBackendUrl = async () => {
-    const correctUrl = 'https://fork-safe-auth.preview.emergentagent.com';
-    setApiUrl(correctUrl);
-    setStatusMessage('✅ URL pasted into text box. Now click "Get Token" and then "Save".');
+    setApiUrl(CURRENT_BACKEND_URL);
+    setStatusMessage(`✅ URL set to current environment: ${CURRENT_BACKEND_URL}`);
     setStatusType('info');
   };
 
