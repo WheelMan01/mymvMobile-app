@@ -9,6 +9,8 @@ export default function DevSettingsScreen() {
   const [testEmail, setTestEmail] = useState('anthony@wheelsfinance.com.au');
   const [testPin, setTestPin] = useState('1234');
   const [loading, setLoading] = useState(false);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [statusType, setStatusType] = useState<'success' | 'error' | 'info'>('info');
 
   useEffect(() => {
     loadSavedConfig();
