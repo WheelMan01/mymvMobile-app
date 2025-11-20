@@ -32,13 +32,13 @@ export default function DevSettingsScreen() {
       await AsyncStorage.removeItem('user_data');
       
       console.log('✅ All cached data cleared');
-      console.log('✅ Using CURRENT environment URL:', CURRENT_BACKEND_URL);
+      console.log('✅ Forcing BRIDGE URL:', BRIDGE_URL);
       
-      // FORCE the text input to show the CURRENT environment URL
-      setApiUrl(CURRENT_BACKEND_URL);
+      // FORCE the bridge URL
+      setApiUrl(BRIDGE_URL);
       setToken('');
       
-      setStatusMessage(`✅ Cleared all cached data. Using: ${CURRENT_BACKEND_URL}`);
+      setStatusMessage(`✅ Ready! Using bridge URL: ${BRIDGE_URL}`);
       setStatusType('success');
     } catch (error) {
       console.log('Error clearing cache:', error);
