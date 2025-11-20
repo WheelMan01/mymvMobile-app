@@ -133,7 +133,7 @@ export default function DevTab() {
   const clearConfig = async () => {
     await AsyncStorage.removeItem('DEV_API_URL');
     await AsyncStorage.removeItem('DEV_TOKEN');
-    setApiUrl('https://token-backend-fix.preview.emergentagent.com');
+    setApiUrl('https://app-bridge-api.preview.emergentagent.com');
     setToken('');
     setStatusMessage('✅ Configuration cleared');
     setStatusType('success');
