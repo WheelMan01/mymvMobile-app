@@ -6,7 +6,7 @@ import { Platform } from 'react-native';
 // CRITICAL: This is the SHARED backend API used by both web and mobile apps
 // This URL points to the web workspace's backend (Job: 961c0d08...)
 // DO NOT CHANGE THIS URL unless instructed by the web developer
-let API_URL = 'https://app-bridge-api.preview.emergentagent.com';
+let API_URL = 'https://apicache-fix.preview.emergentagent.com';
 
 // DEV ONLY: Load dev configuration
 export const loadDevConfig = async () => {

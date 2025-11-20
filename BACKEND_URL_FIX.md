@@ -1,17 +1,17 @@
 # Backend URL Configuration Issue - Resolution
 
 ## Problem
-The app is showing "fetching errors no data" because it's calling the **LOCAL backend** instead of the **LIVE backend** at `https://app-bridge-fix.preview.emergentagent.com`.
+The app is showing "fetching errors no data" because it's calling the **LOCAL backend** instead of the **LIVE backend** at `https://apicache-fix.preview.emergentagent.com`.
 
 ## Root Cause
-1. The `EXPO_PUBLIC_BACKEND_URL` in `/app/frontend/.env` was pointing to `https://app-bridge-fix.preview.emergentagent.com` (local backend)
+1. The `EXPO_PUBLIC_BACKEND_URL` in `/app/frontend/.env` was pointing to `https://apicache-fix.preview.emergentagent.com` (local backend)
 2. This caused the app to hit the local backend which has different data/schema
 3. The local backend throws validation errors: `ValidationError: Field 'vin' required`
 
 ## Fix Applied
 ✅ Updated `/app/frontend/.env`:
 ```
-EXPO_PUBLIC_BACKEND_URL=https://app-bridge-fix.preview.emergentagent.com
+EXPO_PUBLIC_BACKEND_URL=https://apicache-fix.preview.emergentagent.com
 ```
 
 ✅ Restarted Expo service to load new environment variable
@@ -49,6 +49,6 @@ After refreshing, the app should:
 - `EXPO_PUBLIC_*` environment variables are embedded in the client bundle
 
 ## Preview URL
-https://app-bridge-fix.preview.emergentagent.com
+https://apicache-fix.preview.emergentagent.com
 
 **Please hard refresh your browser now to see the fix in action!**

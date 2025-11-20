@@ -129,7 +129,7 @@ Import stack:
 ```
 
 ### Backend Configuration
-- Backend URL: `https://app-bridge-fix.preview.emergentagent.com`
+- Backend URL: `https://apicache-fix.preview.emergentagent.com`
 - API calls work correctly (tested with curl)
 - Backend is functional and responsive
 
