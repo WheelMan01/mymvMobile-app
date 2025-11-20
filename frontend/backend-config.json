@@ -1,4 +1,4 @@
 {
-  "backendUrl": "https://tokenfix-2.preview.emergentagent.com",
+  "backendUrl": "https://app-bridge-api.preview.emergentagent.com",
   "apiPrefix": "/api"
 }
