@@ -264,6 +264,25 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: '#92400e',
   },
+  statusBox: {
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  statusSuccess: {
+    backgroundColor: '#d1fae5',
+  },
+  statusError: {
+    backgroundColor: '#fee2e2',
+  },
+  statusInfo: {
+    backgroundColor: '#dbeafe',
+  },
+  statusText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1f2937',
+  },
   section: {
     marginBottom: 20,
     backgroundColor: 'white',
