@@ -2,20 +2,28 @@ import React, { useEffect } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../contexts/AuthContext';
+import { useDevAuth } from '../contexts/DevAuthContext'; // DEV ONLY
 
 export default function Index() {
   const { user, isLoading } = useAuth();
+  const { isAuthenticated: devIsAuthenticated, isDevMode } = useDevAuth(); // DEV ONLY
   const router = useRouter();
 
   useEffect(() => {
     if (!isLoading) {
-      if (user) {
+      // DEV ONLY: Check dev auth first
+      if (isDevMode && devIsAuthenticated) {
+        console.log('🔧 DEV: Redirecting to tabs (dev authenticated)');
+        router.replace('/(tabs)');
+      } else if (user) {
+        console.log('✅ User authenticated, redirecting to tabs');
         router.replace('/(tabs)');
       } else {
+        console.log('❌ Not authenticated, redirecting to login');
         router.replace('/auth/login');
       }
     }
-  }, [user, isLoading]);
+  }, [user, isLoading, devIsAuthenticated, isDevMode]);
 
   return (
     <View style={styles.container}>
