@@ -152,6 +152,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
   },
+  devBanner: {
+    backgroundColor: '#fef3c7',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
+    marginTop: 12,
+  },
+  devBannerText: {
+    color: '#92400e',
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
   form: {
     width: '100%',
   },
