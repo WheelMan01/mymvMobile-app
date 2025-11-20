@@ -156,6 +156,26 @@ export default function DevSettingsScreen() {
         ⚠️ This screen is for development only and will be removed in production
       </Text>
 
+      {/* Blue Reference Box - Correct Bridge URL */}
+      <View style={styles.blueReferenceBox}>
+        <Text style={styles.blueReferenceLabel}>
+          ✅ CORRECT BRIDGE URL (Use This):
+        </Text>
+        <Text style={styles.blueReferenceUrl}>
+          {BRIDGE_URL}
+        </Text>
+      </View>
+
+      {/* Use Bridge URL Button */}
+      <TouchableOpacity
+        onPress={() => setApiUrl(BRIDGE_URL)}
+        style={[styles.button, styles.useBridgeButton]}
+      >
+        <Text style={styles.buttonText}>
+          ✅ Use Correct Bridge URL
+        </Text>
+      </TouchableOpacity>
+
       {/* Status Message */}
       {statusMessage ? (
         <View style={[
@@ -170,14 +190,14 @@ export default function DevSettingsScreen() {
 
       {/* Backend URL */}
       <View style={styles.section}>
-        <Text style={styles.label}>Backend API URL (READ ONLY - AUTO-DETECTED):</Text>
-        <View style={styles.readOnlyUrlBox}>
-          <Text style={styles.readOnlyUrlText}>{CURRENT_BACKEND_URL}</Text>
-        </View>
-        <Text style={styles.helperText}>
-          ℹ️ This URL is automatically detected from your current environment.
-          It cannot be changed to prevent fork issues.
-        </Text>
+        <Text style={styles.label}>Backend API URL:</Text>
+        <TextInput
+          value={apiUrl}
+          onChangeText={setApiUrl}
+          style={styles.input}
+          placeholder="https://..."
+          autoCapitalize="none"
+        />
       </View>
 
       {/* Get Real Token */}
