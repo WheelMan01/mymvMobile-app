@@ -18,17 +18,25 @@ export default function DevTab() {
 
   const loadSavedConfig = async () => {
     try {
-      // Clear old URL from storage and force the correct one
+      console.log('🧹 CLEARING ALL CACHED DATA FROM PREVIOUS FORK...');
+      
+      // AGGRESSIVE CLEAR: Remove ALL dev-related cached data
       await AsyncStorage.removeItem('DEV_API_URL');
+      await AsyncStorage.removeItem('DEV_TOKEN');
+      await AsyncStorage.removeItem('auth_token');
+      await AsyncStorage.removeItem('user_data');
       
-      // Only load saved token
-      const savedToken = await AsyncStorage.getItem('DEV_TOKEN');
-      if (savedToken) setToken(savedToken);
+      console.log('✅ All cached data cleared');
+      console.log('✅ Forcing correct URL: https://app-bridge-api.preview.emergentagent.com');
       
-      // Always use the correct URL
+      // Always start fresh with correct URL
       setApiUrl('https://app-bridge-api.preview.emergentagent.com');
+      setToken('');
+      
+      setStatusMessage('✅ Cleared all cached data. Ready for fresh setup.');
+      setStatusType('success');
     } catch (error) {
-      console.log('No saved config');
+      console.log('Error clearing cache:', error);
     }
   };
 
