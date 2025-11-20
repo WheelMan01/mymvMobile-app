@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 export const API_URL = 'https://app-bridge-api.preview.emergentagent.com';
 
 // Log to verify correct URL is being used
-console.log('🔗 Mobile App Backend URL:', API_URL);
+console.log('🔗 [POST-FORK-FIX-v2] Mobile App Backend URL:', API_URL);
 console.log('✅ Connected to shared backend (web workspace)');
 
 // Storage helpers that work on both web and native
