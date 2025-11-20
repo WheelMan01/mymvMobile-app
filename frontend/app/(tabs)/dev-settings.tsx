@@ -136,6 +136,18 @@ export default function DevSettingsScreen() {
         ⚠️ This screen is for development only and will be removed in production
       </Text>
 
+      {/* Status Message */}
+      {statusMessage ? (
+        <View style={[
+          styles.statusBox,
+          statusType === 'success' && styles.statusSuccess,
+          statusType === 'error' && styles.statusError,
+          statusType === 'info' && styles.statusInfo,
+        ]}>
+          <Text style={styles.statusText}>{statusMessage}</Text>
+        </View>
+      ) : null}
+
       {/* Backend URL */}
       <View style={styles.section}>
         <Text style={styles.label}>Backend API URL:</Text>
