@@ -169,6 +169,9 @@ export default function DevTab() {
           placeholder="https://..."
           autoCapitalize="none"
         />
+        <Text style={styles.copyableUrl} selectable={true}>
+          https://app-bridge-api.preview.emergentagent.com
+        </Text>
         <TouchableOpacity 
           onPress={setCorrectBackendUrl} 
           style={[styles.button, styles.quickButton]}
