@@ -18,6 +18,7 @@ import SecurityTab from '../../components/settings/SecurityTab';
 import NotificationsTab from '../../components/settings/NotificationsTab';
 import BillingTab from '../../components/settings/BillingTab';
 import TransfersTab from '../../components/settings/TransfersTab';
+import DevTab from '../../components/settings/DevTab'; // DEV ONLY
 
 const initialLayout = { width: Dimensions.get('window').width };
 
@@ -29,6 +30,7 @@ export default function SettingsScreen() {
     { key: 'notifications', title: 'Notifications' },
     { key: 'billing', title: 'Billing' },
     { key: 'transfers', title: 'Transfers' },
+    { key: 'dev', title: '🔧 Dev' }, // DEV ONLY
   ]);
 
   const renderScene = SceneMap({
@@ -37,6 +39,7 @@ export default function SettingsScreen() {
     notifications: NotificationsTab,
     billing: BillingTab,
     transfers: TransfersTab,
+    dev: DevTab, // DEV ONLY
   });
 
   const renderTabBar = (props: any) => (
