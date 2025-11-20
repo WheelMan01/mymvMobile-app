@@ -255,10 +255,10 @@ export default function DevSettingsScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity 
-          onPress={clearConfig} 
+          onPress={clearCachedData} 
           style={[styles.button, styles.dangerButton]}
         >
-          <Text style={styles.buttonText}>Clear Config</Text>
+          <Text style={styles.buttonText}>Clear Cached Data</Text>
         </TouchableOpacity>
       </View>
 
