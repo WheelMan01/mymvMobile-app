@@ -153,6 +153,13 @@ export default function DevTab() {
 
   return (
     <ScrollView style={styles.container}>
+      {/* RED LABEL - Correct Backend URL */}
+      <View style={styles.redLabelContainer}>
+        <Text style={styles.redLabel}>
+          https://app-bridge-api.preview.emergentagent.com
+        </Text>
+      </View>
+
       <Text style={styles.warning}>
         ⚠️ This tab is for development only and will be removed in production
       </Text>
