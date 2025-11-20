@@ -10,6 +10,8 @@ export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log('🔍 Index useEffect - isLoading:', isLoading, 'user:', !!user, 'devAuth:', devIsAuthenticated, 'devMode:', isDevMode);
+    
     if (!isLoading) {
       // DEV ONLY: Check dev auth first
       if (isDevMode && devIsAuthenticated) {
@@ -23,6 +25,16 @@ export default function Index() {
         router.replace('/auth/login');
       }
     }
+    
+    // Fallback: Force redirect after 5 seconds if still loading
+    const timeout = setTimeout(() => {
+      if (isLoading) {
+        console.log('⏱️ Timeout: Force redirecting to login after 5s');
+        router.replace('/auth/login');
+      }
+    }, 5000);
+    
+    return () => clearTimeout(timeout);
   }, [user, isLoading, devIsAuthenticated, isDevMode]);
 
   return (
