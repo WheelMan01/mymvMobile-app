@@ -73,9 +73,9 @@ validateApiUrl(url) {
 
 ### Default Configuration
 
-- **Default Backend URL**: `https://apicache-fix.preview.emergentagent.com`
-- **Shared Backend URL**: `https://app-bridge-api.preview.emergentagent.com`
-- Both should work, but the default is recommended for this environment
+- **Correct Shared Backend URL**: `https://app-bridge-api.preview.emergentagent.com`
+- This is the URL that the "Use Shared Backend" button will now set
+- This is the backend shared between web and mobile apps
 
 ## Troubleshooting
 
