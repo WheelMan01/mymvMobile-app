@@ -205,14 +205,14 @@ export default function DevTab() {
           autoCapitalize="none"
         />
         <Text style={styles.copyableUrl} selectable={true}>
-          https://fork-safe-auth.preview.emergentagent.com
+          {CURRENT_BACKEND_URL}
         </Text>
         <TouchableOpacity 
           onPress={setCorrectBackendUrl} 
           style={[styles.button, styles.quickButton]}
         >
           <Text style={styles.buttonText}>
-            https://fork-safe-auth.preview.emergentagent.com
+            📋 Use Current Environment URL
           </Text>
         </TouchableOpacity>
       </View>
