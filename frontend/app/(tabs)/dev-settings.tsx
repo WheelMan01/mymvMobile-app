@@ -76,9 +76,12 @@ export default function DevSettingsScreen() {
         setStatusType('success');
         console.log('✅ Token received:', data.access_token.substring(0, 20) + '...');
       } else {
-        setStatusMessage(`❌ Failed to get token: ${data.detail || 'Unknown error'}`);
+        const errorMsg = typeof data.detail === 'string' 
+          ? data.detail 
+          : data.message || JSON.stringify(data) || 'Unknown error';
+        setStatusMessage(`❌ Failed to get token: ${errorMsg}`);
         setStatusType('error');
-        console.error('Failed:', data);
+        console.error('Failed response:', response.status, data);
       }
     } catch (error: any) {
       setStatusMessage(`❌ Network error: ${error.message}`);
