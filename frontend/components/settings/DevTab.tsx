@@ -163,7 +163,7 @@ export default function DevTab() {
   const clearConfig = async () => {
     await AsyncStorage.removeItem('DEV_API_URL');
     await AsyncStorage.removeItem('DEV_TOKEN');
-    setApiUrl('https://fork-safe-auth.preview.emergentagent.com');
+    setApiUrl(CURRENT_BACKEND_URL);
     setToken('');
     setStatusMessage('✅ Configuration cleared');
     setStatusType('success');
@@ -171,10 +171,10 @@ export default function DevTab() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* RED LABEL - Correct Backend URL */}
+      {/* RED LABEL - Shows CURRENT Environment URL */}
       <View style={styles.redLabelContainer}>
         <Text style={styles.redLabel}>
-          https://fork-safe-auth.preview.emergentagent.com
+          Current Environment: {CURRENT_BACKEND_URL}
         </Text>
       </View>
 
