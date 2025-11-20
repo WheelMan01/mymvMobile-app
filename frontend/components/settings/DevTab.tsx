@@ -168,14 +168,14 @@ export default function DevTab() {
           autoCapitalize="none"
         />
         <Text style={styles.copyableUrl} selectable={true}>
-          https://api-bridge-dev.preview.emergentagent.com
+          https://app-bridge-api.preview.emergentagent.com
         </Text>
         <TouchableOpacity 
           onPress={setCorrectBackendUrl} 
           style={[styles.button, styles.quickButton]}
         >
           <Text style={styles.buttonText}>
-            https://api-bridge-dev.preview.emergentagent.com
+            https://app-bridge-api.preview.emergentagent.com
           </Text>
         </TouchableOpacity>
       </View>
