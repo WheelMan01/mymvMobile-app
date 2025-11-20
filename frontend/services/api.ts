@@ -72,7 +72,11 @@ const deleteStorageItem = async (key: string) => {
 const getCurrentApiUrl = async () => {
   try {
     const devUrl = await AsyncStorage.getItem('DEV_API_URL');
-    return devUrl || DEFAULT_API_URL;
+    if (devUrl) {
+      // Validate and auto-fix if needed
+      return validateApiUrl(devUrl);
+    }
+    return DEFAULT_API_URL;
   } catch (error) {
     return DEFAULT_API_URL;
   }
