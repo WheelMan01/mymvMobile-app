@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // ============================================================================
 // CRITICAL: THIS IS THE SHARED BRIDGE URL - DO NOT CHANGE!
 // ============================================================================
-const BRIDGE_URL = 'https://auth-cache-reset.preview.emergentagent.com';
+const BRIDGE_URL = 'https://app-bridge-api.preview.emergentagent.com';
 // ============================================================================
 
 export default function DevTab() {
