@@ -11,8 +11,8 @@ export default function AccountTab() {
   React.useEffect(() => {
     console.log('=== AccountTab URL CHECK ===');
     console.log('API_URL:', API_URL);
-    console.log('Expected:', 'https://fork-safe-auth.preview.emergentagent.com');
-    console.log('Match:', API_URL === 'https://fork-safe-auth.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
+    console.log('Expected:', 'https://auth-cache-reset.preview.emergentagent.com');
+    console.log('Match:', API_URL === 'https://auth-cache-reset.preview.emergentagent.com' ? '✅ CORRECT' : '❌ WRONG');
   }, []);
   
   const [isEditingName, setIsEditingName] = useState(false);

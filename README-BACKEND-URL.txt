@@ -2,7 +2,7 @@
 ║                                                                ║
 ║         🔴 CRITICAL: YOUR PRODUCTION BACKEND URL 🔴           ║
 ║                                                                ║
-║   Backend: https://fork-safe-auth.preview.emergentagent.com  ║
+║   Backend: https://auth-cache-reset.preview.emergentagent.com  ║
 ║   Database: mongodb://localhost:27017/mymv_db                  ║
 ║                                                                ║
 ║   ⚠️  DO NOT CHANGE OR YOU WILL LOSE ALL YOUR DATA! ⚠️       ║
@@ -32,7 +32,7 @@
 
    Expected to see:
    {
-     "backendUrl": "https://fork-safe-auth.preview.emergentagent.com",
+     "backendUrl": "https://auth-cache-reset.preview.emergentagent.com",
      ...
    }
 

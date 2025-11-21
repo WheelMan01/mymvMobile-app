@@ -7,7 +7,7 @@ import requests
 import json
 
 # Backend URL
-BASE_URL = "https://fork-safe-auth.preview.emergentagent.com/api"
+BASE_URL = "https://auth-cache-reset.preview.emergentagent.com/api"
 
 def test_pin_login():
     """Test PIN login functionality"""

@@ -1,4 +1,4 @@
 {
-  "backendUrl": "https://fork-safe-auth.preview.emergentagent.com",
+  "backendUrl": "https://auth-cache-reset.preview.emergentagent.com",
   "apiPrefix": "/api"
 }

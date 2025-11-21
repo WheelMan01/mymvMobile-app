@@ -1,10 +1,10 @@
 # Backend Connection Fixed
 
 ## Issue
-App was not connecting to the correct backend URL `https://fork-safe-auth.preview.emergentagent.com`
+App was not connecting to the correct backend URL `https://auth-cache-reset.preview.emergentagent.com`
 
 ## Root Cause
-Metro bundler had cached the old backend-config.json file with the previous URL `https://fork-safe-auth.preview.emergentagent.com`
+Metro bundler had cached the old backend-config.json file with the previous URL `https://auth-cache-reset.preview.emergentagent.com`
 
 ## Solution
 1. Updated all configuration files to point to correct URL
@@ -12,15 +12,15 @@ Metro bundler had cached the old backend-config.json file with the previous URL 
 3. Force rebuilt the entire bundle
 
 ## Files Updated
-- ✅ `/app/frontend/backend-config.json` → `https://fork-safe-auth.preview.emergentagent.com`
+- ✅ `/app/frontend/backend-config.json` → `https://auth-cache-reset.preview.emergentagent.com`
 - ✅ `/app/frontend/.env` → Updated all URL variables
 - ✅ `/app/frontend/services/logoService.ts` → Updated fallback URL
 
 ## Verification
 The app now correctly shows in logs:
 ```
-🔧 AuthContext API_URL: https://fork-safe-auth.preview.emergentagent.com
-🔧 Using backend-config.json: https://fork-safe-auth.preview.emergentagent.com
+🔧 AuthContext API_URL: https://auth-cache-reset.preview.emergentagent.com
+🔧 Using backend-config.json: https://auth-cache-reset.preview.emergentagent.com
 ```
 
 ## Login Credentials (Confirmed Working)
